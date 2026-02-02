@@ -1,0 +1,19 @@
+Reading netlist file: "/home/peterglen/gowin/picotiny/project/impl/gwsynthesis/picotiny.vg"
+Parsing netlist file "/home/peterglen/gowin/picotiny/project/impl/gwsynthesis/picotiny.vg" completed
+Processing netlist completed
+Reading constraint file: "/home/peterglen/gowin/picotiny/project/picotiny.cst"
+Physical Constraint parsed completed
+Running placement......
+ERROR  (PR2028) : The constrained location is useless in current package
+ERROR  (PR2017) : 'flash_csb' cannot be placed according to constraint, for the location is a dedicated pin (MSPI)
+ERROR  (PR2028) : The constrained location is useless in current package
+ERROR  (PR2017) : 'flash_clk' cannot be placed according to constraint, for the location is a dedicated pin (MSPI)
+ERROR  (PR2028) : The constrained location is useless in current package
+ERROR  (PR2017) : 'flash_miso' cannot be placed according to constraint, for the location is a dedicated pin (MSPI)
+ERROR  (PR2028) : The constrained location is useless in current package
+ERROR  (PR2017) : 'flash_mosi' cannot be placed according to constraint, for the location is a dedicated pin (MSPI)
+Generate file "/home/peterglen/gowin/picotiny/project/impl/pnr/picotiny.pin.html" completed
+Generate file "/home/peterglen/gowin/picotiny/project/impl/pnr/picotiny.rpt.html" completed
+Generate file "/home/peterglen/gowin/picotiny/project/impl/pnr/picotiny.rpt.txt" completed
+Sun Feb  1 17:36:55 2026
+
