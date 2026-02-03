@@ -2,11 +2,11 @@
  *  SVO - Simple Video Out FPGA Core
  *
  *  Copyright (C) 2014  Clifford Wolf <clifford@clifford.at>
- *  
+ *
  *  Permission to use, copy, modify, and/or distribute this software for any
  *  purpose with or without fee is hereby granted, provided that the above
  *  copyright notice and this permission notice appear in all copies.
- *  
+ *
  *  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  *  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  *  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -79,7 +79,13 @@ module svo_tcard #( `SVO_DEFAULT_PARAMS ) (
 				best_y_off = 5;
 			end
 
-			if (which == 1) best_y_params = best_y_blk;
+			if (SVO_VER_PIXELS == 576) begin
+				best_y_blk = 3;
+				best_y_gap = 2;
+				best_y_off = 2;
+			end
+
+        if (which == 1) best_y_params = best_y_blk;
 			if (which == 2) best_y_params = best_y_gap;
 			if (which == 3) best_y_params = best_y_off;
 		end

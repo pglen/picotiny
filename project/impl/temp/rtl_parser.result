@@ -307,7 +307,7 @@
    },
    {
     "InstFile" : "/home/peterglen/gowin/picotiny/hw/picotiny.v",
-    "InstLine" : 294,
+    "InstLine" : 295,
     "InstName" : "u_hdmi",
     "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
     "ModuleLine" : 23,
@@ -315,7 +315,7 @@
     "SubInsts" : [
      {
       "InstFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
-      "InstLine" : 89,
+      "InstLine" : 91,
       "InstName" : "svo_tcard",
       "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_tcard.v",
       "ModuleLine" : 23,
@@ -323,7 +323,7 @@
      },
      {
       "InstFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
-      "InstLine" : 99,
+      "InstLine" : 101,
       "InstName" : "svo_term",
       "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_term.v",
       "ModuleLine" : 23,
@@ -331,7 +331,7 @@
      },
      {
       "InstFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
-      "InstLine" : 114,
+      "InstLine" : 116,
       "InstName" : "svo_overlay",
       "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_utils.v",
       "ModuleLine" : 250,
@@ -395,7 +395,7 @@
      },
      {
       "InstFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
-      "InstLine" : 135,
+      "InstLine" : 137,
       "InstName" : "svo_enc",
       "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_enc.v",
       "ModuleLine" : 23,
@@ -403,7 +403,7 @@
      },
      {
       "InstFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
-      "InstLine" : 152,
+      "InstLine" : 154,
       "InstName" : "svo_tmds_0",
       "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_tmds.v",
       "ModuleLine" : 23,
@@ -411,7 +411,7 @@
      },
      {
       "InstFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
-      "InstLine" : 162,
+      "InstLine" : 164,
       "InstName" : "svo_tmds_1",
       "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_tmds.v",
       "ModuleLine" : 23,
@@ -419,7 +419,7 @@
      },
      {
       "InstFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_hdmi_top.v",
-      "InstLine" : 172,
+      "InstLine" : 174,
       "InstName" : "svo_tmds_2",
       "ModuleFile" : "/home/peterglen/gowin/picotiny/hw/hdmi/svo_tmds.v",
       "ModuleLine" : 23,

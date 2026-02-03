@@ -60,7 +60,7 @@ trap_entry:
   addi sp,sp,-16*4
       50:	fc010113          	addi	sp,sp,-64
   call irqCallback
-      54:	085020ef          	jal	ra,28d8 <irqCallback>
+      54:	0c1020ef          	jal	ra,2914 <irqCallback>
   lw x1 , 15*4(sp)
       58:	03c12083          	lw	ra,60(sp)
   lw x5,  14*4(sp)
@@ -114,7 +114,7 @@ crtInit:
 # copy data section
   la a0, _sidata
       ac:	00003517          	auipc	a0,0x3
-      b0:	ba850513          	addi	a0,a0,-1112 # 2c54 <_etext>
+      b0:	c0450513          	addi	a0,a0,-1020 # 2cb0 <_etext>
   la a1, _sdata
       b4:	40000597          	auipc	a1,0x40000
       b8:	f4c58593          	addi	a1,a1,-180 # 40000000 <spi_flashio>
@@ -164,7 +164,7 @@ bss_done:
 ctors_init:
   la a0, _ctors_start
       f8:	00003517          	auipc	a0,0x3
-      fc:	b5c50513          	addi	a0,a0,-1188 # 2c54 <_etext>
+      fc:	bb850513          	addi	a0,a0,-1096 # 2cb0 <_etext>
   addi sp,sp,-4
      100:	ffc10113          	addi	sp,sp,-4
 
@@ -172,7 +172,7 @@ ctors_init:
 ctors_loop:
   la a1, _ctors_end
      104:	00003597          	auipc	a1,0x3
-     108:	b5058593          	addi	a1,a1,-1200 # 2c54 <_etext>
+     108:	bac58593          	addi	a1,a1,-1108 # 2cb0 <_etext>
   beq a0,a1,ctors_done
      10c:	00b50e63          	beq	a0,a1,128 <ctors_done>
   lw a3,0(a0)
@@ -257,7 +257,7 @@ void cmd_read_flash_id()
      190:	00d14703          	lbu	a4,13(sp)
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
      194:	000037b7          	lui	a5,0x3
-     198:	8dc78793          	addi	a5,a5,-1828 # 28dc <irqCallback+0x4>
+     198:	91878793          	addi	a5,a5,-1768 # 2918 <irqCallback+0x4>
      19c:	00475693          	srli	a3,a4,0x4
      1a0:	00d786b3          	add	a3,a5,a3
      1a4:	0006c683          	lbu	a3,0(a3)
@@ -267,7 +267,7 @@ void cmd_read_flash_id()
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
      1b0:	00f77713          	andi	a4,a4,15
      1b4:	00e78733          	add	a4,a5,a4
-     1b8:	00074703          	lbu	a4,0(a4) # 400000 <_etext+0x3fd3ac>
+     1b8:	00074703          	lbu	a4,0(a4) # 400000 <_etext+0x3fd350>
     UART0->DATA = c;
      1bc:	83000637          	lui	a2,0x83000
      1c0:	00d62023          	sw	a3,0(a2) # 83000000 <__global_pointer$+0x42fff800>
@@ -421,7 +421,7 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
     __asm__ volatile ("rdinstret %0" : "=r"(instns_begin));
      334:	01400e13          	li	t3,20
     uint32_t x32 = 314159265;
-     338:	0a178793          	addi	a5,a5,161 # 12b9b0a1 <_etext+0x12b9844d>
+     338:	0a178793          	addi	a5,a5,161 # 12b9b0a1 <_etext+0x12b983f1>
      33c:	10010813          	addi	a6,sp,256
             x32 ^= x32 >> 17;
             x32 ^= x32 << 5;
@@ -505,7 +505,7 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
      3d0:	00d72023          	sw	a3,0(a4) # 83000000 <__global_pointer$+0x42fff800>
         putchar(*(p++));
      3d4:	000036b7          	lui	a3,0x3
-     3d8:	8f168693          	addi	a3,a3,-1807 # 28f1 <irqCallback+0x19>
+     3d8:	92d68693          	addi	a3,a3,-1747 # 292d <irqCallback+0x19>
     while (*p)
      3dc:	07900713          	li	a4,121
     if (c == '\n')
@@ -527,7 +527,7 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
      400:	40580533          	sub	a0,a6,t0
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
      404:	00003737          	lui	a4,0x3
-     408:	8dc70713          	addi	a4,a4,-1828 # 28dc <irqCallback+0x4>
+     408:	91870713          	addi	a4,a4,-1768 # 2918 <irqCallback+0x4>
      40c:	01c55693          	srli	a3,a0,0x1c
      410:	00d706b3          	add	a3,a4,a3
      414:	0006c803          	lbu	a6,0(a3)
@@ -644,7 +644,7 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
      550:	00c6a023          	sw	a2,0(a3)
         putchar(*(p++));
      554:	00003637          	lui	a2,0x3
-     558:	8fd60613          	addi	a2,a2,-1795 # 28fd <irqCallback+0x25>
+     558:	93960613          	addi	a2,a2,-1735 # 2939 <irqCallback+0x25>
     while (*p)
      55c:	06e00693          	li	a3,110
     if (c == '\n')
@@ -781,7 +781,7 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
      6c8:	00c6a023          	sw	a2,0(a3)
         putchar(*(p++));
      6cc:	00003637          	lui	a2,0x3
-     6d0:	90960613          	addi	a2,a2,-1783 # 2909 <irqCallback+0x31>
+     6d0:	94560613          	addi	a2,a2,-1723 # 2945 <irqCallback+0x31>
     while (*p)
      6d4:	06800693          	li	a3,104
     if (c == '\n')
@@ -959,7 +959,7 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
      8a4:	40580533          	sub	a0,a6,t0
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
      8a8:	00003737          	lui	a4,0x3
-     8ac:	8dc70713          	addi	a4,a4,-1828 # 28dc <irqCallback+0x4>
+     8ac:	91870713          	addi	a4,a4,-1768 # 2918 <irqCallback+0x4>
      8b0:	01c55693          	srli	a3,a0,0x1c
      8b4:	00d706b3          	add	a3,a4,a3
      8b8:	0006c803          	lbu	a6,0(a3)
@@ -1239,7 +1239,7 @@ void cmd_benchmark_all()
      be0:	00e7a023          	sw	a4,0(a5) # 83000000 <__global_pointer$+0x42fff800>
         putchar(*(p++));
      be4:	00003737          	lui	a4,0x3
-     be8:	91570713          	addi	a4,a4,-1771 # 2915 <irqCallback+0x3d>
+     be8:	95170713          	addi	a4,a4,-1711 # 2951 <irqCallback+0x3d>
     while (*p)
      bec:	06500793          	li	a5,101
     if (c == '\n')
@@ -1277,11 +1277,11 @@ void cmd_benchmark_all()
      c44:	03a00693          	li	a3,58
      c48:	00d7a023          	sw	a3,0(a5) # 83000000 <__global_pointer$+0x42fff800>
         putchar(*(p++));
-     c4c:	b1170493          	addi	s1,a4,-1263 # 2b11 <irqCallback+0x239>
+     c4c:	b6d70493          	addi	s1,a4,-1171 # 2b6d <irqCallback+0x259>
     while (*p)
      c50:	02000793          	li	a5,32
         putchar(*(p++));
-     c54:	b1170713          	addi	a4,a4,-1263
+     c54:	b6d70713          	addi	a4,a4,-1171
     if (c == '\n')
      c58:	00a00613          	li	a2,10
     UART0->DATA = c;
@@ -1308,7 +1308,7 @@ void cmd_benchmark_all()
      c80:	e9cff0ef          	jal	ra,31c <cmd_benchmark>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
      c84:	00003437          	lui	s0,0x3
-     c88:	8dc40413          	addi	s0,s0,-1828 # 28dc <irqCallback+0x4>
+     c88:	91840413          	addi	s0,s0,-1768 # 2918 <irqCallback+0x4>
      c8c:	01c55793          	srli	a5,a0,0x1c
      c90:	00f407b3          	add	a5,s0,a5
      c94:	0007c683          	lbu	a3,0(a5)
@@ -1429,7 +1429,7 @@ void cmd_benchmark_all()
      ddc:	00e7a023          	sw	a4,0(a5)
         putchar(*(p++));
      de0:	00003737          	lui	a4,0x3
-     de4:	92570713          	addi	a4,a4,-1755 # 2925 <irqCallback+0x4d>
+     de4:	96170713          	addi	a4,a4,-1695 # 2961 <irqCallback+0x4d>
     while (*p)
      de8:	07300793          	li	a5,115
     if (c == '\n')
@@ -1455,7 +1455,7 @@ void cmd_benchmark_all()
      e1c:	00e7a023          	sw	a4,0(a5)
         putchar(*(p++));
      e20:	00003737          	lui	a4,0x3
-     e24:	92d70713          	addi	a4,a4,-1747 # 292d <irqCallback+0x55>
+     e24:	96970713          	addi	a4,a4,-1687 # 2969 <irqCallback+0x55>
     while (*p)
      e28:	02000793          	li	a5,32
     if (c == '\n')
@@ -1632,7 +1632,7 @@ void cmd_benchmark_all()
      ff0:	00e7a023          	sw	a4,0(a5)
         putchar(*(p++));
      ff4:	00003737          	lui	a4,0x3
-     ff8:	93970713          	addi	a4,a4,-1735 # 2939 <irqCallback+0x61>
+     ff8:	97570713          	addi	a4,a4,-1675 # 2975 <irqCallback+0x61>
     while (*p)
      ffc:	07300793          	li	a5,115
     if (c == '\n')
@@ -1658,7 +1658,7 @@ void cmd_benchmark_all()
     1030:	00e7a023          	sw	a4,0(a5)
         putchar(*(p++));
     1034:	00003737          	lui	a4,0x3
-    1038:	93170713          	addi	a4,a4,-1743 # 2931 <irqCallback+0x59>
+    1038:	96d70713          	addi	a4,a4,-1683 # 296d <irqCallback+0x59>
     while (*p)
     103c:	02000793          	li	a5,32
     if (c == '\n')
@@ -1835,7 +1835,7 @@ void cmd_benchmark_all()
     1204:	00e7a023          	sw	a4,0(a5)
         putchar(*(p++));
     1208:	00003737          	lui	a4,0x3
-    120c:	94570713          	addi	a4,a4,-1723 # 2945 <irqCallback+0x6d>
+    120c:	98170713          	addi	a4,a4,-1663 # 2981 <irqCallback+0x6d>
     while (*p)
     1210:	06e00793          	li	a5,110
     if (c == '\n')
@@ -2149,2342 +2149,2381 @@ void cmd_benchmark_all()
 
 void main()
 {
-    159c:	e7010113          	addi	sp,sp,-400
-    15a0:	18112623          	sw	ra,396(sp)
-    15a4:	18812423          	sw	s0,392(sp)
-    15a8:	18912223          	sw	s1,388(sp)
-    15ac:	19212023          	sw	s2,384(sp)
-    15b0:	17312e23          	sw	s3,380(sp)
-    15b4:	17412c23          	sw	s4,376(sp)
-    15b8:	17512a23          	sw	s5,372(sp)
-    15bc:	17612823          	sw	s6,368(sp)
-    15c0:	17712623          	sw	s7,364(sp)
-    15c4:	17812423          	sw	s8,360(sp)
-    15c8:	17912223          	sw	s9,356(sp)
-    15cc:	17a12023          	sw	s10,352(sp)
-    15d0:	15b12e23          	sw	s11,348(sp)
+    159c:	e6010113          	addi	sp,sp,-416
+    15a0:	18112e23          	sw	ra,412(sp)
+    15a4:	18812c23          	sw	s0,408(sp)
+    15a8:	18912a23          	sw	s1,404(sp)
+    15ac:	19212823          	sw	s2,400(sp)
+    15b0:	19312623          	sw	s3,396(sp)
+    15b4:	19412423          	sw	s4,392(sp)
+    15b8:	19512223          	sw	s5,388(sp)
+    15bc:	19612023          	sw	s6,384(sp)
+    15c0:	17712e23          	sw	s7,380(sp)
+    15c4:	17812c23          	sw	s8,376(sp)
+    15c8:	17912a23          	sw	s9,372(sp)
+    15cc:	17a12823          	sw	s10,368(sp)
+    15d0:	17b12623          	sw	s11,364(sp)
     UART0->CLKDIV = CLK_FREQ / UART_BAUD - 2;
-    15d4:	830006b7          	lui	a3,0x83000
-    15d8:	0d800793          	li	a5,216
-    15dc:	00f6a223          	sw	a5,4(a3) # 83000004 <__global_pointer$+0x42fff804>
+    15d4:	830007b7          	lui	a5,0x83000
+    15d8:	0d800713          	li	a4,216
+    15dc:	00e7a223          	sw	a4,4(a5) # 83000004 <__global_pointer$+0x42fff804>
 
     GPIO0->OE = 0x3F;
-    15e0:	03f00713          	li	a4,63
-    15e4:	820007b7          	lui	a5,0x82000
+    15e0:	820007b7          	lui	a5,0x82000
+    15e4:	03f00713          	li	a4,63
     15e8:	00e7a423          	sw	a4,8(a5) # 82000008 <__global_pointer$+0x41fff808>
     GPIO0->OUT = 0x3F;
     15ec:	00e7a023          	sw	a4,0(a5)
         QSPI0->REG |= QSPI_REG_CRM;
-    15f0:	810007b7          	lui	a5,0x81000
-    15f4:	0007a703          	lw	a4,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-    15f8:	00100637          	lui	a2,0x100
-    if (c == '\n')
-    15fc:	00a00593          	li	a1,10
-        QSPI0->REG |= QSPI_REG_CRM;
-    1600:	00c76733          	or	a4,a4,a2
-    1604:	00e7a023          	sw	a4,0(a5)
+    15f0:	81000737          	lui	a4,0x81000
+    15f4:	00072783          	lw	a5,0(a4) # 81000000 <__global_pointer$+0x40fff800>
+    15f8:	001006b7          	lui	a3,0x100
         QSPI0->REG |= QSPI_REG_DSPI;
-    1608:	0007a703          	lw	a4,0(a5)
-    160c:	00400637          	lui	a2,0x400
-    1610:	00c76733          	or	a4,a4,a2
-    1614:	00e7a023          	sw	a4,0(a5)
-    UART0->DATA = c;
-    1618:	05c00793          	li	a5,92
-        putchar(*(p++));
+    15fc:	00400637          	lui	a2,0x400
+        QSPI0->REG |= QSPI_REG_CRM;
+    1600:	00d7e7b3          	or	a5,a5,a3
+    1604:	00f72023          	sw	a5,0(a4)
+        QSPI0->REG |= QSPI_REG_DSPI;
+    1608:	00072683          	lw	a3,0(a4)
+    while (*p)
+    160c:	00a00793          	li	a5,10
+    if (c == '\n')
+    1610:	00a00593          	li	a1,10
+        QSPI0->REG |= QSPI_REG_DSPI;
+    1614:	00c6e6b3          	or	a3,a3,a2
+    1618:	00d72023          	sw	a3,0(a4)
     161c:	00003737          	lui	a4,0x3
+    1620:	99470713          	addi	a4,a4,-1644 # 2994 <irqCallback+0x80>
     UART0->DATA = c;
-    1620:	00f6a023          	sw	a5,0(a3)
-        putchar(*(p++));
-    1624:	95970713          	addi	a4,a4,-1703 # 2959 <irqCallback+0x81>
-    while (*p)
-    1628:	06e00793          	li	a5,110
+    1624:	830006b7          	lui	a3,0x83000
         UART0->DATA = '\r';
-    162c:	00d00613          	li	a2,13
+    1628:	00d00613          	li	a2,13
         putchar(*(p++));
-    1630:	00170713          	addi	a4,a4,1
+    162c:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1634:	6eb78663          	beq	a5,a1,1d20 <main+0x784>
+    1630:	70b78c63          	beq	a5,a1,1d48 <main+0x7ac>
     UART0->DATA = c;
-    1638:	00f6a023          	sw	a5,0(a3)
+    1634:	00f6a023          	sw	a5,0(a3) # 83000000 <__global_pointer$+0x42fff800>
     while (*p)
-    163c:	00074783          	lbu	a5,0(a4)
-    1640:	fe0798e3          	bnez	a5,1630 <main+0x94>
+    1638:	00074783          	lbu	a5,0(a4)
+    163c:	fe0798e3          	bnez	a5,162c <main+0x90>
     UART0->DATA = c;
-    1644:	830007b7          	lui	a5,0x83000
-    1648:	02000713          	li	a4,32
-    164c:	00e7a023          	sw	a4,0(a5) # 83000000 <__global_pointer$+0x42fff800>
+    1640:	830007b7          	lui	a5,0x83000
+    1644:	02000713          	li	a4,32
+    1648:	00e7a023          	sw	a4,0(a5) # 83000000 <__global_pointer$+0x42fff800>
         putchar(*(p++));
-    1650:	00003737          	lui	a4,0x3
-    1654:	96170713          	addi	a4,a4,-1695 # 2961 <irqCallback+0x89>
+    164c:	00003737          	lui	a4,0x3
+    1650:	99d70713          	addi	a4,a4,-1635 # 299d <irqCallback+0x89>
     while (*p)
-    1658:	02000793          	li	a5,32
+    1654:	02000793          	li	a5,32
     if (c == '\n')
-    165c:	00a00593          	li	a1,10
+    1658:	00a00593          	li	a1,10
     UART0->DATA = c;
-    1660:	830006b7          	lui	a3,0x83000
+    165c:	830006b7          	lui	a3,0x83000
         UART0->DATA = '\r';
-    1664:	00d00613          	li	a2,13
+    1660:	00d00613          	li	a2,13
         putchar(*(p++));
-    1668:	00170713          	addi	a4,a4,1
+    1664:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    166c:	6cb78463          	beq	a5,a1,1d34 <main+0x798>
+    1668:	6eb78a63          	beq	a5,a1,1d5c <main+0x7c0>
     UART0->DATA = c;
-    1670:	00f6a023          	sw	a5,0(a3) # 83000000 <__global_pointer$+0x42fff800>
+    166c:	00f6a023          	sw	a5,0(a3) # 83000000 <__global_pointer$+0x42fff800>
     while (*p)
-    1674:	00074783          	lbu	a5,0(a4)
-    1678:	fe0798e3          	bnez	a5,1668 <main+0xcc>
+    1670:	00074783          	lbu	a5,0(a4)
+    1674:	fe0798e3          	bnez	a5,1664 <main+0xc8>
         UART0->DATA = '\r';
-    167c:	830007b7          	lui	a5,0x83000
-    1680:	00d00713          	li	a4,13
-    1684:	00e7a023          	sw	a4,0(a5) # 83000000 <__global_pointer$+0x42fff800>
+    1678:	830007b7          	lui	a5,0x83000
+    167c:	00d00713          	li	a4,13
+    1680:	00e7a023          	sw	a4,0(a5) # 83000000 <__global_pointer$+0x42fff800>
     UART0->DATA = c;
-    1688:	00a00713          	li	a4,10
-    168c:	00e7a023          	sw	a4,0(a5)
+    1684:	00a00713          	li	a4,10
+    1688:	00e7a023          	sw	a4,0(a5)
     //print(" |_|   |_|\\___\\___/____/ \\___/ \\____|\n");
     //print("\n");
     print("           On Lichee Tang Nano-9K by Peter Glen\n");
     print("\n");
 
     for ( i = 0 ; i < 10000; i++);
-    1690:	400007b7          	lui	a5,0x40000
-    1694:	00478793          	addi	a5,a5,4 # 40000004 <i>
-    1698:	0007a023          	sw	zero,0(a5)
-    169c:	0007a683          	lw	a3,0(a5)
-    16a0:	00002737          	lui	a4,0x2
-    16a4:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    16a8:	00d74c63          	blt	a4,a3,16c0 <main+0x124>
-    16ac:	0007a683          	lw	a3,0(a5)
-    16b0:	00168693          	addi	a3,a3,1
-    16b4:	00d7a023          	sw	a3,0(a5)
-    16b8:	0007a683          	lw	a3,0(a5)
-    16bc:	fed758e3          	bge	a4,a3,16ac <main+0x110>
+    168c:	400007b7          	lui	a5,0x40000
+    1690:	00478793          	addi	a5,a5,4 # 40000004 <i>
+    1694:	0007a023          	sw	zero,0(a5)
+    1698:	0007a683          	lw	a3,0(a5)
+    169c:	00002737          	lui	a4,0x2
+    16a0:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    16a4:	00d74c63          	blt	a4,a3,16bc <main+0x120>
+    16a8:	0007a683          	lw	a3,0(a5)
+    16ac:	00168693          	addi	a3,a3,1
+    16b0:	00d7a023          	sw	a3,0(a5)
+    16b4:	0007a683          	lw	a3,0(a5)
+    16b8:	fed758e3          	bge	a4,a3,16a8 <main+0x10c>
     GPIO0->OUT = 0x3F ^ 0x01;
-    16c0:	82000737          	lui	a4,0x82000
-    16c4:	03e00693          	li	a3,62
-    16c8:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    16bc:	82000737          	lui	a4,0x82000
+    16c0:	03e00693          	li	a3,62
+    16c4:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    16cc:	0007a023          	sw	zero,0(a5)
-    16d0:	0007a683          	lw	a3,0(a5)
-    16d4:	00002737          	lui	a4,0x2
-    16d8:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    16dc:	00d74c63          	blt	a4,a3,16f4 <main+0x158>
-    16e0:	0007a683          	lw	a3,0(a5)
-    16e4:	00168693          	addi	a3,a3,1
-    16e8:	00d7a023          	sw	a3,0(a5)
-    16ec:	0007a683          	lw	a3,0(a5)
-    16f0:	fed758e3          	bge	a4,a3,16e0 <main+0x144>
+    16c8:	0007a023          	sw	zero,0(a5)
+    16cc:	0007a683          	lw	a3,0(a5)
+    16d0:	00002737          	lui	a4,0x2
+    16d4:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    16d8:	00d74c63          	blt	a4,a3,16f0 <main+0x154>
+    16dc:	0007a683          	lw	a3,0(a5)
+    16e0:	00168693          	addi	a3,a3,1
+    16e4:	00d7a023          	sw	a3,0(a5)
+    16e8:	0007a683          	lw	a3,0(a5)
+    16ec:	fed758e3          	bge	a4,a3,16dc <main+0x140>
     GPIO0->OUT = 0x3F ^ 0x02;
-    16f4:	82000737          	lui	a4,0x82000
-    16f8:	03d00693          	li	a3,61
-    16fc:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    16f0:	82000737          	lui	a4,0x82000
+    16f4:	03d00693          	li	a3,61
+    16f8:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    1700:	0007a023          	sw	zero,0(a5)
-    1704:	0007a683          	lw	a3,0(a5)
-    1708:	00002737          	lui	a4,0x2
-    170c:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    1710:	00d74c63          	blt	a4,a3,1728 <main+0x18c>
-    1714:	0007a683          	lw	a3,0(a5)
-    1718:	00168693          	addi	a3,a3,1
-    171c:	00d7a023          	sw	a3,0(a5)
-    1720:	0007a683          	lw	a3,0(a5)
-    1724:	fed758e3          	bge	a4,a3,1714 <main+0x178>
+    16fc:	0007a023          	sw	zero,0(a5)
+    1700:	0007a683          	lw	a3,0(a5)
+    1704:	00002737          	lui	a4,0x2
+    1708:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    170c:	00d74c63          	blt	a4,a3,1724 <main+0x188>
+    1710:	0007a683          	lw	a3,0(a5)
+    1714:	00168693          	addi	a3,a3,1
+    1718:	00d7a023          	sw	a3,0(a5)
+    171c:	0007a683          	lw	a3,0(a5)
+    1720:	fed758e3          	bge	a4,a3,1710 <main+0x174>
     GPIO0->OUT = 0x3F ^ 0x04;
-    1728:	82000737          	lui	a4,0x82000
-    172c:	03b00693          	li	a3,59
-    1730:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    1724:	82000737          	lui	a4,0x82000
+    1728:	03b00693          	li	a3,59
+    172c:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    1734:	0007a023          	sw	zero,0(a5)
-    1738:	0007a683          	lw	a3,0(a5)
-    173c:	00002737          	lui	a4,0x2
-    1740:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    1744:	00d74c63          	blt	a4,a3,175c <main+0x1c0>
-    1748:	0007a683          	lw	a3,0(a5)
-    174c:	00168693          	addi	a3,a3,1
-    1750:	00d7a023          	sw	a3,0(a5)
-    1754:	0007a683          	lw	a3,0(a5)
-    1758:	fed758e3          	bge	a4,a3,1748 <main+0x1ac>
+    1730:	0007a023          	sw	zero,0(a5)
+    1734:	0007a683          	lw	a3,0(a5)
+    1738:	00002737          	lui	a4,0x2
+    173c:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    1740:	00d74c63          	blt	a4,a3,1758 <main+0x1bc>
+    1744:	0007a683          	lw	a3,0(a5)
+    1748:	00168693          	addi	a3,a3,1
+    174c:	00d7a023          	sw	a3,0(a5)
+    1750:	0007a683          	lw	a3,0(a5)
+    1754:	fed758e3          	bge	a4,a3,1744 <main+0x1a8>
     GPIO0->OUT = 0x3F ^ 0x08;
-    175c:	82000737          	lui	a4,0x82000
-    1760:	03700693          	li	a3,55
-    1764:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    1758:	82000737          	lui	a4,0x82000
+    175c:	03700693          	li	a3,55
+    1760:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    1768:	0007a023          	sw	zero,0(a5)
-    176c:	0007a683          	lw	a3,0(a5)
-    1770:	00002737          	lui	a4,0x2
-    1774:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    1778:	00d74c63          	blt	a4,a3,1790 <main+0x1f4>
-    177c:	0007a683          	lw	a3,0(a5)
-    1780:	00168693          	addi	a3,a3,1
-    1784:	00d7a023          	sw	a3,0(a5)
-    1788:	0007a683          	lw	a3,0(a5)
-    178c:	fed758e3          	bge	a4,a3,177c <main+0x1e0>
+    1764:	0007a023          	sw	zero,0(a5)
+    1768:	0007a683          	lw	a3,0(a5)
+    176c:	00002737          	lui	a4,0x2
+    1770:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    1774:	00d74c63          	blt	a4,a3,178c <main+0x1f0>
+    1778:	0007a683          	lw	a3,0(a5)
+    177c:	00168693          	addi	a3,a3,1
+    1780:	00d7a023          	sw	a3,0(a5)
+    1784:	0007a683          	lw	a3,0(a5)
+    1788:	fed758e3          	bge	a4,a3,1778 <main+0x1dc>
     GPIO0->OUT = 0x3F ^ 0x10;
-    1790:	82000737          	lui	a4,0x82000
-    1794:	02f00693          	li	a3,47
-    1798:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    178c:	82000737          	lui	a4,0x82000
+    1790:	02f00693          	li	a3,47
+    1794:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    179c:	0007a023          	sw	zero,0(a5)
-    17a0:	0007a683          	lw	a3,0(a5)
-    17a4:	00002737          	lui	a4,0x2
-    17a8:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    17ac:	00d74c63          	blt	a4,a3,17c4 <main+0x228>
-    17b0:	0007a683          	lw	a3,0(a5)
-    17b4:	00168693          	addi	a3,a3,1
-    17b8:	00d7a023          	sw	a3,0(a5)
-    17bc:	0007a683          	lw	a3,0(a5)
-    17c0:	fed758e3          	bge	a4,a3,17b0 <main+0x214>
+    1798:	0007a023          	sw	zero,0(a5)
+    179c:	0007a683          	lw	a3,0(a5)
+    17a0:	00002737          	lui	a4,0x2
+    17a4:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    17a8:	00d74c63          	blt	a4,a3,17c0 <main+0x224>
+    17ac:	0007a683          	lw	a3,0(a5)
+    17b0:	00168693          	addi	a3,a3,1
+    17b4:	00d7a023          	sw	a3,0(a5)
+    17b8:	0007a683          	lw	a3,0(a5)
+    17bc:	fed758e3          	bge	a4,a3,17ac <main+0x210>
     GPIO0->OUT = 0x3F ^ 0x20;
-    17c4:	82000737          	lui	a4,0x82000
-    17c8:	01f00693          	li	a3,31
-    17cc:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    17c0:	82000737          	lui	a4,0x82000
+    17c4:	01f00693          	li	a3,31
+    17c8:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    17d0:	0007a023          	sw	zero,0(a5)
-    17d4:	0007a683          	lw	a3,0(a5)
-    17d8:	00002737          	lui	a4,0x2
-    17dc:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    17e0:	00d74c63          	blt	a4,a3,17f8 <main+0x25c>
-    17e4:	0007a683          	lw	a3,0(a5)
-    17e8:	00168693          	addi	a3,a3,1
-    17ec:	00d7a023          	sw	a3,0(a5)
-    17f0:	0007a683          	lw	a3,0(a5)
-    17f4:	fed758e3          	bge	a4,a3,17e4 <main+0x248>
+    17cc:	0007a023          	sw	zero,0(a5)
+    17d0:	0007a683          	lw	a3,0(a5)
+    17d4:	00002737          	lui	a4,0x2
+    17d8:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    17dc:	00d74c63          	blt	a4,a3,17f4 <main+0x258>
+    17e0:	0007a683          	lw	a3,0(a5)
+    17e4:	00168693          	addi	a3,a3,1
+    17e8:	00d7a023          	sw	a3,0(a5)
+    17ec:	0007a683          	lw	a3,0(a5)
+    17f0:	fed758e3          	bge	a4,a3,17e0 <main+0x244>
     GPIO0->OUT = 0x3F;
-    17f8:	82000737          	lui	a4,0x82000
-    17fc:	03f00693          	li	a3,63
-    1800:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    17f4:	82000737          	lui	a4,0x82000
+    17f8:	03f00693          	li	a3,63
+    17fc:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    1804:	0007a023          	sw	zero,0(a5)
-    1808:	0007a683          	lw	a3,0(a5)
-    180c:	00002737          	lui	a4,0x2
-    1810:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    1814:	00d74c63          	blt	a4,a3,182c <main+0x290>
-    1818:	0007a683          	lw	a3,0(a5)
-    181c:	00168693          	addi	a3,a3,1
-    1820:	00d7a023          	sw	a3,0(a5)
-    1824:	0007a683          	lw	a3,0(a5)
-    1828:	fed758e3          	bge	a4,a3,1818 <main+0x27c>
+    1800:	0007a023          	sw	zero,0(a5)
+    1804:	0007a683          	lw	a3,0(a5)
+    1808:	00002737          	lui	a4,0x2
+    180c:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    1810:	00d74c63          	blt	a4,a3,1828 <main+0x28c>
+    1814:	0007a683          	lw	a3,0(a5)
+    1818:	00168693          	addi	a3,a3,1
+    181c:	00d7a023          	sw	a3,0(a5)
+    1820:	0007a683          	lw	a3,0(a5)
+    1824:	fed758e3          	bge	a4,a3,1814 <main+0x278>
     GPIO0->OUT = 0x00;
-    182c:	82000737          	lui	a4,0x82000
-    1830:	00072023          	sw	zero,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    1828:	82000737          	lui	a4,0x82000
+    182c:	00072023          	sw	zero,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    1834:	0007a023          	sw	zero,0(a5)
-    1838:	0007a683          	lw	a3,0(a5)
-    183c:	00002737          	lui	a4,0x2
-    1840:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    1844:	00d74c63          	blt	a4,a3,185c <main+0x2c0>
-    1848:	0007a683          	lw	a3,0(a5)
-    184c:	00168693          	addi	a3,a3,1
-    1850:	00d7a023          	sw	a3,0(a5)
-    1854:	0007a683          	lw	a3,0(a5)
-    1858:	fed758e3          	bge	a4,a3,1848 <main+0x2ac>
+    1830:	0007a023          	sw	zero,0(a5)
+    1834:	0007a683          	lw	a3,0(a5)
+    1838:	00002737          	lui	a4,0x2
+    183c:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    1840:	00d74c63          	blt	a4,a3,1858 <main+0x2bc>
+    1844:	0007a683          	lw	a3,0(a5)
+    1848:	00168693          	addi	a3,a3,1
+    184c:	00d7a023          	sw	a3,0(a5)
+    1850:	0007a683          	lw	a3,0(a5)
+    1854:	fed758e3          	bge	a4,a3,1844 <main+0x2a8>
     GPIO0->OUT = 0x3F;
-    185c:	82000737          	lui	a4,0x82000
-    1860:	03f00693          	li	a3,63
-    1864:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    1858:	82000737          	lui	a4,0x82000
+    185c:	03f00693          	li	a3,63
+    1860:	00d72023          	sw	a3,0(a4) # 82000000 <__global_pointer$+0x41fff800>
     for ( i = 0 ; i < 10000; i++);
-    1868:	0007a023          	sw	zero,0(a5)
-    186c:	0007a683          	lw	a3,0(a5)
-    1870:	00002737          	lui	a4,0x2
-    1874:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
-    1878:	00d74c63          	blt	a4,a3,1890 <main+0x2f4>
-    187c:	0007a683          	lw	a3,0(a5)
-    1880:	00168693          	addi	a3,a3,1
-    1884:	00d7a023          	sw	a3,0(a5)
-    1888:	0007a683          	lw	a3,0(a5)
-    188c:	fed758e3          	bge	a4,a3,187c <main+0x2e0>
-    1890:	000039b7          	lui	s3,0x3
-    1894:	99598793          	addi	a5,s3,-1643 # 2995 <irqCallback+0xbd>
-    1898:	02f12823          	sw	a5,48(sp)
-    189c:	000037b7          	lui	a5,0x3
-    18a0:	9c178793          	addi	a5,a5,-1599 # 29c1 <irqCallback+0xe9>
-    18a4:	02f12a23          	sw	a5,52(sp)
-    18a8:	000037b7          	lui	a5,0x3
-    18ac:	9d978793          	addi	a5,a5,-1575 # 29d9 <irqCallback+0x101>
-    18b0:	02f12c23          	sw	a5,56(sp)
-    18b4:	000037b7          	lui	a5,0x3
-    18b8:	9f178793          	addi	a5,a5,-1551 # 29f1 <irqCallback+0x119>
-    18bc:	02f12e23          	sw	a5,60(sp)
-    18c0:	000037b7          	lui	a5,0x3
-    18c4:	a0978793          	addi	a5,a5,-1527 # 2a09 <irqCallback+0x131>
-    18c8:	04f12023          	sw	a5,64(sp)
-    18cc:	000037b7          	lui	a5,0x3
-    18d0:	a2178793          	addi	a5,a5,-1503 # 2a21 <irqCallback+0x149>
-    18d4:	00f12423          	sw	a5,8(sp)
-    18d8:	000037b7          	lui	a5,0x3
-    18dc:	a3978793          	addi	a5,a5,-1479 # 2a39 <irqCallback+0x161>
-    18e0:	00f12623          	sw	a5,12(sp)
-    18e4:	000037b7          	lui	a5,0x3
-    18e8:	a5178793          	addi	a5,a5,-1455 # 2a51 <irqCallback+0x179>
-    18ec:	00f12823          	sw	a5,16(sp)
-    18f0:	000037b7          	lui	a5,0x3
-    18f4:	a6d78793          	addi	a5,a5,-1427 # 2a6d <irqCallback+0x195>
-    18f8:	00f12a23          	sw	a5,20(sp)
-    18fc:	000037b7          	lui	a5,0x3
-    1900:	a8978793          	addi	a5,a5,-1399 # 2a89 <irqCallback+0x1b1>
-    1904:	00f12c23          	sw	a5,24(sp)
-    1908:	000037b7          	lui	a5,0x3
-    190c:	aa178793          	addi	a5,a5,-1375 # 2aa1 <irqCallback+0x1c9>
-    1910:	00f12e23          	sw	a5,28(sp)
-    1914:	000037b7          	lui	a5,0x3
-    1918:	abd78793          	addi	a5,a5,-1347 # 2abd <irqCallback+0x1e5>
-    191c:	02f12023          	sw	a5,32(sp)
-    1920:	000037b7          	lui	a5,0x3
-    1924:	ae978793          	addi	a5,a5,-1303 # 2ae9 <irqCallback+0x211>
-    1928:	02f12223          	sw	a5,36(sp)
-    192c:	000037b7          	lui	a5,0x3
-    1930:	b2d78793          	addi	a5,a5,-1235 # 2b2d <irqCallback+0x255>
-    1934:	000034b7          	lui	s1,0x3
-    1938:	02f12423          	sw	a5,40(sp)
-    193c:	b3548793          	addi	a5,s1,-1227 # 2b35 <irqCallback+0x25d>
-    1940:	00f12023          	sw	a5,0(sp)
-    1944:	000037b7          	lui	a5,0x3
-    1948:	b4178793          	addi	a5,a5,-1215 # 2b41 <irqCallback+0x269>
-    194c:	02f12623          	sw	a5,44(sp)
-    1950:	000037b7          	lui	a5,0x3
-    1954:	8f178793          	addi	a5,a5,-1807 # 28f1 <irqCallback+0x19>
-    1958:	04f12223          	sw	a5,68(sp)
-    195c:	000037b7          	lui	a5,0x3
-    1960:	8fd78793          	addi	a5,a5,-1795 # 28fd <irqCallback+0x25>
-    1964:	04f12423          	sw	a5,72(sp)
-    1968:	000037b7          	lui	a5,0x3
-    196c:	90978793          	addi	a5,a5,-1783 # 2909 <irqCallback+0x31>
+    1864:	0007a023          	sw	zero,0(a5)
+    1868:	0007a683          	lw	a3,0(a5)
+    186c:	00002737          	lui	a4,0x2
+    1870:	70f70713          	addi	a4,a4,1807 # 270f <main+0x1173>
+    1874:	00d74c63          	blt	a4,a3,188c <main+0x2f0>
+    1878:	0007a683          	lw	a3,0(a5)
+    187c:	00168693          	addi	a3,a3,1
+    1880:	00d7a023          	sw	a3,0(a5)
+    1884:	0007a683          	lw	a3,0(a5)
+    1888:	fed758e3          	bge	a4,a3,1878 <main+0x2dc>
+    188c:	000039b7          	lui	s3,0x3
+    1890:	9d198793          	addi	a5,s3,-1583 # 29d1 <irqCallback+0xbd>
+    1894:	00f12a23          	sw	a5,20(sp)
+    1898:	000037b7          	lui	a5,0x3
+    189c:	a0578793          	addi	a5,a5,-1531 # 2a05 <irqCallback+0xf1>
+    18a0:	00f12c23          	sw	a5,24(sp)
+    18a4:	000037b7          	lui	a5,0x3
+    18a8:	a1d78793          	addi	a5,a5,-1507 # 2a1d <irqCallback+0x109>
+    18ac:	00f12e23          	sw	a5,28(sp)
+    18b0:	000037b7          	lui	a5,0x3
+    18b4:	a3578793          	addi	a5,a5,-1483 # 2a35 <irqCallback+0x121>
+    18b8:	02f12023          	sw	a5,32(sp)
+    18bc:	000037b7          	lui	a5,0x3
+    18c0:	a4d78793          	addi	a5,a5,-1459 # 2a4d <irqCallback+0x139>
+    18c4:	02f12223          	sw	a5,36(sp)
+    18c8:	000037b7          	lui	a5,0x3
+    18cc:	a6578793          	addi	a5,a5,-1435 # 2a65 <irqCallback+0x151>
+    18d0:	02f12a23          	sw	a5,52(sp)
+    18d4:	000037b7          	lui	a5,0x3
+    18d8:	a7d78793          	addi	a5,a5,-1411 # 2a7d <irqCallback+0x169>
+    18dc:	02f12c23          	sw	a5,56(sp)
+    18e0:	000037b7          	lui	a5,0x3
+    18e4:	a9578793          	addi	a5,a5,-1387 # 2a95 <irqCallback+0x181>
+    18e8:	02f12e23          	sw	a5,60(sp)
+    18ec:	000037b7          	lui	a5,0x3
+    18f0:	aad78793          	addi	a5,a5,-1363 # 2aad <irqCallback+0x199>
+    18f4:	04f12023          	sw	a5,64(sp)
+    18f8:	000037b7          	lui	a5,0x3
+    18fc:	ac978793          	addi	a5,a5,-1335 # 2ac9 <irqCallback+0x1b5>
+    1900:	04f12223          	sw	a5,68(sp)
+    1904:	000037b7          	lui	a5,0x3
+    1908:	ae578793          	addi	a5,a5,-1307 # 2ae5 <irqCallback+0x1d1>
+    190c:	04f12423          	sw	a5,72(sp)
+    1910:	000037b7          	lui	a5,0x3
+    1914:	afd78793          	addi	a5,a5,-1283 # 2afd <irqCallback+0x1e9>
+    1918:	04f12623          	sw	a5,76(sp)
+    191c:	000037b7          	lui	a5,0x3
+    1920:	b1978793          	addi	a5,a5,-1255 # 2b19 <irqCallback+0x205>
+    1924:	04f12823          	sw	a5,80(sp)
+    1928:	000037b7          	lui	a5,0x3
+    192c:	b4578793          	addi	a5,a5,-1211 # 2b45 <irqCallback+0x231>
+    1930:	04f12a23          	sw	a5,84(sp)
+    1934:	000037b7          	lui	a5,0x3
+    1938:	b8978793          	addi	a5,a5,-1143 # 2b89 <irqCallback+0x275>
+    193c:	000034b7          	lui	s1,0x3
+    1940:	04f12c23          	sw	a5,88(sp)
+    1944:	b9148793          	addi	a5,s1,-1135 # 2b91 <irqCallback+0x27d>
+    1948:	00f12623          	sw	a5,12(sp)
+    194c:	000037b7          	lui	a5,0x3
+    1950:	b9d78793          	addi	a5,a5,-1123 # 2b9d <irqCallback+0x289>
+    1954:	04f12e23          	sw	a5,92(sp)
+    1958:	000037b7          	lui	a5,0x3
+    195c:	92d78793          	addi	a5,a5,-1747 # 292d <irqCallback+0x19>
+    1960:	02f12423          	sw	a5,40(sp)
+    1964:	000037b7          	lui	a5,0x3
+    1968:	93978793          	addi	a5,a5,-1735 # 2939 <irqCallback+0x25>
+    196c:	02f12623          	sw	a5,44(sp)
+    1970:	000037b7          	lui	a5,0x3
+    1974:	94578793          	addi	a5,a5,-1723 # 2945 <irqCallback+0x31>
         QSPI0->REG &= ~QSPI_REG_CRM;
-    1970:	fff00437          	lui	s0,0xfff00
-    1974:	00003fb7          	lui	t6,0x3
-    1978:	00003c37          	lui	s8,0x3
-    197c:	00003cb7          	lui	s9,0x3
-    1980:	00003d37          	lui	s10,0x3
-    1984:	000032b7          	lui	t0,0x3
-    1988:	00003937          	lui	s2,0x3
-    198c:	04f12623          	sw	a5,76(sp)
-    1990:	00003eb7          	lui	t4,0x3
-    1994:	fff40793          	addi	a5,s0,-1 # ffefffff <__global_pointer$+0xbfeff7ff>
-    1998:	9a9f8f93          	addi	t6,t6,-1623 # 29a9 <irqCallback+0xd1>
-    199c:	8dcc0c13          	addi	s8,s8,-1828 # 28dc <irqCallback+0x4>
-    19a0:	b15c8c93          	addi	s9,s9,-1259 # 2b15 <irqCallback+0x23d>
-    19a4:	b48d0d13          	addi	s10,s10,-1208 # 2b48 <irqCallback+0x270>
-    19a8:	b2128293          	addi	t0,t0,-1247 # 2b21 <irqCallback+0x249>
-    19ac:	b3990913          	addi	s2,s2,-1223 # 2b39 <irqCallback+0x261>
-    19b0:	b09e8493          	addi	s1,t4,-1271 # 2b09 <irqCallback+0x231>
+    1978:	fff00437          	lui	s0,0xfff00
+    197c:	00003fb7          	lui	t6,0x3
+    1980:	00003c37          	lui	s8,0x3
+    1984:	00003cb7          	lui	s9,0x3
+    1988:	00003d37          	lui	s10,0x3
+    198c:	000032b7          	lui	t0,0x3
+    1990:	00003937          	lui	s2,0x3
+    1994:	02f12823          	sw	a5,48(sp)
+    1998:	00003eb7          	lui	t4,0x3
+    199c:	fff40793          	addi	a5,s0,-1 # ffefffff <__global_pointer$+0xbfeff7ff>
+    19a0:	9e5f8f93          	addi	t6,t6,-1563 # 29e5 <irqCallback+0xd1>
+    19a4:	918c0c13          	addi	s8,s8,-1768 # 2918 <irqCallback+0x4>
+    19a8:	b71c8c93          	addi	s9,s9,-1167 # 2b71 <irqCallback+0x25d>
+    19ac:	ba4d0d13          	addi	s10,s10,-1116 # 2ba4 <irqCallback+0x290>
+    19b0:	b7d28293          	addi	t0,t0,-1155 # 2b7d <irqCallback+0x269>
+    19b4:	b9590913          	addi	s2,s2,-1131 # 2b95 <irqCallback+0x281>
+    19b8:	b65e8493          	addi	s1,t4,-1179 # 2b65 <irqCallback+0x251>
         UART0->DATA = '\r';
-    19b4:	83000ab7          	lui	s5,0x83000
-    19b8:	00d00b93          	li	s7,13
+    19bc:	83000ab7          	lui	s5,0x83000
+    19c0:	00d00b93          	li	s7,13
     UART0->DATA = c;
-    19bc:	00a00b13          	li	s6,10
-    19c0:	02000993          	li	s3,32
+    19c4:	00a00b13          	li	s6,10
+    19c8:	02000993          	li	s3,32
         QSPI0->REG &= ~QSPI_REG_CRM;
-    19c4:	00f12223          	sw	a5,4(sp)
+    19cc:	00f12823          	sw	a5,16(sp)
         UART0->DATA = '\r';
-    19c8:	00d00793          	li	a5,13
-    19cc:	00faa023          	sw	a5,0(s5) # 83000000 <__global_pointer$+0x42fff800>
+    19d0:	00d00793          	li	a5,13
+    19d4:	00faa023          	sw	a5,0(s5) # 83000000 <__global_pointer$+0x42fff800>
         putchar(*(p++));
-    19d0:	03012703          	lw	a4,48(sp)
+    19d8:	01412703          	lw	a4,20(sp)
     UART0->DATA = c;
-    19d4:	05300793          	li	a5,83
-    19d8:	016aa023          	sw	s6,0(s5)
-    19dc:	00faa023          	sw	a5,0(s5)
+    19dc:	05300793          	li	a5,83
+    19e0:	016aa023          	sw	s6,0(s5)
+    19e4:	00faa023          	sw	a5,0(s5)
     while (*p)
-    19e0:	06500793          	li	a5,101
+    19e8:	06500793          	li	a5,101
         putchar(*(p++));
-    19e4:	00170713          	addi	a4,a4,1
+    19ec:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    19e8:	2b6786e3          	beq	a5,s6,2494 <main+0xef8>
+    19f0:	35678ce3          	beq	a5,s6,2548 <main+0xfac>
     UART0->DATA = c;
-    19ec:	00faa023          	sw	a5,0(s5)
+    19f4:	00faa023          	sw	a5,0(s5)
     while (*p)
-    19f0:	00074783          	lbu	a5,0(a4)
-    19f4:	fe0798e3          	bnez	a5,19e4 <main+0x448>
+    19f8:	00074783          	lbu	a5,0(a4)
+    19fc:	fe0798e3          	bnez	a5,19ec <main+0x450>
         UART0->DATA = '\r';
-    19f8:	017aa023          	sw	s7,0(s5)
+    1a00:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    19fc:	016aa023          	sw	s6,0(s5)
-    1a00:	013aa023          	sw	s3,0(s5)
+    1a04:	016aa023          	sw	s6,0(s5)
+    1a08:	013aa023          	sw	s3,0(s5)
         putchar(*(p++));
-    1a04:	000f8713          	mv	a4,t6
+    1a0c:	000f8713          	mv	a4,t6
     while (*p)
-    1a08:	02000793          	li	a5,32
+    1a10:	02000793          	li	a5,32
         putchar(*(p++));
-    1a0c:	00170713          	addi	a4,a4,1
+    1a14:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1a10:	276788e3          	beq	a5,s6,2480 <main+0xee4>
+    1a18:	31678ee3          	beq	a5,s6,2534 <main+0xf98>
     UART0->DATA = c;
-    1a14:	00faa023          	sw	a5,0(s5)
+    1a1c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1a18:	00074783          	lbu	a5,0(a4)
-    1a1c:	fe0798e3          	bnez	a5,1a0c <main+0x470>
+    1a20:	00074783          	lbu	a5,0(a4)
+    1a24:	fe0798e3          	bnez	a5,1a14 <main+0x478>
         putchar(*(p++));
-    1a20:	03412703          	lw	a4,52(sp)
+    1a28:	01812703          	lw	a4,24(sp)
     UART0->DATA = c;
-    1a24:	013aa023          	sw	s3,0(s5)
+    1a2c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1a28:	02000793          	li	a5,32
+    1a30:	02000793          	li	a5,32
         putchar(*(p++));
-    1a2c:	00170713          	addi	a4,a4,1
+    1a34:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1a30:	23678ee3          	beq	a5,s6,246c <main+0xed0>
+    1a38:	2f6784e3          	beq	a5,s6,2520 <main+0xf84>
     UART0->DATA = c;
-    1a34:	00faa023          	sw	a5,0(s5)
+    1a3c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1a38:	00074783          	lbu	a5,0(a4)
-    1a3c:	fe0798e3          	bnez	a5,1a2c <main+0x490>
+    1a40:	00074783          	lbu	a5,0(a4)
+    1a44:	fe0798e3          	bnez	a5,1a34 <main+0x498>
         putchar(*(p++));
-    1a40:	03812703          	lw	a4,56(sp)
+    1a48:	01c12703          	lw	a4,28(sp)
     UART0->DATA = c;
-    1a44:	013aa023          	sw	s3,0(s5)
+    1a4c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1a48:	02000793          	li	a5,32
+    1a50:	02000793          	li	a5,32
         putchar(*(p++));
-    1a4c:	00170713          	addi	a4,a4,1
+    1a54:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1a50:	216784e3          	beq	a5,s6,2458 <main+0xebc>
+    1a58:	2b678ae3          	beq	a5,s6,250c <main+0xf70>
     UART0->DATA = c;
-    1a54:	00faa023          	sw	a5,0(s5)
+    1a5c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1a58:	00074783          	lbu	a5,0(a4)
-    1a5c:	fe0798e3          	bnez	a5,1a4c <main+0x4b0>
+    1a60:	00074783          	lbu	a5,0(a4)
+    1a64:	fe0798e3          	bnez	a5,1a54 <main+0x4b8>
         putchar(*(p++));
-    1a60:	03c12703          	lw	a4,60(sp)
+    1a68:	02012703          	lw	a4,32(sp)
     UART0->DATA = c;
-    1a64:	013aa023          	sw	s3,0(s5)
+    1a6c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1a68:	02000793          	li	a5,32
+    1a70:	02000793          	li	a5,32
         putchar(*(p++));
-    1a6c:	00170713          	addi	a4,a4,1
+    1a74:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1a70:	1d678ae3          	beq	a5,s6,2444 <main+0xea8>
+    1a78:	296780e3          	beq	a5,s6,24f8 <main+0xf5c>
     UART0->DATA = c;
-    1a74:	00faa023          	sw	a5,0(s5)
+    1a7c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1a78:	00074783          	lbu	a5,0(a4)
-    1a7c:	fe0798e3          	bnez	a5,1a6c <main+0x4d0>
+    1a80:	00074783          	lbu	a5,0(a4)
+    1a84:	fe0798e3          	bnez	a5,1a74 <main+0x4d8>
         putchar(*(p++));
-    1a80:	04012703          	lw	a4,64(sp)
+    1a88:	02412703          	lw	a4,36(sp)
     UART0->DATA = c;
-    1a84:	013aa023          	sw	s3,0(s5)
+    1a8c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1a88:	02000793          	li	a5,32
+    1a90:	02000793          	li	a5,32
         putchar(*(p++));
-    1a8c:	00170713          	addi	a4,a4,1
+    1a94:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1a90:	1b6780e3          	beq	a5,s6,2430 <main+0xe94>
+    1a98:	256786e3          	beq	a5,s6,24e4 <main+0xf48>
     UART0->DATA = c;
-    1a94:	00faa023          	sw	a5,0(s5)
+    1a9c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1a98:	00074783          	lbu	a5,0(a4)
-    1a9c:	fe0798e3          	bnez	a5,1a8c <main+0x4f0>
+    1aa0:	00074783          	lbu	a5,0(a4)
+    1aa4:	fe0798e3          	bnez	a5,1a94 <main+0x4f8>
         putchar(*(p++));
-    1aa0:	00812703          	lw	a4,8(sp)
+    1aa8:	03412703          	lw	a4,52(sp)
     UART0->DATA = c;
-    1aa4:	013aa023          	sw	s3,0(s5)
+    1aac:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1aa8:	02000793          	li	a5,32
+    1ab0:	02000793          	li	a5,32
         putchar(*(p++));
-    1aac:	00170713          	addi	a4,a4,1
+    1ab4:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1ab0:	176786e3          	beq	a5,s6,241c <main+0xe80>
+    1ab8:	21678ce3          	beq	a5,s6,24d0 <main+0xf34>
     UART0->DATA = c;
-    1ab4:	00faa023          	sw	a5,0(s5)
+    1abc:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1ab8:	00074783          	lbu	a5,0(a4)
-    1abc:	fe0798e3          	bnez	a5,1aac <main+0x510>
+    1ac0:	00074783          	lbu	a5,0(a4)
+    1ac4:	fe0798e3          	bnez	a5,1ab4 <main+0x518>
         putchar(*(p++));
-    1ac0:	00c12703          	lw	a4,12(sp)
+    1ac8:	03812703          	lw	a4,56(sp)
     UART0->DATA = c;
-    1ac4:	013aa023          	sw	s3,0(s5)
+    1acc:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1ac8:	02000793          	li	a5,32
+    1ad0:	02000793          	li	a5,32
         putchar(*(p++));
-    1acc:	00170713          	addi	a4,a4,1
+    1ad4:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1ad0:	13678ce3          	beq	a5,s6,2408 <main+0xe6c>
+    1ad8:	1f6782e3          	beq	a5,s6,24bc <main+0xf20>
     UART0->DATA = c;
-    1ad4:	00faa023          	sw	a5,0(s5)
+    1adc:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1ad8:	00074783          	lbu	a5,0(a4)
-    1adc:	fe0798e3          	bnez	a5,1acc <main+0x530>
+    1ae0:	00074783          	lbu	a5,0(a4)
+    1ae4:	fe0798e3          	bnez	a5,1ad4 <main+0x538>
         putchar(*(p++));
-    1ae0:	01012703          	lw	a4,16(sp)
+    1ae8:	03c12703          	lw	a4,60(sp)
     UART0->DATA = c;
-    1ae4:	013aa023          	sw	s3,0(s5)
+    1aec:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1ae8:	02000793          	li	a5,32
+    1af0:	02000793          	li	a5,32
         putchar(*(p++));
-    1aec:	00170713          	addi	a4,a4,1
+    1af4:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1af0:	1f678ae3          	beq	a5,s6,24e4 <main+0xf48>
+    1af8:	1b6788e3          	beq	a5,s6,24a8 <main+0xf0c>
     UART0->DATA = c;
-    1af4:	00faa023          	sw	a5,0(s5)
+    1afc:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1af8:	00074783          	lbu	a5,0(a4)
-    1afc:	fe0798e3          	bnez	a5,1aec <main+0x550>
+    1b00:	00074783          	lbu	a5,0(a4)
+    1b04:	fe0798e3          	bnez	a5,1af4 <main+0x558>
         putchar(*(p++));
-    1b00:	01412703          	lw	a4,20(sp)
+    1b08:	04012703          	lw	a4,64(sp)
     UART0->DATA = c;
-    1b04:	013aa023          	sw	s3,0(s5)
+    1b0c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1b08:	02000793          	li	a5,32
+    1b10:	02000793          	li	a5,32
         putchar(*(p++));
-    1b0c:	00170713          	addi	a4,a4,1
+    1b14:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1b10:	1d6780e3          	beq	a5,s6,24d0 <main+0xf34>
+    1b18:	17678ee3          	beq	a5,s6,2494 <main+0xef8>
     UART0->DATA = c;
-    1b14:	00faa023          	sw	a5,0(s5)
+    1b1c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1b18:	00074783          	lbu	a5,0(a4)
-    1b1c:	fe0798e3          	bnez	a5,1b0c <main+0x570>
+    1b20:	00074783          	lbu	a5,0(a4)
+    1b24:	fe0798e3          	bnez	a5,1b14 <main+0x578>
         putchar(*(p++));
-    1b20:	01812703          	lw	a4,24(sp)
+    1b28:	04412703          	lw	a4,68(sp)
     UART0->DATA = c;
-    1b24:	013aa023          	sw	s3,0(s5)
+    1b2c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1b28:	02000793          	li	a5,32
+    1b30:	02000793          	li	a5,32
         putchar(*(p++));
-    1b2c:	00170713          	addi	a4,a4,1
+    1b34:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1b30:	196786e3          	beq	a5,s6,24bc <main+0xf20>
+    1b38:	156784e3          	beq	a5,s6,2480 <main+0xee4>
     UART0->DATA = c;
-    1b34:	00faa023          	sw	a5,0(s5)
+    1b3c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1b38:	00074783          	lbu	a5,0(a4)
-    1b3c:	fe0798e3          	bnez	a5,1b2c <main+0x590>
+    1b40:	00074783          	lbu	a5,0(a4)
+    1b44:	fe0798e3          	bnez	a5,1b34 <main+0x598>
         putchar(*(p++));
-    1b40:	01c12703          	lw	a4,28(sp)
+    1b48:	04812703          	lw	a4,72(sp)
     UART0->DATA = c;
-    1b44:	013aa023          	sw	s3,0(s5)
+    1b4c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1b48:	02000793          	li	a5,32
+    1b50:	02000793          	li	a5,32
         putchar(*(p++));
-    1b4c:	00170713          	addi	a4,a4,1
+    1b54:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1b50:	15678ce3          	beq	a5,s6,24a8 <main+0xf0c>
+    1b58:	11678ae3          	beq	a5,s6,246c <main+0xed0>
     UART0->DATA = c;
-    1b54:	00faa023          	sw	a5,0(s5)
+    1b5c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1b58:	00074783          	lbu	a5,0(a4)
-    1b5c:	fe0798e3          	bnez	a5,1b4c <main+0x5b0>
+    1b60:	00074783          	lbu	a5,0(a4)
+    1b64:	fe0798e3          	bnez	a5,1b54 <main+0x5b8>
         putchar(*(p++));
-    1b60:	02012703          	lw	a4,32(sp)
+    1b68:	04c12703          	lw	a4,76(sp)
     UART0->DATA = c;
-    1b64:	013aa023          	sw	s3,0(s5)
+    1b6c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1b68:	02000793          	li	a5,32
+    1b70:	02000793          	li	a5,32
         putchar(*(p++));
-    1b6c:	00170713          	addi	a4,a4,1
+    1b74:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1b70:	19678ee3          	beq	a5,s6,250c <main+0xf70>
+    1b78:	0f6780e3          	beq	a5,s6,2458 <main+0xebc>
     UART0->DATA = c;
-    1b74:	00faa023          	sw	a5,0(s5)
+    1b7c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1b78:	00074783          	lbu	a5,0(a4)
-    1b7c:	fe0798e3          	bnez	a5,1b6c <main+0x5d0>
+    1b80:	00074783          	lbu	a5,0(a4)
+    1b84:	fe0798e3          	bnez	a5,1b74 <main+0x5d8>
         putchar(*(p++));
-    1b80:	02412703          	lw	a4,36(sp)
+    1b88:	05012703          	lw	a4,80(sp)
     UART0->DATA = c;
-    1b84:	013aa023          	sw	s3,0(s5)
+    1b8c:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1b88:	02000793          	li	a5,32
+    1b90:	02000793          	li	a5,32
         putchar(*(p++));
-    1b8c:	00170713          	addi	a4,a4,1
+    1b94:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1b90:	176784e3          	beq	a5,s6,24f8 <main+0xf5c>
+    1b98:	0b6786e3          	beq	a5,s6,2444 <main+0xea8>
     UART0->DATA = c;
-    1b94:	00faa023          	sw	a5,0(s5)
+    1b9c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1b98:	00074783          	lbu	a5,0(a4)
-    1b9c:	fe0798e3          	bnez	a5,1b8c <main+0x5f0>
+    1ba0:	00074783          	lbu	a5,0(a4)
+    1ba4:	fe0798e3          	bnez	a5,1b94 <main+0x5f8>
+        putchar(*(p++));
+    1ba8:	05412703          	lw	a4,84(sp)
+    UART0->DATA = c;
+    1bac:	013aa023          	sw	s3,0(s5)
+    while (*p)
+    1bb0:	02000793          	li	a5,32
+        putchar(*(p++));
+    1bb4:	00170713          	addi	a4,a4,1
+    if (c == '\n')
+    1bb8:	07678ce3          	beq	a5,s6,2430 <main+0xe94>
+    UART0->DATA = c;
+    1bbc:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    1bc0:	00074783          	lbu	a5,0(a4)
+    1bc4:	fe0798e3          	bnez	a5,1bb4 <main+0x618>
         QSPI0->REG &= ~QSPI_REG_DSPI;
-    1ba0:	ffc00437          	lui	s0,0xffc00
+    1bc8:	ffc00437          	lui	s0,0xffc00
     while (*p)
-    1ba4:	00a00a13          	li	s4,10
+    1bcc:	00a00a13          	li	s4,10
     UART0->DATA = c;
-    1ba8:	04900d93          	li	s11,73
+    1bd0:	04900d93          	li	s11,73
         QSPI0->REG &= ~QSPI_REG_DSPI;
-    1bac:	fff40413          	addi	s0,s0,-1 # ffbfffff <__global_pointer$+0xbfbff7ff>
+    1bd4:	fff40413          	addi	s0,s0,-1 # ffbfffff <__global_pointer$+0xbfbff7ff>
         UART0->DATA = '\r';
-    1bb0:	017aa023          	sw	s7,0(s5)
+    1bd8:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    1bb4:	016aa023          	sw	s6,0(s5)
-    1bb8:	01baa023          	sw	s11,0(s5)
+    1bdc:	016aa023          	sw	s6,0(s5)
+    1be0:	01baa023          	sw	s11,0(s5)
         putchar(*(p++));
-    1bbc:	00048713          	mv	a4,s1
+    1be4:	00048713          	mv	a4,s1
     while (*p)
-    1bc0:	04f00793          	li	a5,79
+    1be8:	04f00793          	li	a5,79
         putchar(*(p++));
-    1bc4:	00170713          	addi	a4,a4,1
+    1bec:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1bc8:	73678e63          	beq	a5,s6,2304 <main+0xd68>
+    1bf0:	75678863          	beq	a5,s6,2340 <main+0xda4>
     UART0->DATA = c;
-    1bcc:	00faa023          	sw	a5,0(s5)
+    1bf4:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1bd0:	00074783          	lbu	a5,0(a4)
-    1bd4:	fe0798e3          	bnez	a5,1bc4 <main+0x628>
+    1bf8:	00074783          	lbu	a5,0(a4)
+    1bfc:	fe0798e3          	bnez	a5,1bec <main+0x650>
 
         for (int rep = 10; rep > 0; rep--)
         {
             print("\n");
             print("IO State: ");
             print_hex(GPIO0->IN, 8);
-    1bd8:	820007b7          	lui	a5,0x82000
-    1bdc:	0047a783          	lw	a5,4(a5) # 82000004 <__global_pointer$+0x41fff804>
+    1c00:	820007b7          	lui	a5,0x82000
+    1c04:	0047a783          	lw	a5,4(a5) # 82000004 <__global_pointer$+0x41fff804>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1be0:	01c7d713          	srli	a4,a5,0x1c
-    1be4:	00ec0733          	add	a4,s8,a4
-    1be8:	00074603          	lbu	a2,0(a4)
+    1c08:	01c7d713          	srli	a4,a5,0x1c
+    1c0c:	00ec0733          	add	a4,s8,a4
+    1c10:	00074603          	lbu	a2,0(a4)
     if (c == '\n')
-    1bec:	75660063          	beq	a2,s6,232c <main+0xd90>
+    1c14:	75660a63          	beq	a2,s6,2368 <main+0xdcc>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1bf0:	0187d713          	srli	a4,a5,0x18
-    1bf4:	00f77713          	andi	a4,a4,15
-    1bf8:	00ec0733          	add	a4,s8,a4
-    1bfc:	00074683          	lbu	a3,0(a4)
+    1c18:	0187d713          	srli	a4,a5,0x18
+    1c1c:	00f77713          	andi	a4,a4,15
+    1c20:	00ec0733          	add	a4,s8,a4
+    1c24:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    1c00:	00caa023          	sw	a2,0(s5)
+    1c28:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    1c04:	75668263          	beq	a3,s6,2348 <main+0xdac>
+    1c2c:	75668c63          	beq	a3,s6,2384 <main+0xde8>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1c08:	0147d713          	srli	a4,a5,0x14
-    1c0c:	00f77713          	andi	a4,a4,15
-    1c10:	00ec0733          	add	a4,s8,a4
-    1c14:	00074603          	lbu	a2,0(a4)
+    1c30:	0147d713          	srli	a4,a5,0x14
+    1c34:	00f77713          	andi	a4,a4,15
+    1c38:	00ec0733          	add	a4,s8,a4
+    1c3c:	00074603          	lbu	a2,0(a4)
     UART0->DATA = c;
-    1c18:	00daa023          	sw	a3,0(s5)
+    1c40:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    1c1c:	75660463          	beq	a2,s6,2364 <main+0xdc8>
+    1c44:	75660e63          	beq	a2,s6,23a0 <main+0xe04>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1c20:	0107d713          	srli	a4,a5,0x10
-    1c24:	00f77713          	andi	a4,a4,15
-    1c28:	00ec0733          	add	a4,s8,a4
-    1c2c:	00074683          	lbu	a3,0(a4)
+    1c48:	0107d713          	srli	a4,a5,0x10
+    1c4c:	00f77713          	andi	a4,a4,15
+    1c50:	00ec0733          	add	a4,s8,a4
+    1c54:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    1c30:	00caa023          	sw	a2,0(s5)
+    1c58:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    1c34:	75668663          	beq	a3,s6,2380 <main+0xde4>
+    1c5c:	77668063          	beq	a3,s6,23bc <main+0xe20>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1c38:	00c7d713          	srli	a4,a5,0xc
-    1c3c:	00f77713          	andi	a4,a4,15
-    1c40:	00ec0733          	add	a4,s8,a4
-    1c44:	00074603          	lbu	a2,0(a4)
+    1c60:	00c7d713          	srli	a4,a5,0xc
+    1c64:	00f77713          	andi	a4,a4,15
+    1c68:	00ec0733          	add	a4,s8,a4
+    1c6c:	00074603          	lbu	a2,0(a4)
     UART0->DATA = c;
-    1c48:	00daa023          	sw	a3,0(s5)
+    1c70:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    1c4c:	75660863          	beq	a2,s6,239c <main+0xe00>
+    1c74:	77660263          	beq	a2,s6,23d8 <main+0xe3c>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1c50:	0087d713          	srli	a4,a5,0x8
-    1c54:	00f77713          	andi	a4,a4,15
-    1c58:	00ec0733          	add	a4,s8,a4
-    1c5c:	00074683          	lbu	a3,0(a4)
+    1c78:	0087d713          	srli	a4,a5,0x8
+    1c7c:	00f77713          	andi	a4,a4,15
+    1c80:	00ec0733          	add	a4,s8,a4
+    1c84:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    1c60:	00caa023          	sw	a2,0(s5)
+    1c88:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    1c64:	75668a63          	beq	a3,s6,23b8 <main+0xe1c>
+    1c8c:	77668463          	beq	a3,s6,23f4 <main+0xe58>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1c68:	0047d713          	srli	a4,a5,0x4
-    1c6c:	00f77713          	andi	a4,a4,15
-    1c70:	00ec0733          	add	a4,s8,a4
-    1c74:	00074703          	lbu	a4,0(a4)
+    1c90:	0047d713          	srli	a4,a5,0x4
+    1c94:	00f77713          	andi	a4,a4,15
+    1c98:	00ec0733          	add	a4,s8,a4
+    1c9c:	00074703          	lbu	a4,0(a4)
     UART0->DATA = c;
-    1c78:	00daa023          	sw	a3,0(s5)
+    1ca0:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    1c7c:	75670c63          	beq	a4,s6,23d4 <main+0xe38>
+    1ca4:	77670663          	beq	a4,s6,2410 <main+0xe74>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1c80:	00f7f793          	andi	a5,a5,15
-    1c84:	00fc07b3          	add	a5,s8,a5
-    1c88:	0007c783          	lbu	a5,0(a5)
+    1ca8:	00f7f793          	andi	a5,a5,15
+    1cac:	00fc07b3          	add	a5,s8,a5
+    1cb0:	0007c783          	lbu	a5,0(a5)
     UART0->DATA = c;
-    1c8c:	00eaa023          	sw	a4,0(s5)
+    1cb4:	00eaa023          	sw	a4,0(s5)
     if (c == '\n')
-    1c90:	75678e63          	beq	a5,s6,23ec <main+0xe50>
+    1cb8:	77678863          	beq	a5,s6,2428 <main+0xe8c>
     UART0->DATA = c;
-    1c94:	00faa023          	sw	a5,0(s5)
+    1cbc:	00faa023          	sw	a5,0(s5)
         UART0->DATA = '\r';
-    1c98:	017aa023          	sw	s7,0(s5)
+    1cc0:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    1c9c:	016aa023          	sw	s6,0(s5)
+    1cc4:	016aa023          	sw	s6,0(s5)
         UART0->DATA = '\r';
-    1ca0:	017aa023          	sw	s7,0(s5)
+    1cc8:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    1ca4:	04300793          	li	a5,67
-    1ca8:	016aa023          	sw	s6,0(s5)
-    1cac:	00faa023          	sw	a5,0(s5)
+    1ccc:	04300793          	li	a5,67
+    1cd0:	016aa023          	sw	s6,0(s5)
+    1cd4:	00faa023          	sw	a5,0(s5)
         putchar(*(p++));
-    1cb0:	000c8713          	mv	a4,s9
+    1cd8:	000c8713          	mv	a4,s9
     while (*p)
-    1cb4:	06f00793          	li	a5,111
+    1cdc:	06f00793          	li	a5,111
         putchar(*(p++));
-    1cb8:	00170713          	addi	a4,a4,1
+    1ce0:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1cbc:	73678c63          	beq	a5,s6,23f4 <main+0xe58>
+    1ce4:	65678463          	beq	a5,s6,232c <main+0xd90>
     UART0->DATA = c;
-    1cc0:	00faa023          	sw	a5,0(s5)
+    1ce8:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1cc4:	00074783          	lbu	a5,0(a4)
-    1cc8:	fe0798e3          	bnez	a5,1cb8 <main+0x71c>
+    1cec:	00074783          	lbu	a5,0(a4)
+    1cf0:	fe0798e3          	bnez	a5,1ce0 <main+0x744>
     __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
-    1ccc:	c00027f3          	rdcycle	a5
+    1cf4:	c00027f3          	rdcycle	a5
     while (c == -1) {
-    1cd0:	fff00713          	li	a4,-1
+    1cf8:	fff00713          	li	a4,-1
         __asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-    1cd4:	c00027f3          	rdcycle	a5
+    1cfc:	c00027f3          	rdcycle	a5
         c = UART0->DATA;
-    1cd8:	000aa783          	lw	a5,0(s5)
+    1d00:	000aa783          	lw	a5,0(s5)
     while (c == -1) {
-    1cdc:	fee78ce3          	beq	a5,a4,1cd4 <main+0x738>
+    1d04:	fee78ce3          	beq	a5,a4,1cfc <main+0x760>
             print("\n");
             print("\n");
 
             print("Command> ");
             char cmd = getchar();
             if (cmd > 32 && cmd < 127)
-    1ce0:	fdf78713          	addi	a4,a5,-33
-    1ce4:	0ff77713          	andi	a4,a4,255
-    1ce8:	05d00693          	li	a3,93
-    1cec:	0ff7f793          	andi	a5,a5,255
-    1cf0:	00e6e663          	bltu	a3,a4,1cfc <main+0x760>
+    1d08:	fdf78713          	addi	a4,a5,-33
+    1d0c:	0ff77713          	andi	a4,a4,255
+    1d10:	05d00693          	li	a3,93
+    1d14:	0ff7f793          	andi	a5,a5,255
+    1d18:	00e6e663          	bltu	a3,a4,1d24 <main+0x788>
     if (c == '\n')
-    1cf4:	57678063          	beq	a5,s6,2254 <main+0xcb8>
+    1d1c:	57678063          	beq	a5,s6,227c <main+0xce0>
     UART0->DATA = c;
-    1cf8:	00faa023          	sw	a5,0(s5)
+    1d20:	00faa023          	sw	a5,0(s5)
         UART0->DATA = '\r';
-    1cfc:	017aa023          	sw	s7,0(s5)
+    1d24:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    1d00:	016aa023          	sw	s6,0(s5)
+    1d28:	016aa023          	sw	s6,0(s5)
                 putchar(cmd);
             print("\n");
 
             switch (cmd)
-    1d04:	fcf78793          	addi	a5,a5,-49
-    1d08:	04200713          	li	a4,66
-    1d0c:	06f76063          	bltu	a4,a5,1d6c <main+0x7d0>
-    1d10:	00279793          	slli	a5,a5,0x2
-    1d14:	00fd07b3          	add	a5,s10,a5
-    1d18:	0007a783          	lw	a5,0(a5)
-    1d1c:	00078067          	jr	a5
+    1d2c:	fcf78793          	addi	a5,a5,-49
+    1d30:	04200713          	li	a4,66
+    1d34:	06f76063          	bltu	a4,a5,1d94 <main+0x7f8>
+    1d38:	00279793          	slli	a5,a5,0x2
+    1d3c:	00fd07b3          	add	a5,s10,a5
+    1d40:	0007a783          	lw	a5,0(a5)
+    1d44:	00078067          	jr	a5
         UART0->DATA = '\r';
-    1d20:	00c6a023          	sw	a2,0(a3)
+    1d48:	00c6a023          	sw	a2,0(a3)
     UART0->DATA = c;
-    1d24:	00f6a023          	sw	a5,0(a3)
+    1d4c:	00f6a023          	sw	a5,0(a3)
     while (*p)
-    1d28:	00074783          	lbu	a5,0(a4)
-    1d2c:	900792e3          	bnez	a5,1630 <main+0x94>
-    1d30:	915ff06f          	j	1644 <main+0xa8>
+    1d50:	00074783          	lbu	a5,0(a4)
+    1d54:	8c079ce3          	bnez	a5,162c <main+0x90>
+    1d58:	8e9ff06f          	j	1640 <main+0xa4>
         UART0->DATA = '\r';
-    1d34:	00c6a023          	sw	a2,0(a3)
+    1d5c:	00c6a023          	sw	a2,0(a3)
     UART0->DATA = c;
-    1d38:	00f6a023          	sw	a5,0(a3)
+    1d60:	00f6a023          	sw	a5,0(a3)
     while (*p)
-    1d3c:	00074783          	lbu	a5,0(a4)
-    1d40:	920794e3          	bnez	a5,1668 <main+0xcc>
-    1d44:	939ff06f          	j	167c <main+0xe0>
+    1d64:	00074783          	lbu	a5,0(a4)
+    1d68:	8e079ee3          	bnez	a5,1664 <main+0xc8>
+    1d6c:	90dff06f          	j	1678 <main+0xdc>
         QSPI0->REG &= ~QSPI_REG_CRM;
-    1d48:	810007b7          	lui	a5,0x81000
-    1d4c:	0007a703          	lw	a4,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-    1d50:	00412683          	lw	a3,4(sp)
-    1d54:	00d77733          	and	a4,a4,a3
+    1d70:	810007b7          	lui	a5,0x81000
+    1d74:	0007a703          	lw	a4,0(a5) # 81000000 <__global_pointer$+0x40fff800>
+    1d78:	01012683          	lw	a3,16(sp)
+    1d7c:	00d77733          	and	a4,a4,a3
         QSPI0->REG |= QSPI_REG_CRM;
-    1d58:	00e7a023          	sw	a4,0(a5)
+    1d80:	00e7a023          	sw	a4,0(a5)
         QSPI0->REG |= QSPI_REG_DSPI;
-    1d5c:	0007a703          	lw	a4,0(a5)
-    1d60:	004006b7          	lui	a3,0x400
-    1d64:	00d76733          	or	a4,a4,a3
-    1d68:	00e7a023          	sw	a4,0(a5)
+    1d84:	0007a703          	lw	a4,0(a5)
+    1d88:	004006b7          	lui	a3,0x400
+    1d8c:	00d76733          	or	a4,a4,a3
+    1d90:	00e7a023          	sw	a4,0(a5)
         for (int rep = 10; rep > 0; rep--)
-    1d6c:	fffa0a13          	addi	s4,s4,-1
-    1d70:	e40a10e3          	bnez	s4,1bb0 <main+0x614>
-    1d74:	c55ff06f          	j	19c8 <main+0x42c>
+    1d94:	fffa0a13          	addi	s4,s4,-1
+    1d98:	e40a10e3          	bnez	s4,1bd8 <main+0x63c>
+    1d9c:	c35ff06f          	j	19d0 <main+0x434>
         UART0->DATA = '\r';
-    1d78:	017aa023          	sw	s7,0(s5)
+    1da0:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    1d7c:	05300793          	li	a5,83
-    1d80:	016aa023          	sw	s6,0(s5)
-    1d84:	00faa023          	sw	a5,0(s5)
+    1da4:	05300793          	li	a5,83
+    1da8:	016aa023          	sw	s6,0(s5)
+    1dac:	00faa023          	sw	a5,0(s5)
         putchar(*(p++));
-    1d88:	00028713          	mv	a4,t0
+    1db0:	00028713          	mv	a4,t0
     while (*p)
-    1d8c:	05000793          	li	a5,80
+    1db4:	05000793          	li	a5,80
         putchar(*(p++));
-    1d90:	00170713          	addi	a4,a4,1
+    1db8:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1d94:	176780e3          	beq	a5,s6,26f4 <main+0x1158>
+    1dbc:	336788e3          	beq	a5,s6,28ec <main+0x1350>
     UART0->DATA = c;
-    1d98:	00faa023          	sw	a5,0(s5)
+    1dc0:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1d9c:	00074783          	lbu	a5,0(a4)
-    1da0:	fe0798e3          	bnez	a5,1d90 <main+0x7f4>
+    1dc4:	00074783          	lbu	a5,0(a4)
+    1dc8:	fe0798e3          	bnez	a5,1db8 <main+0x81c>
         putchar(*(p++));
-    1da4:	02812703          	lw	a4,40(sp)
+    1dcc:	05812703          	lw	a4,88(sp)
     UART0->DATA = c;
-    1da8:	013aa023          	sw	s3,0(s5)
+    1dd0:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1dac:	02000793          	li	a5,32
+    1dd4:	02000793          	li	a5,32
         putchar(*(p++));
-    1db0:	00170713          	addi	a4,a4,1
+    1dd8:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1db4:	2b6786e3          	beq	a5,s6,2860 <main+0x12c4>
+    1ddc:	2b6786e3          	beq	a5,s6,2888 <main+0x12ec>
     UART0->DATA = c;
-    1db8:	00faa023          	sw	a5,0(s5)
+    1de0:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1dbc:	00074783          	lbu	a5,0(a4)
-    1dc0:	fe0798e3          	bnez	a5,1db0 <main+0x814>
+    1de4:	00074783          	lbu	a5,0(a4)
+    1de8:	fe0798e3          	bnez	a5,1dd8 <main+0x83c>
     return QSPI0->REG & QSPI_REG_DSPI;
-    1dc4:	810007b7          	lui	a5,0x81000
-    1dc8:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-    1dcc:	00400737          	lui	a4,0x400
-    1dd0:	00e7f7b3          	and	a5,a5,a4
+    1dec:	810007b7          	lui	a5,0x81000
+    1df0:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
+    1df4:	00400737          	lui	a4,0x400
+    1df8:	00e7f7b3          	and	a5,a5,a4
             case 'F':
             case 'f':
                 print("\n");
                 print("SPI State:\n");
                 print("  DSPI ");
                 if ( cmd_get_dspi() )
-    1dd4:	2a0798e3          	bnez	a5,2884 <main+0x12e8>
+    1dfc:	2a0798e3          	bnez	a5,28ac <main+0x1310>
     UART0->DATA = c;
-    1dd8:	04f00793          	li	a5,79
-    1ddc:	00faa023          	sw	a5,0(s5)
+    1e00:	04f00793          	li	a5,79
+    1e04:	00faa023          	sw	a5,0(s5)
         putchar(*(p++));
-    1de0:	00090713          	mv	a4,s2
+    1e08:	00090713          	mv	a4,s2
     while (*p)
-    1de4:	04600793          	li	a5,70
+    1e0c:	04600793          	li	a5,70
         putchar(*(p++));
-    1de8:	00170713          	addi	a4,a4,1 # 400001 <_etext+0x3fd3ad>
+    1e10:	00170713          	addi	a4,a4,1 # 400001 <_etext+0x3fd351>
     if (c == '\n')
-    1dec:	2d678ce3          	beq	a5,s6,28c4 <main+0x1328>
+    1e14:	2f6786e3          	beq	a5,s6,2900 <main+0x1364>
     UART0->DATA = c;
-    1df0:	00faa023          	sw	a5,0(s5)
+    1e18:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1df4:	00074783          	lbu	a5,0(a4)
-    1df8:	fe0798e3          	bnez	a5,1de8 <main+0x84c>
+    1e1c:	00074783          	lbu	a5,0(a4)
+    1e20:	fe0798e3          	bnez	a5,1e10 <main+0x874>
         putchar(*(p++));
-    1dfc:	02c12703          	lw	a4,44(sp)
+    1e24:	05c12703          	lw	a4,92(sp)
     UART0->DATA = c;
-    1e00:	013aa023          	sw	s3,0(s5)
+    1e28:	013aa023          	sw	s3,0(s5)
     while (*p)
-    1e04:	02000793          	li	a5,32
+    1e2c:	02000793          	li	a5,32
         putchar(*(p++));
-    1e08:	00170713          	addi	a4,a4,1
+    1e30:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1e0c:	1f6784e3          	beq	a5,s6,27f4 <main+0x1258>
+    1e34:	73678463          	beq	a5,s6,255c <main+0xfc0>
     UART0->DATA = c;
-    1e10:	00faa023          	sw	a5,0(s5)
+    1e38:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1e14:	00074783          	lbu	a5,0(a4)
-    1e18:	fe0798e3          	bnez	a5,1e08 <main+0x86c>
+    1e3c:	00074783          	lbu	a5,0(a4)
+    1e40:	fe0798e3          	bnez	a5,1e30 <main+0x894>
     return QSPI0->REG & QSPI_REG_CRM;
-    1e1c:	810007b7          	lui	a5,0x81000
-    1e20:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-    1e24:	00100737          	lui	a4,0x100
-    1e28:	00e7f7b3          	and	a5,a5,a4
+    1e44:	810007b7          	lui	a5,0x81000
+    1e48:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
+    1e4c:	00100737          	lui	a4,0x100
+    1e50:	00e7f7b3          	and	a5,a5,a4
                     print("ON\n");
                 else
                     print("OFF\n");
                 print("  CRM  ");
                 if ( cmd_get_crm() )
-    1e2c:	1e0796e3          	bnez	a5,2818 <main+0x127c>
+    1e54:	72079663          	bnez	a5,2580 <main+0xfe4>
     UART0->DATA = c;
-    1e30:	04f00793          	li	a5,79
-    1e34:	00faa023          	sw	a5,0(s5)
+    1e58:	04f00793          	li	a5,79
+    1e5c:	00faa023          	sw	a5,0(s5)
         putchar(*(p++));
-    1e38:	00090713          	mv	a4,s2
+    1e60:	00090713          	mv	a4,s2
     while (*p)
-    1e3c:	04600793          	li	a5,70
+    1e64:	04600793          	li	a5,70
         putchar(*(p++));
-    1e40:	00170713          	addi	a4,a4,1 # 100001 <_etext+0xfd3ad>
+    1e68:	00170713          	addi	a4,a4,1 # 100001 <_etext+0xfd351>
     if (c == '\n')
-    1e44:	01678c63          	beq	a5,s6,1e5c <main+0x8c0>
+    1e6c:	01678c63          	beq	a5,s6,1e84 <main+0x8e8>
     UART0->DATA = c;
-    1e48:	00faa023          	sw	a5,0(s5)
+    1e70:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1e4c:	00074783          	lbu	a5,0(a4)
-    1e50:	f0078ee3          	beqz	a5,1d6c <main+0x7d0>
+    1e74:	00074783          	lbu	a5,0(a4)
+    1e78:	f0078ee3          	beqz	a5,1d94 <main+0x7f8>
         putchar(*(p++));
-    1e54:	00170713          	addi	a4,a4,1
+    1e7c:	00170713          	addi	a4,a4,1
     if (c == '\n')
-    1e58:	ff6798e3          	bne	a5,s6,1e48 <main+0x8ac>
+    1e80:	ff6798e3          	bne	a5,s6,1e70 <main+0x8d4>
         UART0->DATA = '\r';
-    1e5c:	017aa023          	sw	s7,0(s5)
+    1e84:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    1e60:	00faa023          	sw	a5,0(s5)
+    1e88:	00faa023          	sw	a5,0(s5)
     while (*p)
-    1e64:	00074783          	lbu	a5,0(a4)
-    1e68:	fc079ce3          	bnez	a5,1e40 <main+0x8a4>
+    1e8c:	00074783          	lbu	a5,0(a4)
+    1e90:	fc079ce3          	bnez	a5,1e68 <main+0x8cc>
         for (int rep = 10; rep > 0; rep--)
-    1e6c:	fffa0a13          	addi	s4,s4,-1
-    1e70:	d40a10e3          	bnez	s4,1bb0 <main+0x614>
-    1e74:	b55ff06f          	j	19c8 <main+0x42c>
+    1e94:	fffa0a13          	addi	s4,s4,-1
+    1e98:	d40a10e3          	bnez	s4,1bd8 <main+0x63c>
+    1e9c:	b35ff06f          	j	19d0 <main+0x434>
+        QSPI0->REG &= ~QSPI_REG_DSPI;
+    1ea0:	810007b7          	lui	a5,0x81000
+    1ea4:	0007a703          	lw	a4,0(a5) # 81000000 <__global_pointer$+0x40fff800>
+        QSPI0->REG &= ~QSPI_REG_CRM;
+    1ea8:	01012683          	lw	a3,16(sp)
+        for (int rep = 10; rep > 0; rep--)
+    1eac:	fffa0a13          	addi	s4,s4,-1
+        QSPI0->REG &= ~QSPI_REG_DSPI;
+    1eb0:	00877733          	and	a4,a4,s0
+    1eb4:	00e7a023          	sw	a4,0(a5)
+        QSPI0->REG &= ~QSPI_REG_CRM;
+    1eb8:	0007a703          	lw	a4,0(a5)
+    1ebc:	00d77733          	and	a4,a4,a3
+    1ec0:	00e7a023          	sw	a4,0(a5)
+        for (int rep = 10; rep > 0; rep--)
+    1ec4:	d00a1ae3          	bnez	s4,1bd8 <main+0x63c>
+    1ec8:	b09ff06f          	j	19d0 <main+0x434>
 
                 break;
 
             case 'I':
             case 'i':
                 cmd_read_flash_id();
-    1e78:	abcfe0ef          	jal	ra,134 <cmd_read_flash_id>
+    1ecc:	a68fe0ef          	jal	ra,134 <cmd_read_flash_id>
                 break;
-    1e7c:	000037b7          	lui	a5,0x3
-    1e80:	b2178293          	addi	t0,a5,-1247 # 2b21 <irqCallback+0x249>
+    1ed0:	000037b7          	lui	a5,0x3
+    1ed4:	9e578f93          	addi	t6,a5,-1563 # 29e5 <irqCallback+0xd1>
         for (int rep = 10; rep > 0; rep--)
-    1e84:	fffa0a13          	addi	s4,s4,-1
+    1ed8:	fffa0a13          	addi	s4,s4,-1
                 break;
-    1e88:	000037b7          	lui	a5,0x3
-    1e8c:	9a978f93          	addi	t6,a5,-1623 # 29a9 <irqCallback+0xd1>
+    1edc:	000037b7          	lui	a5,0x3
+    1ee0:	b7d78293          	addi	t0,a5,-1155 # 2b7d <irqCallback+0x269>
         for (int rep = 10; rep > 0; rep--)
-    1e90:	d20a10e3          	bnez	s4,1bb0 <main+0x614>
-    1e94:	b35ff06f          	j	19c8 <main+0x42c>
-        QSPI0->REG &= ~QSPI_REG_DSPI;
-    1e98:	810007b7          	lui	a5,0x81000
-    1e9c:	0007a703          	lw	a4,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-        QSPI0->REG &= ~QSPI_REG_CRM;
-    1ea0:	00412683          	lw	a3,4(sp)
-        for (int rep = 10; rep > 0; rep--)
-    1ea4:	fffa0a13          	addi	s4,s4,-1
-        QSPI0->REG &= ~QSPI_REG_DSPI;
-    1ea8:	00877733          	and	a4,a4,s0
-    1eac:	00e7a023          	sw	a4,0(a5)
-        QSPI0->REG &= ~QSPI_REG_CRM;
-    1eb0:	0007a703          	lw	a4,0(a5)
-    1eb4:	00d77733          	and	a4,a4,a3
-    1eb8:	00e7a023          	sw	a4,0(a5)
-        for (int rep = 10; rep > 0; rep--)
-    1ebc:	ce0a1ae3          	bnez	s4,1bb0 <main+0x614>
-    1ec0:	b09ff06f          	j	19c8 <main+0x42c>
+    1ee4:	ce0a1ae3          	bnez	s4,1bd8 <main+0x63c>
+    1ee8:	ae9ff06f          	j	19d0 <main+0x434>
         QSPI0->REG |= QSPI_REG_CRM;
-    1ec4:	810007b7          	lui	a5,0x81000
-    1ec8:	0007a703          	lw	a4,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-    1ecc:	001006b7          	lui	a3,0x100
-    1ed0:	00d76733          	or	a4,a4,a3
-    1ed4:	e85ff06f          	j	1d58 <main+0x7bc>
+    1eec:	810007b7          	lui	a5,0x81000
+    1ef0:	0007a703          	lw	a4,0(a5) # 81000000 <__global_pointer$+0x40fff800>
+    1ef4:	001006b7          	lui	a3,0x100
+    1ef8:	00d76733          	or	a4,a4,a3
+    1efc:	e85ff06f          	j	1d80 <main+0x7e4>
     __asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
-    1ed8:	c0002e73          	rdcycle	t3
+    1f00:	c0002e73          	rdcycle	t3
     __asm__ volatile ("rdinstret %0" : "=r"(instns_begin));
-    1edc:	c0202373          	rdinstret	t1
+    1f04:	c0202373          	rdinstret	t1
     uint32_t x32 = 314159265;
-    1ee0:	12b9b7b7          	lui	a5,0x12b9b
+    1f08:	12b9b7b7          	lui	a5,0x12b9b
     __asm__ volatile ("rdinstret %0" : "=r"(instns_begin));
-    1ee4:	01400893          	li	a7,20
+    1f0c:	01400893          	li	a7,20
     uint32_t x32 = 314159265;
-    1ee8:	0a178793          	addi	a5,a5,161 # 12b9b0a1 <_etext+0x12b9844d>
-    1eec:	15010513          	addi	a0,sp,336
+    1f10:	0a178793          	addi	a5,a5,161 # 12b9b0a1 <_etext+0x12b983f1>
+    1f14:	16010513          	addi	a0,sp,352
         for (int k = 0, p = 0; k < 256; k++)
-    1ef0:	10000813          	li	a6,256
+    1f18:	10000813          	li	a6,256
         for (int k = 0; k < 256; k++)
-    1ef4:	05010613          	addi	a2,sp,80
+    1f1c:	06010613          	addi	a2,sp,96
     while (*p)
-    1ef8:	00060693          	mv	a3,a2
-    1efc:	00078713          	mv	a4,a5
+    1f20:	00060693          	mv	a3,a2
+    1f24:	00078713          	mv	a4,a5
             x32 ^= x32 << 13;
-    1f00:	00d71793          	slli	a5,a4,0xd
-    1f04:	00e7c7b3          	xor	a5,a5,a4
+    1f28:	00d71793          	slli	a5,a4,0xd
+    1f2c:	00e7c7b3          	xor	a5,a5,a4
             x32 ^= x32 >> 17;
-    1f08:	0117d713          	srli	a4,a5,0x11
-    1f0c:	00e7c7b3          	xor	a5,a5,a4
+    1f30:	0117d713          	srli	a4,a5,0x11
+    1f34:	00e7c7b3          	xor	a5,a5,a4
             x32 ^= x32 << 5;
-    1f10:	00579713          	slli	a4,a5,0x5
-    1f14:	00e7c733          	xor	a4,a5,a4
+    1f38:	00579713          	slli	a4,a5,0x5
+    1f3c:	00e7c733          	xor	a4,a5,a4
             data[k] = x32;
-    1f18:	00e68023          	sb	a4,0(a3) # 100000 <_etext+0xfd3ac>
+    1f40:	00e68023          	sb	a4,0(a3) # 100000 <_etext+0xfd350>
         for (int k = 0; k < 256; k++)
-    1f1c:	00168693          	addi	a3,a3,1
-    1f20:	fed510e3          	bne	a0,a3,1f00 <main+0x964>
-    1f24:	00070793          	mv	a5,a4
-    1f28:	05010693          	addi	a3,sp,80
+    1f44:	00168693          	addi	a3,a3,1
+    1f48:	fed510e3          	bne	a0,a3,1f28 <main+0x98c>
+    1f4c:	00070793          	mv	a5,a4
+    1f50:	06010693          	addi	a3,sp,96
         for (int k = 0, p = 0; k < 256; k++)
-    1f2c:	00000e93          	li	t4,0
-    1f30:	00000713          	li	a4,0
+    1f54:	00000e93          	li	t4,0
+    1f58:	00000713          	li	a4,0
             if (data[k])
-    1f34:	0006c583          	lbu	a1,0(a3)
-    1f38:	00058a63          	beqz	a1,1f4c <main+0x9b0>
+    1f5c:	0006c583          	lbu	a1,0(a3)
+    1f60:	00058a63          	beqz	a1,1f74 <main+0x9d8>
                 data[p++] = k;
-    1f3c:	15010593          	addi	a1,sp,336
-    1f40:	01d585b3          	add	a1,a1,t4
-    1f44:	f0e58023          	sb	a4,-256(a1)
-    1f48:	001e8e93          	addi	t4,t4,1
+    1f64:	16010593          	addi	a1,sp,352
+    1f68:	01d585b3          	add	a1,a1,t4
+    1f6c:	f0e58023          	sb	a4,-256(a1)
+    1f70:	001e8e93          	addi	t4,t4,1
         for (int k = 0, p = 0; k < 256; k++)
-    1f4c:	00170713          	addi	a4,a4,1
-    1f50:	00168693          	addi	a3,a3,1
-    1f54:	ff0710e3          	bne	a4,a6,1f34 <main+0x998>
+    1f74:	00170713          	addi	a4,a4,1
+    1f78:	00168693          	addi	a3,a3,1
+    1f7c:	ff0710e3          	bne	a4,a6,1f5c <main+0x9c0>
             x32 = x32 ^ words[k];
-    1f58:	00062703          	lw	a4,0(a2) # 400000 <_etext+0x3fd3ac>
+    1f80:	00062703          	lw	a4,0(a2) # 400000 <_etext+0x3fd350>
         for (int k = 0, p = 0; k < 64; k++)
-    1f5c:	00460613          	addi	a2,a2,4
+    1f84:	00460613          	addi	a2,a2,4
             x32 = x32 ^ words[k];
-    1f60:	00e7c7b3          	xor	a5,a5,a4
+    1f88:	00e7c7b3          	xor	a5,a5,a4
         for (int k = 0, p = 0; k < 64; k++)
-    1f64:	fec51ae3          	bne	a0,a2,1f58 <main+0x9bc>
+    1f8c:	fec51ae3          	bne	a0,a2,1f80 <main+0x9e4>
     for (int i = 0; i < 20; i++)
-    1f68:	fff88893          	addi	a7,a7,-1
-    1f6c:	f80894e3          	bnez	a7,1ef4 <main+0x958>
+    1f90:	fff88893          	addi	a7,a7,-1
+    1f94:	f80894e3          	bnez	a7,1f1c <main+0x980>
     __asm__ volatile ("rdcycle %0" : "=r"(cycles_end));
-    1f70:	c00025f3          	rdcycle	a1
+    1f98:	c00025f3          	rdcycle	a1
     __asm__ volatile ("rdinstret %0" : "=r"(instns_end));
-    1f74:	c0202673          	rdinstret	a2
+    1f9c:	c0202673          	rdinstret	a2
         putchar(*(p++));
-    1f78:	04412683          	lw	a3,68(sp)
+    1fa0:	02812683          	lw	a3,40(sp)
     UART0->DATA = c;
-    1f7c:	04300713          	li	a4,67
-    1f80:	00eaa023          	sw	a4,0(s5)
+    1fa4:	04300713          	li	a4,67
+    1fa8:	00eaa023          	sw	a4,0(s5)
     while (*p)
-    1f84:	07900713          	li	a4,121
+    1fac:	07900713          	li	a4,121
         putchar(*(p++));
-    1f88:	00168693          	addi	a3,a3,1
+    1fb0:	00168693          	addi	a3,a3,1
     if (c == '\n')
-    1f8c:	77670e63          	beq	a4,s6,2708 <main+0x116c>
+    1fb4:	61670a63          	beq	a4,s6,25c8 <main+0x102c>
     UART0->DATA = c;
-    1f90:	00eaa023          	sw	a4,0(s5)
+    1fb8:	00eaa023          	sw	a4,0(s5)
     while (*p)
-    1f94:	0006c703          	lbu	a4,0(a3)
-    1f98:	fe0718e3          	bnez	a4,1f88 <main+0x9ec>
+    1fbc:	0006c703          	lbu	a4,0(a3)
+    1fc0:	fe0718e3          	bnez	a4,1fb0 <main+0xa14>
         print_hex(cycles_end - cycles_begin, 8);
-    1f9c:	41c58e33          	sub	t3,a1,t3
+    1fc4:	41c58e33          	sub	t3,a1,t3
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1fa0:	01ce5713          	srli	a4,t3,0x1c
-    1fa4:	00ec0733          	add	a4,s8,a4
-    1fa8:	00074683          	lbu	a3,0(a4)
+    1fc8:	01ce5713          	srli	a4,t3,0x1c
+    1fcc:	00ec0733          	add	a4,s8,a4
+    1fd0:	00074683          	lbu	a3,0(a4)
     if (c == '\n')
-    1fac:	79668063          	beq	a3,s6,272c <main+0x1190>
+    1fd4:	61668c63          	beq	a3,s6,25ec <main+0x1050>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1fb0:	018e5713          	srli	a4,t3,0x18
-    1fb4:	00f77713          	andi	a4,a4,15
-    1fb8:	00ec0733          	add	a4,s8,a4
-    1fbc:	00074583          	lbu	a1,0(a4)
+    1fd8:	018e5713          	srli	a4,t3,0x18
+    1fdc:	00f77713          	andi	a4,a4,15
+    1fe0:	00ec0733          	add	a4,s8,a4
+    1fe4:	00074583          	lbu	a1,0(a4)
     UART0->DATA = c;
-    1fc0:	00daa023          	sw	a3,0(s5)
+    1fe8:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    1fc4:	79658263          	beq	a1,s6,2748 <main+0x11ac>
+    1fec:	61658e63          	beq	a1,s6,2608 <main+0x106c>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1fc8:	014e5713          	srli	a4,t3,0x14
-    1fcc:	00f77713          	andi	a4,a4,15
-    1fd0:	00ec0733          	add	a4,s8,a4
-    1fd4:	00074683          	lbu	a3,0(a4)
+    1ff0:	014e5713          	srli	a4,t3,0x14
+    1ff4:	00f77713          	andi	a4,a4,15
+    1ff8:	00ec0733          	add	a4,s8,a4
+    1ffc:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    1fd8:	00baa023          	sw	a1,0(s5)
+    2000:	00baa023          	sw	a1,0(s5)
     if (c == '\n')
-    1fdc:	79668463          	beq	a3,s6,2764 <main+0x11c8>
+    2004:	63668063          	beq	a3,s6,2624 <main+0x1088>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1fe0:	010e5713          	srli	a4,t3,0x10
-    1fe4:	00f77713          	andi	a4,a4,15
-    1fe8:	00ec0733          	add	a4,s8,a4
-    1fec:	00074583          	lbu	a1,0(a4)
+    2008:	010e5713          	srli	a4,t3,0x10
+    200c:	00f77713          	andi	a4,a4,15
+    2010:	00ec0733          	add	a4,s8,a4
+    2014:	00074583          	lbu	a1,0(a4)
     UART0->DATA = c;
-    1ff0:	00daa023          	sw	a3,0(s5)
+    2018:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    1ff4:	79658663          	beq	a1,s6,2780 <main+0x11e4>
+    201c:	63658263          	beq	a1,s6,2640 <main+0x10a4>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    1ff8:	00ce5713          	srli	a4,t3,0xc
-    1ffc:	00f77713          	andi	a4,a4,15
-    2000:	00ec0733          	add	a4,s8,a4
-    2004:	00074683          	lbu	a3,0(a4)
+    2020:	00ce5713          	srli	a4,t3,0xc
+    2024:	00f77713          	andi	a4,a4,15
+    2028:	00ec0733          	add	a4,s8,a4
+    202c:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    2008:	00baa023          	sw	a1,0(s5)
+    2030:	00baa023          	sw	a1,0(s5)
     if (c == '\n')
-    200c:	79668863          	beq	a3,s6,279c <main+0x1200>
+    2034:	63668463          	beq	a3,s6,265c <main+0x10c0>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2010:	008e5713          	srli	a4,t3,0x8
-    2014:	00f77713          	andi	a4,a4,15
-    2018:	00ec0733          	add	a4,s8,a4
-    201c:	00074583          	lbu	a1,0(a4)
+    2038:	008e5713          	srli	a4,t3,0x8
+    203c:	00f77713          	andi	a4,a4,15
+    2040:	00ec0733          	add	a4,s8,a4
+    2044:	00074583          	lbu	a1,0(a4)
     UART0->DATA = c;
-    2020:	00daa023          	sw	a3,0(s5)
+    2048:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2024:	79658a63          	beq	a1,s6,27b8 <main+0x121c>
+    204c:	63658663          	beq	a1,s6,2678 <main+0x10dc>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2028:	004e5713          	srli	a4,t3,0x4
-    202c:	00f77713          	andi	a4,a4,15
-    2030:	00ec0733          	add	a4,s8,a4
-    2034:	00074683          	lbu	a3,0(a4)
+    2050:	004e5713          	srli	a4,t3,0x4
+    2054:	00f77713          	andi	a4,a4,15
+    2058:	00ec0733          	add	a4,s8,a4
+    205c:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    2038:	00baa023          	sw	a1,0(s5)
+    2060:	00baa023          	sw	a1,0(s5)
     if (c == '\n')
-    203c:	79668c63          	beq	a3,s6,27d4 <main+0x1238>
+    2064:	63668863          	beq	a3,s6,2694 <main+0x10f8>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2040:	00fe7e13          	andi	t3,t3,15
-    2044:	01cc0733          	add	a4,s8,t3
-    2048:	00074703          	lbu	a4,0(a4)
+    2068:	00fe7e13          	andi	t3,t3,15
+    206c:	01cc0733          	add	a4,s8,t3
+    2070:	00074703          	lbu	a4,0(a4)
     UART0->DATA = c;
-    204c:	00daa023          	sw	a3,0(s5)
+    2074:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2050:	79670e63          	beq	a4,s6,27ec <main+0x1250>
+    2078:	63670a63          	beq	a4,s6,26ac <main+0x1110>
     UART0->DATA = c;
-    2054:	00eaa023          	sw	a4,0(s5)
+    207c:	00eaa023          	sw	a4,0(s5)
         UART0->DATA = '\r';
-    2058:	017aa023          	sw	s7,0(s5)
+    2080:	017aa023          	sw	s7,0(s5)
         putchar(*(p++));
-    205c:	04812683          	lw	a3,72(sp)
+    2084:	02c12683          	lw	a3,44(sp)
     UART0->DATA = c;
-    2060:	016aa023          	sw	s6,0(s5)
-    2064:	01baa023          	sw	s11,0(s5)
+    2088:	016aa023          	sw	s6,0(s5)
+    208c:	01baa023          	sw	s11,0(s5)
     while (*p)
-    2068:	06e00713          	li	a4,110
+    2090:	06e00713          	li	a4,110
         putchar(*(p++));
-    206c:	00168693          	addi	a3,a3,1
+    2094:	00168693          	addi	a3,a3,1
     if (c == '\n')
-    2070:	4b670863          	beq	a4,s6,2520 <main+0xf84>
+    2098:	61670e63          	beq	a4,s6,26b4 <main+0x1118>
     UART0->DATA = c;
-    2074:	00eaa023          	sw	a4,0(s5)
+    209c:	00eaa023          	sw	a4,0(s5)
     while (*p)
-    2078:	0006c703          	lbu	a4,0(a3)
-    207c:	fe0718e3          	bnez	a4,206c <main+0xad0>
+    20a0:	0006c703          	lbu	a4,0(a3)
+    20a4:	fe0718e3          	bnez	a4,2094 <main+0xaf8>
         print_hex(instns_end - instns_begin, 8);
-    2080:	40660333          	sub	t1,a2,t1
+    20a8:	40660333          	sub	t1,a2,t1
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2084:	01c35713          	srli	a4,t1,0x1c
-    2088:	00ec0733          	add	a4,s8,a4
-    208c:	00074683          	lbu	a3,0(a4)
+    20ac:	01c35713          	srli	a4,t1,0x1c
+    20b0:	00ec0733          	add	a4,s8,a4
+    20b4:	00074683          	lbu	a3,0(a4)
     if (c == '\n')
-    2090:	4b668a63          	beq	a3,s6,2544 <main+0xfa8>
+    20b8:	63668063          	beq	a3,s6,26d8 <main+0x113c>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2094:	01835713          	srli	a4,t1,0x18
-    2098:	00f77713          	andi	a4,a4,15
-    209c:	00ec0733          	add	a4,s8,a4
-    20a0:	00074603          	lbu	a2,0(a4)
+    20bc:	01835713          	srli	a4,t1,0x18
+    20c0:	00f77713          	andi	a4,a4,15
+    20c4:	00ec0733          	add	a4,s8,a4
+    20c8:	00074603          	lbu	a2,0(a4)
     UART0->DATA = c;
-    20a4:	00daa023          	sw	a3,0(s5)
+    20cc:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    20a8:	4b660c63          	beq	a2,s6,2560 <main+0xfc4>
+    20d0:	63660263          	beq	a2,s6,26f4 <main+0x1158>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    20ac:	01435713          	srli	a4,t1,0x14
-    20b0:	00f77713          	andi	a4,a4,15
-    20b4:	00ec0733          	add	a4,s8,a4
-    20b8:	00074683          	lbu	a3,0(a4)
+    20d4:	01435713          	srli	a4,t1,0x14
+    20d8:	00f77713          	andi	a4,a4,15
+    20dc:	00ec0733          	add	a4,s8,a4
+    20e0:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    20bc:	00caa023          	sw	a2,0(s5)
+    20e4:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    20c0:	4b668e63          	beq	a3,s6,257c <main+0xfe0>
+    20e8:	63668463          	beq	a3,s6,2710 <main+0x1174>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    20c4:	01035713          	srli	a4,t1,0x10
-    20c8:	00f77713          	andi	a4,a4,15
-    20cc:	00ec0733          	add	a4,s8,a4
-    20d0:	00074603          	lbu	a2,0(a4)
+    20ec:	01035713          	srli	a4,t1,0x10
+    20f0:	00f77713          	andi	a4,a4,15
+    20f4:	00ec0733          	add	a4,s8,a4
+    20f8:	00074603          	lbu	a2,0(a4)
     UART0->DATA = c;
-    20d4:	00daa023          	sw	a3,0(s5)
+    20fc:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    20d8:	4d660063          	beq	a2,s6,2598 <main+0xffc>
+    2100:	63660663          	beq	a2,s6,272c <main+0x1190>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    20dc:	00c35713          	srli	a4,t1,0xc
-    20e0:	00f77713          	andi	a4,a4,15
-    20e4:	00ec0733          	add	a4,s8,a4
-    20e8:	00074683          	lbu	a3,0(a4)
+    2104:	00c35713          	srli	a4,t1,0xc
+    2108:	00f77713          	andi	a4,a4,15
+    210c:	00ec0733          	add	a4,s8,a4
+    2110:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    20ec:	00caa023          	sw	a2,0(s5)
+    2114:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    20f0:	4d668263          	beq	a3,s6,25b4 <main+0x1018>
+    2118:	63668863          	beq	a3,s6,2748 <main+0x11ac>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    20f4:	00835713          	srli	a4,t1,0x8
-    20f8:	00f77713          	andi	a4,a4,15
-    20fc:	00ec0733          	add	a4,s8,a4
-    2100:	00074603          	lbu	a2,0(a4)
+    211c:	00835713          	srli	a4,t1,0x8
+    2120:	00f77713          	andi	a4,a4,15
+    2124:	00ec0733          	add	a4,s8,a4
+    2128:	00074603          	lbu	a2,0(a4)
     UART0->DATA = c;
-    2104:	00daa023          	sw	a3,0(s5)
+    212c:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2108:	4d660463          	beq	a2,s6,25d0 <main+0x1034>
+    2130:	63660a63          	beq	a2,s6,2764 <main+0x11c8>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    210c:	00435713          	srli	a4,t1,0x4
-    2110:	00f77713          	andi	a4,a4,15
-    2114:	00ec0733          	add	a4,s8,a4
-    2118:	00074683          	lbu	a3,0(a4)
+    2134:	00435713          	srli	a4,t1,0x4
+    2138:	00f77713          	andi	a4,a4,15
+    213c:	00ec0733          	add	a4,s8,a4
+    2140:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    211c:	00caa023          	sw	a2,0(s5)
+    2144:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    2120:	4d668663          	beq	a3,s6,25ec <main+0x1050>
+    2148:	63668c63          	beq	a3,s6,2780 <main+0x11e4>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2124:	00f37313          	andi	t1,t1,15
-    2128:	006c0733          	add	a4,s8,t1
-    212c:	00074703          	lbu	a4,0(a4)
+    214c:	00f37313          	andi	t1,t1,15
+    2150:	006c0733          	add	a4,s8,t1
+    2154:	00074703          	lbu	a4,0(a4)
     UART0->DATA = c;
-    2130:	00daa023          	sw	a3,0(s5)
+    2158:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2134:	4d670863          	beq	a4,s6,2604 <main+0x1068>
+    215c:	63670e63          	beq	a4,s6,2798 <main+0x11fc>
     UART0->DATA = c;
-    2138:	00eaa023          	sw	a4,0(s5)
+    2160:	00eaa023          	sw	a4,0(s5)
         UART0->DATA = '\r';
-    213c:	017aa023          	sw	s7,0(s5)
+    2164:	017aa023          	sw	s7,0(s5)
         putchar(*(p++));
-    2140:	04c12683          	lw	a3,76(sp)
+    2168:	03012683          	lw	a3,48(sp)
     UART0->DATA = c;
-    2144:	04300713          	li	a4,67
-    2148:	016aa023          	sw	s6,0(s5)
-    214c:	00eaa023          	sw	a4,0(s5)
+    216c:	04300713          	li	a4,67
+    2170:	016aa023          	sw	s6,0(s5)
+    2174:	00eaa023          	sw	a4,0(s5)
     while (*p)
-    2150:	06800713          	li	a4,104
+    2178:	06800713          	li	a4,104
         putchar(*(p++));
-    2154:	00168693          	addi	a3,a3,1
+    217c:	00168693          	addi	a3,a3,1
     if (c == '\n')
-    2158:	4b670a63          	beq	a4,s6,260c <main+0x1070>
+    2180:	63670063          	beq	a4,s6,27a0 <main+0x1204>
     UART0->DATA = c;
-    215c:	00eaa023          	sw	a4,0(s5)
+    2184:	00eaa023          	sw	a4,0(s5)
     while (*p)
-    2160:	0006c703          	lbu	a4,0(a3)
-    2164:	fe0718e3          	bnez	a4,2154 <main+0xbb8>
+    2188:	0006c703          	lbu	a4,0(a3)
+    218c:	fe0718e3          	bnez	a4,217c <main+0xbe0>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2168:	01c7d713          	srli	a4,a5,0x1c
-    216c:	00ec0733          	add	a4,s8,a4
-    2170:	00074603          	lbu	a2,0(a4)
+    2190:	01c7d713          	srli	a4,a5,0x1c
+    2194:	00ec0733          	add	a4,s8,a4
+    2198:	00074603          	lbu	a2,0(a4)
     if (c == '\n')
-    2174:	4b660c63          	beq	a2,s6,262c <main+0x1090>
+    219c:	63660263          	beq	a2,s6,27c0 <main+0x1224>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2178:	0187d713          	srli	a4,a5,0x18
-    217c:	00f77713          	andi	a4,a4,15
-    2180:	00ec0733          	add	a4,s8,a4
-    2184:	00074683          	lbu	a3,0(a4)
+    21a0:	0187d713          	srli	a4,a5,0x18
+    21a4:	00f77713          	andi	a4,a4,15
+    21a8:	00ec0733          	add	a4,s8,a4
+    21ac:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    2188:	00caa023          	sw	a2,0(s5)
+    21b0:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    218c:	4b668e63          	beq	a3,s6,2648 <main+0x10ac>
+    21b4:	63668463          	beq	a3,s6,27dc <main+0x1240>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2190:	0147d713          	srli	a4,a5,0x14
-    2194:	00f77713          	andi	a4,a4,15
-    2198:	00ec0733          	add	a4,s8,a4
-    219c:	00074603          	lbu	a2,0(a4)
+    21b8:	0147d713          	srli	a4,a5,0x14
+    21bc:	00f77713          	andi	a4,a4,15
+    21c0:	00ec0733          	add	a4,s8,a4
+    21c4:	00074603          	lbu	a2,0(a4)
     UART0->DATA = c;
-    21a0:	00daa023          	sw	a3,0(s5)
+    21c8:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    21a4:	4d660063          	beq	a2,s6,2664 <main+0x10c8>
+    21cc:	63660663          	beq	a2,s6,27f8 <main+0x125c>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    21a8:	0107d713          	srli	a4,a5,0x10
-    21ac:	00f77713          	andi	a4,a4,15
-    21b0:	00ec0733          	add	a4,s8,a4
-    21b4:	00074683          	lbu	a3,0(a4)
+    21d0:	0107d713          	srli	a4,a5,0x10
+    21d4:	00f77713          	andi	a4,a4,15
+    21d8:	00ec0733          	add	a4,s8,a4
+    21dc:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    21b8:	00caa023          	sw	a2,0(s5)
+    21e0:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    21bc:	4d668263          	beq	a3,s6,2680 <main+0x10e4>
+    21e4:	63668863          	beq	a3,s6,2814 <main+0x1278>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    21c0:	00c7d713          	srli	a4,a5,0xc
-    21c4:	00f77713          	andi	a4,a4,15
-    21c8:	00ec0733          	add	a4,s8,a4
-    21cc:	00074603          	lbu	a2,0(a4)
+    21e8:	00c7d713          	srli	a4,a5,0xc
+    21ec:	00f77713          	andi	a4,a4,15
+    21f0:	00ec0733          	add	a4,s8,a4
+    21f4:	00074603          	lbu	a2,0(a4)
     UART0->DATA = c;
-    21d0:	00daa023          	sw	a3,0(s5)
+    21f8:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    21d4:	4d660463          	beq	a2,s6,269c <main+0x1100>
+    21fc:	63660a63          	beq	a2,s6,2830 <main+0x1294>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    21d8:	0087d713          	srli	a4,a5,0x8
-    21dc:	00f77713          	andi	a4,a4,15
-    21e0:	00ec0733          	add	a4,s8,a4
-    21e4:	00074683          	lbu	a3,0(a4)
+    2200:	0087d713          	srli	a4,a5,0x8
+    2204:	00f77713          	andi	a4,a4,15
+    2208:	00ec0733          	add	a4,s8,a4
+    220c:	00074683          	lbu	a3,0(a4)
     UART0->DATA = c;
-    21e8:	00caa023          	sw	a2,0(s5)
+    2210:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    21ec:	4d668663          	beq	a3,s6,26b8 <main+0x111c>
+    2214:	63668c63          	beq	a3,s6,284c <main+0x12b0>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    21f0:	0047d713          	srli	a4,a5,0x4
-    21f4:	00f77713          	andi	a4,a4,15
-    21f8:	00ec0733          	add	a4,s8,a4
-    21fc:	00074703          	lbu	a4,0(a4)
+    2218:	0047d713          	srli	a4,a5,0x4
+    221c:	00f77713          	andi	a4,a4,15
+    2220:	00ec0733          	add	a4,s8,a4
+    2224:	00074703          	lbu	a4,0(a4)
     UART0->DATA = c;
-    2200:	00daa023          	sw	a3,0(s5)
+    2228:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2204:	4d670863          	beq	a4,s6,26d4 <main+0x1138>
+    222c:	63670e63          	beq	a4,s6,2868 <main+0x12cc>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2208:	00f7f793          	andi	a5,a5,15
-    220c:	00fc07b3          	add	a5,s8,a5
-    2210:	0007c783          	lbu	a5,0(a5)
+    2230:	00f7f793          	andi	a5,a5,15
+    2234:	00fc07b3          	add	a5,s8,a5
+    2238:	0007c783          	lbu	a5,0(a5)
     UART0->DATA = c;
-    2214:	00eaa023          	sw	a4,0(s5)
+    223c:	00eaa023          	sw	a4,0(s5)
     if (c == '\n')
-    2218:	4d678a63          	beq	a5,s6,26ec <main+0x1150>
+    2240:	65678063          	beq	a5,s6,2880 <main+0x12e4>
     UART0->DATA = c;
-    221c:	00faa023          	sw	a5,0(s5)
+    2244:	00faa023          	sw	a5,0(s5)
         UART0->DATA = '\r';
-    2220:	017aa023          	sw	s7,0(s5)
+    2248:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2224:	016aa023          	sw	s6,0(s5)
+    224c:	016aa023          	sw	s6,0(s5)
         for (int rep = 10; rep > 0; rep--)
-    2228:	fffa0a13          	addi	s4,s4,-1
-    222c:	980a12e3          	bnez	s4,1bb0 <main+0x614>
-    2230:	f98ff06f          	j	19c8 <main+0x42c>
+    2250:	fffa0a13          	addi	s4,s4,-1
+    2254:	980a12e3          	bnez	s4,1bd8 <main+0x63c>
+    2258:	f78ff06f          	j	19d0 <main+0x434>
                 cmd_benchmark(1, 0);
                 break;
 
             case 'A':
             case 'a':
                 cmd_benchmark_all();
-    2234:	991fe0ef          	jal	ra,bc4 <cmd_benchmark_all>
+    225c:	969fe0ef          	jal	ra,bc4 <cmd_benchmark_all>
                 break;
-    2238:	000037b7          	lui	a5,0x3
-    223c:	b2178293          	addi	t0,a5,-1247 # 2b21 <irqCallback+0x249>
+    2260:	000037b7          	lui	a5,0x3
+    2264:	9e578f93          	addi	t6,a5,-1563 # 29e5 <irqCallback+0xd1>
         for (int rep = 10; rep > 0; rep--)
-    2240:	fffa0a13          	addi	s4,s4,-1
+    2268:	fffa0a13          	addi	s4,s4,-1
                 break;
-    2244:	000037b7          	lui	a5,0x3
-    2248:	9a978f93          	addi	t6,a5,-1623 # 29a9 <irqCallback+0xd1>
+    226c:	000037b7          	lui	a5,0x3
+    2270:	b7d78293          	addi	t0,a5,-1155 # 2b7d <irqCallback+0x269>
         for (int rep = 10; rep > 0; rep--)
-    224c:	960a12e3          	bnez	s4,1bb0 <main+0x614>
-    2250:	f78ff06f          	j	19c8 <main+0x42c>
+    2274:	960a12e3          	bnez	s4,1bd8 <main+0x63c>
+    2278:	f58ff06f          	j	19d0 <main+0x434>
         UART0->DATA = '\r';
-    2254:	017aa023          	sw	s7,0(s5)
-    2258:	aa1ff06f          	j	1cf8 <main+0x75c>
+    227c:	017aa023          	sw	s7,0(s5)
+    2280:	aa1ff06f          	j	1d20 <main+0x784>
             case '5':
                 GPIO0->OUT ^= 0x00000010;
                 break;
 
             case '6':
                 GPIO0->OUT ^= 0x00000020;
-    225c:	82000737          	lui	a4,0x82000
-    2260:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    2284:	82000737          	lui	a4,0x82000
+    2288:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
         for (int rep = 10; rep > 0; rep--)
-    2264:	fffa0a13          	addi	s4,s4,-1
+    228c:	fffa0a13          	addi	s4,s4,-1
                 GPIO0->OUT ^= 0x00000020;
-    2268:	0207c793          	xori	a5,a5,32
-    226c:	00f72023          	sw	a5,0(a4)
+    2290:	0207c793          	xori	a5,a5,32
+    2294:	00f72023          	sw	a5,0(a4)
         for (int rep = 10; rep > 0; rep--)
-    2270:	940a10e3          	bnez	s4,1bb0 <main+0x614>
-    2274:	f54ff06f          	j	19c8 <main+0x42c>
+    2298:	940a10e3          	bnez	s4,1bd8 <main+0x63c>
+    229c:	f34ff06f          	j	19d0 <main+0x434>
                 GPIO0->OUT ^= 0x00000010;
-    2278:	82000737          	lui	a4,0x82000
-    227c:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    22a0:	82000737          	lui	a4,0x82000
+    22a4:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
         for (int rep = 10; rep > 0; rep--)
-    2280:	fffa0a13          	addi	s4,s4,-1
+    22a8:	fffa0a13          	addi	s4,s4,-1
                 GPIO0->OUT ^= 0x00000010;
-    2284:	0107c793          	xori	a5,a5,16
-    2288:	00f72023          	sw	a5,0(a4)
+    22ac:	0107c793          	xori	a5,a5,16
+    22b0:	00f72023          	sw	a5,0(a4)
         for (int rep = 10; rep > 0; rep--)
-    228c:	920a12e3          	bnez	s4,1bb0 <main+0x614>
-    2290:	f38ff06f          	j	19c8 <main+0x42c>
+    22b4:	920a12e3          	bnez	s4,1bd8 <main+0x63c>
+    22b8:	f18ff06f          	j	19d0 <main+0x434>
                 GPIO0->OUT ^= 0x00000008;
-    2294:	82000737          	lui	a4,0x82000
-    2298:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    22bc:	82000737          	lui	a4,0x82000
+    22c0:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
         for (int rep = 10; rep > 0; rep--)
-    229c:	fffa0a13          	addi	s4,s4,-1
+    22c4:	fffa0a13          	addi	s4,s4,-1
                 GPIO0->OUT ^= 0x00000008;
-    22a0:	0087c793          	xori	a5,a5,8
-    22a4:	00f72023          	sw	a5,0(a4)
+    22c8:	0087c793          	xori	a5,a5,8
+    22cc:	00f72023          	sw	a5,0(a4)
         for (int rep = 10; rep > 0; rep--)
-    22a8:	900a14e3          	bnez	s4,1bb0 <main+0x614>
-    22ac:	f1cff06f          	j	19c8 <main+0x42c>
+    22d0:	900a14e3          	bnez	s4,1bd8 <main+0x63c>
+    22d4:	efcff06f          	j	19d0 <main+0x434>
                 GPIO0->OUT ^= 0x00000004;
-    22b0:	82000737          	lui	a4,0x82000
-    22b4:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    22d8:	82000737          	lui	a4,0x82000
+    22dc:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
         for (int rep = 10; rep > 0; rep--)
-    22b8:	fffa0a13          	addi	s4,s4,-1
+    22e0:	fffa0a13          	addi	s4,s4,-1
                 GPIO0->OUT ^= 0x00000004;
-    22bc:	0047c793          	xori	a5,a5,4
-    22c0:	00f72023          	sw	a5,0(a4)
+    22e4:	0047c793          	xori	a5,a5,4
+    22e8:	00f72023          	sw	a5,0(a4)
         for (int rep = 10; rep > 0; rep--)
-    22c4:	8e0a16e3          	bnez	s4,1bb0 <main+0x614>
-    22c8:	f00ff06f          	j	19c8 <main+0x42c>
+    22ec:	8e0a16e3          	bnez	s4,1bd8 <main+0x63c>
+    22f0:	ee0ff06f          	j	19d0 <main+0x434>
                 GPIO0->OUT ^= 0x00000002;
-    22cc:	82000737          	lui	a4,0x82000
-    22d0:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    22f4:	82000737          	lui	a4,0x82000
+    22f8:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
         for (int rep = 10; rep > 0; rep--)
-    22d4:	fffa0a13          	addi	s4,s4,-1
+    22fc:	fffa0a13          	addi	s4,s4,-1
                 GPIO0->OUT ^= 0x00000002;
-    22d8:	0027c793          	xori	a5,a5,2
-    22dc:	00f72023          	sw	a5,0(a4)
+    2300:	0027c793          	xori	a5,a5,2
+    2304:	00f72023          	sw	a5,0(a4)
         for (int rep = 10; rep > 0; rep--)
-    22e0:	8c0a18e3          	bnez	s4,1bb0 <main+0x614>
-    22e4:	ee4ff06f          	j	19c8 <main+0x42c>
+    2308:	8c0a18e3          	bnez	s4,1bd8 <main+0x63c>
+    230c:	ec4ff06f          	j	19d0 <main+0x434>
                 GPIO0->OUT ^= 0x00000001;
-    22e8:	82000737          	lui	a4,0x82000
-    22ec:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
+    2310:	82000737          	lui	a4,0x82000
+    2314:	00072783          	lw	a5,0(a4) # 82000000 <__global_pointer$+0x41fff800>
         for (int rep = 10; rep > 0; rep--)
-    22f0:	fffa0a13          	addi	s4,s4,-1
+    2318:	fffa0a13          	addi	s4,s4,-1
                 GPIO0->OUT ^= 0x00000001;
-    22f4:	0017c793          	xori	a5,a5,1
-    22f8:	00f72023          	sw	a5,0(a4)
+    231c:	0017c793          	xori	a5,a5,1
+    2320:	00f72023          	sw	a5,0(a4)
         for (int rep = 10; rep > 0; rep--)
-    22fc:	8a0a1ae3          	bnez	s4,1bb0 <main+0x614>
-    2300:	ec8ff06f          	j	19c8 <main+0x42c>
+    2324:	8a0a1ae3          	bnez	s4,1bd8 <main+0x63c>
+    2328:	ea8ff06f          	j	19d0 <main+0x434>
         UART0->DATA = '\r';
-    2304:	017aa023          	sw	s7,0(s5)
+    232c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2308:	00faa023          	sw	a5,0(s5)
+    2330:	00faa023          	sw	a5,0(s5)
     while (*p)
-    230c:	00074783          	lbu	a5,0(a4)
-    2310:	8a079ae3          	bnez	a5,1bc4 <main+0x628>
+    2334:	00074783          	lbu	a5,0(a4)
+    2338:	9a0794e3          	bnez	a5,1ce0 <main+0x744>
+    233c:	9b9ff06f          	j	1cf4 <main+0x758>
+        UART0->DATA = '\r';
+    2340:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2344:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    2348:	00074783          	lbu	a5,0(a4)
+    234c:	8a0790e3          	bnez	a5,1bec <main+0x650>
             print_hex(GPIO0->IN, 8);
-    2314:	820007b7          	lui	a5,0x82000
-    2318:	0047a783          	lw	a5,4(a5) # 82000004 <__global_pointer$+0x41fff804>
+    2350:	820007b7          	lui	a5,0x82000
+    2354:	0047a783          	lw	a5,4(a5) # 82000004 <__global_pointer$+0x41fff804>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    231c:	01c7d713          	srli	a4,a5,0x1c
-    2320:	00ec0733          	add	a4,s8,a4
-    2324:	00074603          	lbu	a2,0(a4)
+    2358:	01c7d713          	srli	a4,a5,0x1c
+    235c:	00ec0733          	add	a4,s8,a4
+    2360:	00074603          	lbu	a2,0(a4)
     if (c == '\n')
-    2328:	8d6614e3          	bne	a2,s6,1bf0 <main+0x654>
+    2364:	8b661ae3          	bne	a2,s6,1c18 <main+0x67c>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    232c:	0187d713          	srli	a4,a5,0x18
-    2330:	00f77713          	andi	a4,a4,15
-    2334:	00ec0733          	add	a4,s8,a4
-    2338:	00074683          	lbu	a3,0(a4)
+    2368:	0187d713          	srli	a4,a5,0x18
+    236c:	00f77713          	andi	a4,a4,15
+    2370:	00ec0733          	add	a4,s8,a4
+    2374:	00074683          	lbu	a3,0(a4)
         UART0->DATA = '\r';
-    233c:	017aa023          	sw	s7,0(s5)
+    2378:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2340:	00caa023          	sw	a2,0(s5)
+    237c:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    2344:	8d6692e3          	bne	a3,s6,1c08 <main+0x66c>
+    2380:	8b6698e3          	bne	a3,s6,1c30 <main+0x694>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2348:	0147d713          	srli	a4,a5,0x14
-    234c:	00f77713          	andi	a4,a4,15
-    2350:	00ec0733          	add	a4,s8,a4
-    2354:	00074603          	lbu	a2,0(a4)
+    2384:	0147d713          	srli	a4,a5,0x14
+    2388:	00f77713          	andi	a4,a4,15
+    238c:	00ec0733          	add	a4,s8,a4
+    2390:	00074603          	lbu	a2,0(a4)
         UART0->DATA = '\r';
-    2358:	017aa023          	sw	s7,0(s5)
+    2394:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    235c:	00daa023          	sw	a3,0(s5)
+    2398:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2360:	8d6610e3          	bne	a2,s6,1c20 <main+0x684>
+    239c:	8b6616e3          	bne	a2,s6,1c48 <main+0x6ac>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2364:	0107d713          	srli	a4,a5,0x10
-    2368:	00f77713          	andi	a4,a4,15
-    236c:	00ec0733          	add	a4,s8,a4
-    2370:	00074683          	lbu	a3,0(a4)
+    23a0:	0107d713          	srli	a4,a5,0x10
+    23a4:	00f77713          	andi	a4,a4,15
+    23a8:	00ec0733          	add	a4,s8,a4
+    23ac:	00074683          	lbu	a3,0(a4)
         UART0->DATA = '\r';
-    2374:	017aa023          	sw	s7,0(s5)
+    23b0:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2378:	00caa023          	sw	a2,0(s5)
+    23b4:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    237c:	8b669ee3          	bne	a3,s6,1c38 <main+0x69c>
+    23b8:	8b6694e3          	bne	a3,s6,1c60 <main+0x6c4>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2380:	00c7d713          	srli	a4,a5,0xc
-    2384:	00f77713          	andi	a4,a4,15
-    2388:	00ec0733          	add	a4,s8,a4
-    238c:	00074603          	lbu	a2,0(a4)
+    23bc:	00c7d713          	srli	a4,a5,0xc
+    23c0:	00f77713          	andi	a4,a4,15
+    23c4:	00ec0733          	add	a4,s8,a4
+    23c8:	00074603          	lbu	a2,0(a4)
         UART0->DATA = '\r';
-    2390:	017aa023          	sw	s7,0(s5)
+    23cc:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2394:	00daa023          	sw	a3,0(s5)
+    23d0:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2398:	8b661ce3          	bne	a2,s6,1c50 <main+0x6b4>
+    23d4:	8b6612e3          	bne	a2,s6,1c78 <main+0x6dc>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    239c:	0087d713          	srli	a4,a5,0x8
-    23a0:	00f77713          	andi	a4,a4,15
-    23a4:	00ec0733          	add	a4,s8,a4
-    23a8:	00074683          	lbu	a3,0(a4)
+    23d8:	0087d713          	srli	a4,a5,0x8
+    23dc:	00f77713          	andi	a4,a4,15
+    23e0:	00ec0733          	add	a4,s8,a4
+    23e4:	00074683          	lbu	a3,0(a4)
         UART0->DATA = '\r';
-    23ac:	017aa023          	sw	s7,0(s5)
+    23e8:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    23b0:	00caa023          	sw	a2,0(s5)
+    23ec:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    23b4:	8b669ae3          	bne	a3,s6,1c68 <main+0x6cc>
+    23f0:	8b6690e3          	bne	a3,s6,1c90 <main+0x6f4>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    23b8:	0047d713          	srli	a4,a5,0x4
-    23bc:	00f77713          	andi	a4,a4,15
-    23c0:	00ec0733          	add	a4,s8,a4
-    23c4:	00074703          	lbu	a4,0(a4)
+    23f4:	0047d713          	srli	a4,a5,0x4
+    23f8:	00f77713          	andi	a4,a4,15
+    23fc:	00ec0733          	add	a4,s8,a4
+    2400:	00074703          	lbu	a4,0(a4)
         UART0->DATA = '\r';
-    23c8:	017aa023          	sw	s7,0(s5)
+    2404:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    23cc:	00daa023          	sw	a3,0(s5)
+    2408:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    23d0:	8b6718e3          	bne	a4,s6,1c80 <main+0x6e4>
+    240c:	89671ee3          	bne	a4,s6,1ca8 <main+0x70c>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    23d4:	00f7f793          	andi	a5,a5,15
-    23d8:	00fc07b3          	add	a5,s8,a5
-    23dc:	0007c783          	lbu	a5,0(a5)
-        UART0->DATA = '\r';
-    23e0:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    23e4:	00eaa023          	sw	a4,0(s5)
-    if (c == '\n')
-    23e8:	8b6796e3          	bne	a5,s6,1c94 <main+0x6f8>
-        UART0->DATA = '\r';
-    23ec:	017aa023          	sw	s7,0(s5)
-    23f0:	8a5ff06f          	j	1c94 <main+0x6f8>
-    23f4:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    23f8:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    23fc:	00074783          	lbu	a5,0(a4)
-    2400:	8a079ce3          	bnez	a5,1cb8 <main+0x71c>
-    2404:	8c9ff06f          	j	1ccc <main+0x730>
-        UART0->DATA = '\r';
-    2408:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    240c:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    2410:	00074783          	lbu	a5,0(a4)
-    2414:	ea079c63          	bnez	a5,1acc <main+0x530>
-    2418:	ec8ff06f          	j	1ae0 <main+0x544>
+    2410:	00f7f793          	andi	a5,a5,15
+    2414:	00fc07b3          	add	a5,s8,a5
+    2418:	0007c783          	lbu	a5,0(a5)
         UART0->DATA = '\r';
     241c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2420:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    2424:	00074783          	lbu	a5,0(a4)
-    2428:	e8079263          	bnez	a5,1aac <main+0x510>
-    242c:	e94ff06f          	j	1ac0 <main+0x524>
+    2420:	00eaa023          	sw	a4,0(s5)
+    if (c == '\n')
+    2424:	89679ce3          	bne	a5,s6,1cbc <main+0x720>
         UART0->DATA = '\r';
+    2428:	017aa023          	sw	s7,0(s5)
+    242c:	891ff06f          	j	1cbc <main+0x720>
     2430:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     2434:	00faa023          	sw	a5,0(s5)
     while (*p)
     2438:	00074783          	lbu	a5,0(a4)
-    243c:	e4079863          	bnez	a5,1a8c <main+0x4f0>
-    2440:	e60ff06f          	j	1aa0 <main+0x504>
+    243c:	f6079c63          	bnez	a5,1bb4 <main+0x618>
+    2440:	f88ff06f          	j	1bc8 <main+0x62c>
         UART0->DATA = '\r';
     2444:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     2448:	00faa023          	sw	a5,0(s5)
     while (*p)
     244c:	00074783          	lbu	a5,0(a4)
-    2450:	e0079e63          	bnez	a5,1a6c <main+0x4d0>
-    2454:	e2cff06f          	j	1a80 <main+0x4e4>
+    2450:	f4079263          	bnez	a5,1b94 <main+0x5f8>
+    2454:	f54ff06f          	j	1ba8 <main+0x60c>
         UART0->DATA = '\r';
     2458:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     245c:	00faa023          	sw	a5,0(s5)
     while (*p)
     2460:	00074783          	lbu	a5,0(a4)
-    2464:	de079463          	bnez	a5,1a4c <main+0x4b0>
-    2468:	df8ff06f          	j	1a60 <main+0x4c4>
+    2464:	f0079863          	bnez	a5,1b74 <main+0x5d8>
+    2468:	f20ff06f          	j	1b88 <main+0x5ec>
         UART0->DATA = '\r';
     246c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     2470:	00faa023          	sw	a5,0(s5)
     while (*p)
     2474:	00074783          	lbu	a5,0(a4)
-    2478:	da079a63          	bnez	a5,1a2c <main+0x490>
-    247c:	dc4ff06f          	j	1a40 <main+0x4a4>
+    2478:	ec079e63          	bnez	a5,1b54 <main+0x5b8>
+    247c:	eecff06f          	j	1b68 <main+0x5cc>
         UART0->DATA = '\r';
     2480:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     2484:	00faa023          	sw	a5,0(s5)
     while (*p)
     2488:	00074783          	lbu	a5,0(a4)
-    248c:	d8079063          	bnez	a5,1a0c <main+0x470>
-    2490:	d90ff06f          	j	1a20 <main+0x484>
+    248c:	ea079463          	bnez	a5,1b34 <main+0x598>
+    2490:	eb8ff06f          	j	1b48 <main+0x5ac>
         UART0->DATA = '\r';
     2494:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     2498:	00faa023          	sw	a5,0(s5)
     while (*p)
     249c:	00074783          	lbu	a5,0(a4)
-    24a0:	d4079263          	bnez	a5,19e4 <main+0x448>
-    24a4:	d54ff06f          	j	19f8 <main+0x45c>
+    24a0:	e6079a63          	bnez	a5,1b14 <main+0x578>
+    24a4:	e84ff06f          	j	1b28 <main+0x58c>
         UART0->DATA = '\r';
     24a8:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     24ac:	00faa023          	sw	a5,0(s5)
     while (*p)
     24b0:	00074783          	lbu	a5,0(a4)
-    24b4:	e8079c63          	bnez	a5,1b4c <main+0x5b0>
-    24b8:	ea8ff06f          	j	1b60 <main+0x5c4>
+    24b4:	e4079063          	bnez	a5,1af4 <main+0x558>
+    24b8:	e50ff06f          	j	1b08 <main+0x56c>
         UART0->DATA = '\r';
     24bc:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     24c0:	00faa023          	sw	a5,0(s5)
     while (*p)
     24c4:	00074783          	lbu	a5,0(a4)
-    24c8:	e6079263          	bnez	a5,1b2c <main+0x590>
-    24cc:	e74ff06f          	j	1b40 <main+0x5a4>
+    24c8:	e0079663          	bnez	a5,1ad4 <main+0x538>
+    24cc:	e1cff06f          	j	1ae8 <main+0x54c>
         UART0->DATA = '\r';
     24d0:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     24d4:	00faa023          	sw	a5,0(s5)
     while (*p)
     24d8:	00074783          	lbu	a5,0(a4)
-    24dc:	e2079863          	bnez	a5,1b0c <main+0x570>
-    24e0:	e40ff06f          	j	1b20 <main+0x584>
+    24dc:	dc079c63          	bnez	a5,1ab4 <main+0x518>
+    24e0:	de8ff06f          	j	1ac8 <main+0x52c>
         UART0->DATA = '\r';
     24e4:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     24e8:	00faa023          	sw	a5,0(s5)
     while (*p)
     24ec:	00074783          	lbu	a5,0(a4)
-    24f0:	de079e63          	bnez	a5,1aec <main+0x550>
-    24f4:	e0cff06f          	j	1b00 <main+0x564>
+    24f0:	da079263          	bnez	a5,1a94 <main+0x4f8>
+    24f4:	db4ff06f          	j	1aa8 <main+0x50c>
         UART0->DATA = '\r';
     24f8:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     24fc:	00faa023          	sw	a5,0(s5)
     while (*p)
     2500:	00074783          	lbu	a5,0(a4)
-    2504:	e8079463          	bnez	a5,1b8c <main+0x5f0>
-    2508:	e98ff06f          	j	1ba0 <main+0x604>
+    2504:	d6079863          	bnez	a5,1a74 <main+0x4d8>
+    2508:	d80ff06f          	j	1a88 <main+0x4ec>
         UART0->DATA = '\r';
     250c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
     2510:	00faa023          	sw	a5,0(s5)
     while (*p)
     2514:	00074783          	lbu	a5,0(a4)
-    2518:	e4079a63          	bnez	a5,1b6c <main+0x5d0>
-    251c:	e64ff06f          	j	1b80 <main+0x5e4>
+    2518:	d2079e63          	bnez	a5,1a54 <main+0x4b8>
+    251c:	d4cff06f          	j	1a68 <main+0x4cc>
         UART0->DATA = '\r';
     2520:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2524:	00eaa023          	sw	a4,0(s5)
+    2524:	00faa023          	sw	a5,0(s5)
     while (*p)
-    2528:	0006c703          	lbu	a4,0(a3)
-    252c:	b40710e3          	bnez	a4,206c <main+0xad0>
-        print_hex(instns_end - instns_begin, 8);
-    2530:	40660333          	sub	t1,a2,t1
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2534:	01c35713          	srli	a4,t1,0x1c
-    2538:	00ec0733          	add	a4,s8,a4
-    253c:	00074683          	lbu	a3,0(a4)
-    if (c == '\n')
-    2540:	b5669ae3          	bne	a3,s6,2094 <main+0xaf8>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2544:	01835713          	srli	a4,t1,0x18
-    2548:	00f77713          	andi	a4,a4,15
-    254c:	00ec0733          	add	a4,s8,a4
-    2550:	00074603          	lbu	a2,0(a4)
+    2528:	00074783          	lbu	a5,0(a4)
+    252c:	d0079463          	bnez	a5,1a34 <main+0x498>
+    2530:	d18ff06f          	j	1a48 <main+0x4ac>
         UART0->DATA = '\r';
-    2554:	017aa023          	sw	s7,0(s5)
+    2534:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2558:	00daa023          	sw	a3,0(s5)
-    if (c == '\n')
-    255c:	b56618e3          	bne	a2,s6,20ac <main+0xb10>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2560:	01435713          	srli	a4,t1,0x14
-    2564:	00f77713          	andi	a4,a4,15
-    2568:	00ec0733          	add	a4,s8,a4
-    256c:	00074683          	lbu	a3,0(a4)
-        UART0->DATA = '\r';
-    2570:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    2574:	00caa023          	sw	a2,0(s5)
-    if (c == '\n')
-    2578:	b56696e3          	bne	a3,s6,20c4 <main+0xb28>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    257c:	01035713          	srli	a4,t1,0x10
-    2580:	00f77713          	andi	a4,a4,15
-    2584:	00ec0733          	add	a4,s8,a4
-    2588:	00074603          	lbu	a2,0(a4)
-        UART0->DATA = '\r';
-    258c:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    2590:	00daa023          	sw	a3,0(s5)
-    if (c == '\n')
-    2594:	b56614e3          	bne	a2,s6,20dc <main+0xb40>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2598:	00c35713          	srli	a4,t1,0xc
-    259c:	00f77713          	andi	a4,a4,15
-    25a0:	00ec0733          	add	a4,s8,a4
-    25a4:	00074683          	lbu	a3,0(a4)
-        UART0->DATA = '\r';
-    25a8:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    25ac:	00caa023          	sw	a2,0(s5)
-    if (c == '\n')
-    25b0:	b56692e3          	bne	a3,s6,20f4 <main+0xb58>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    25b4:	00835713          	srli	a4,t1,0x8
-    25b8:	00f77713          	andi	a4,a4,15
-    25bc:	00ec0733          	add	a4,s8,a4
-    25c0:	00074603          	lbu	a2,0(a4)
-        UART0->DATA = '\r';
-    25c4:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    25c8:	00daa023          	sw	a3,0(s5)
-    if (c == '\n')
-    25cc:	b56610e3          	bne	a2,s6,210c <main+0xb70>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    25d0:	00435713          	srli	a4,t1,0x4
-    25d4:	00f77713          	andi	a4,a4,15
-    25d8:	00ec0733          	add	a4,s8,a4
-    25dc:	00074683          	lbu	a3,0(a4)
-        UART0->DATA = '\r';
-    25e0:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    25e4:	00caa023          	sw	a2,0(s5)
-    if (c == '\n')
-    25e8:	b3669ee3          	bne	a3,s6,2124 <main+0xb88>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    25ec:	00f37313          	andi	t1,t1,15
-    25f0:	006c0733          	add	a4,s8,t1
-    25f4:	00074703          	lbu	a4,0(a4)
-        UART0->DATA = '\r';
-    25f8:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    25fc:	00daa023          	sw	a3,0(s5)
-    if (c == '\n')
-    2600:	b3671ce3          	bne	a4,s6,2138 <main+0xb9c>
-        UART0->DATA = '\r';
-    2604:	017aa023          	sw	s7,0(s5)
-    2608:	b31ff06f          	j	2138 <main+0xb9c>
-    260c:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    2610:	00eaa023          	sw	a4,0(s5)
+    2538:	00faa023          	sw	a5,0(s5)
     while (*p)
-    2614:	0006c703          	lbu	a4,0(a3)
-    2618:	b2071ee3          	bnez	a4,2154 <main+0xbb8>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    261c:	01c7d713          	srli	a4,a5,0x1c
-    2620:	00ec0733          	add	a4,s8,a4
-    2624:	00074603          	lbu	a2,0(a4)
-    if (c == '\n')
-    2628:	b56618e3          	bne	a2,s6,2178 <main+0xbdc>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    262c:	0187d713          	srli	a4,a5,0x18
-    2630:	00f77713          	andi	a4,a4,15
-    2634:	00ec0733          	add	a4,s8,a4
-    2638:	00074683          	lbu	a3,0(a4)
+    253c:	00074783          	lbu	a5,0(a4)
+    2540:	cc079a63          	bnez	a5,1a14 <main+0x478>
+    2544:	ce4ff06f          	j	1a28 <main+0x48c>
         UART0->DATA = '\r';
-    263c:	017aa023          	sw	s7,0(s5)
+    2548:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2640:	00caa023          	sw	a2,0(s5)
-    if (c == '\n')
-    2644:	b56696e3          	bne	a3,s6,2190 <main+0xbf4>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2648:	0147d713          	srli	a4,a5,0x14
-    264c:	00f77713          	andi	a4,a4,15
-    2650:	00ec0733          	add	a4,s8,a4
-    2654:	00074603          	lbu	a2,0(a4)
+    254c:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    2550:	00074783          	lbu	a5,0(a4)
+    2554:	c8079c63          	bnez	a5,19ec <main+0x450>
+    2558:	ca8ff06f          	j	1a00 <main+0x464>
         UART0->DATA = '\r';
-    2658:	017aa023          	sw	s7,0(s5)
+    255c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    265c:	00daa023          	sw	a3,0(s5)
+    2560:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    2564:	00074783          	lbu	a5,0(a4)
+    2568:	8c0794e3          	bnez	a5,1e30 <main+0x894>
+    return QSPI0->REG & QSPI_REG_CRM;
+    256c:	810007b7          	lui	a5,0x81000
+    2570:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
+    2574:	00100737          	lui	a4,0x100
+    2578:	00e7f7b3          	and	a5,a5,a4
+                if ( cmd_get_crm() )
+    257c:	8c078ee3          	beqz	a5,1e58 <main+0x8bc>
+        putchar(*(p++));
+    2580:	00c12703          	lw	a4,12(sp)
+    UART0->DATA = c;
+    2584:	04f00793          	li	a5,79
+    2588:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    258c:	04e00793          	li	a5,78
+        putchar(*(p++));
+    2590:	00170713          	addi	a4,a4,1 # 100001 <_etext+0xfd351>
     if (c == '\n')
-    2660:	b56614e3          	bne	a2,s6,21a8 <main+0xc0c>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2664:	0107d713          	srli	a4,a5,0x10
-    2668:	00f77713          	andi	a4,a4,15
-    266c:	00ec0733          	add	a4,s8,a4
-    2670:	00074683          	lbu	a3,0(a4)
+    2594:	01678c63          	beq	a5,s6,25ac <main+0x1010>
+    UART0->DATA = c;
+    2598:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    259c:	00074783          	lbu	a5,0(a4)
+    25a0:	fe078a63          	beqz	a5,1d94 <main+0x7f8>
+        putchar(*(p++));
+    25a4:	00170713          	addi	a4,a4,1
+    if (c == '\n')
+    25a8:	ff6798e3          	bne	a5,s6,2598 <main+0xffc>
         UART0->DATA = '\r';
-    2674:	017aa023          	sw	s7,0(s5)
+    25ac:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2678:	00caa023          	sw	a2,0(s5)
-    if (c == '\n')
-    267c:	b56692e3          	bne	a3,s6,21c0 <main+0xc24>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2680:	00c7d713          	srli	a4,a5,0xc
-    2684:	00f77713          	andi	a4,a4,15
-    2688:	00ec0733          	add	a4,s8,a4
-    268c:	00074603          	lbu	a2,0(a4)
+    25b0:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    25b4:	00074783          	lbu	a5,0(a4)
+    25b8:	fc079ce3          	bnez	a5,2590 <main+0xff4>
+        for (int rep = 10; rep > 0; rep--)
+    25bc:	fffa0a13          	addi	s4,s4,-1
+    25c0:	e00a1c63          	bnez	s4,1bd8 <main+0x63c>
+    25c4:	c0cff06f          	j	19d0 <main+0x434>
         UART0->DATA = '\r';
-    2690:	017aa023          	sw	s7,0(s5)
+    25c8:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2694:	00daa023          	sw	a3,0(s5)
-    if (c == '\n')
-    2698:	b56610e3          	bne	a2,s6,21d8 <main+0xc3c>
+    25cc:	00eaa023          	sw	a4,0(s5)
+    while (*p)
+    25d0:	0006c703          	lbu	a4,0(a3)
+    25d4:	9c071ee3          	bnez	a4,1fb0 <main+0xa14>
+        print_hex(cycles_end - cycles_begin, 8);
+    25d8:	41c58e33          	sub	t3,a1,t3
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    269c:	0087d713          	srli	a4,a5,0x8
-    26a0:	00f77713          	andi	a4,a4,15
-    26a4:	00ec0733          	add	a4,s8,a4
-    26a8:	00074683          	lbu	a3,0(a4)
+    25dc:	01ce5713          	srli	a4,t3,0x1c
+    25e0:	00ec0733          	add	a4,s8,a4
+    25e4:	00074683          	lbu	a3,0(a4)
+    if (c == '\n')
+    25e8:	9f6698e3          	bne	a3,s6,1fd8 <main+0xa3c>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    25ec:	018e5713          	srli	a4,t3,0x18
+    25f0:	00f77713          	andi	a4,a4,15
+    25f4:	00ec0733          	add	a4,s8,a4
+    25f8:	00074583          	lbu	a1,0(a4)
+        UART0->DATA = '\r';
+    25fc:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2600:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    2604:	9f6596e3          	bne	a1,s6,1ff0 <main+0xa54>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2608:	014e5713          	srli	a4,t3,0x14
+    260c:	00f77713          	andi	a4,a4,15
+    2610:	00ec0733          	add	a4,s8,a4
+    2614:	00074683          	lbu	a3,0(a4)
+        UART0->DATA = '\r';
+    2618:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    261c:	00baa023          	sw	a1,0(s5)
+    if (c == '\n')
+    2620:	9f6694e3          	bne	a3,s6,2008 <main+0xa6c>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2624:	010e5713          	srli	a4,t3,0x10
+    2628:	00f77713          	andi	a4,a4,15
+    262c:	00ec0733          	add	a4,s8,a4
+    2630:	00074583          	lbu	a1,0(a4)
+        UART0->DATA = '\r';
+    2634:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2638:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    263c:	9f6592e3          	bne	a1,s6,2020 <main+0xa84>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2640:	00ce5713          	srli	a4,t3,0xc
+    2644:	00f77713          	andi	a4,a4,15
+    2648:	00ec0733          	add	a4,s8,a4
+    264c:	00074683          	lbu	a3,0(a4)
+        UART0->DATA = '\r';
+    2650:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2654:	00baa023          	sw	a1,0(s5)
+    if (c == '\n')
+    2658:	9f6690e3          	bne	a3,s6,2038 <main+0xa9c>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    265c:	008e5713          	srli	a4,t3,0x8
+    2660:	00f77713          	andi	a4,a4,15
+    2664:	00ec0733          	add	a4,s8,a4
+    2668:	00074583          	lbu	a1,0(a4)
+        UART0->DATA = '\r';
+    266c:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2670:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    2674:	9d659ee3          	bne	a1,s6,2050 <main+0xab4>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2678:	004e5713          	srli	a4,t3,0x4
+    267c:	00f77713          	andi	a4,a4,15
+    2680:	00ec0733          	add	a4,s8,a4
+    2684:	00074683          	lbu	a3,0(a4)
+        UART0->DATA = '\r';
+    2688:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    268c:	00baa023          	sw	a1,0(s5)
+    if (c == '\n')
+    2690:	9d669ce3          	bne	a3,s6,2068 <main+0xacc>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2694:	00fe7e13          	andi	t3,t3,15
+    2698:	01cc0733          	add	a4,s8,t3
+    269c:	00074703          	lbu	a4,0(a4)
+        UART0->DATA = '\r';
+    26a0:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    26a4:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    26a8:	9d671ae3          	bne	a4,s6,207c <main+0xae0>
         UART0->DATA = '\r';
     26ac:	017aa023          	sw	s7,0(s5)
+    26b0:	9cdff06f          	j	207c <main+0xae0>
+    26b4:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    26b0:	00caa023          	sw	a2,0(s5)
-    if (c == '\n')
-    26b4:	b3669ee3          	bne	a3,s6,21f0 <main+0xc54>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    26b8:	0047d713          	srli	a4,a5,0x4
-    26bc:	00f77713          	andi	a4,a4,15
-    26c0:	00ec0733          	add	a4,s8,a4
-    26c4:	00074703          	lbu	a4,0(a4)
-        UART0->DATA = '\r';
-    26c8:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    26cc:	00daa023          	sw	a3,0(s5)
-    if (c == '\n')
-    26d0:	b3671ce3          	bne	a4,s6,2208 <main+0xc6c>
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    26d4:	00f7f793          	andi	a5,a5,15
-    26d8:	00fc07b3          	add	a5,s8,a5
-    26dc:	0007c783          	lbu	a5,0(a5)
-        UART0->DATA = '\r';
-    26e0:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    26e4:	00eaa023          	sw	a4,0(s5)
-    if (c == '\n')
-    26e8:	b3679ae3          	bne	a5,s6,221c <main+0xc80>
-        UART0->DATA = '\r';
-    26ec:	017aa023          	sw	s7,0(s5)
-    26f0:	b2dff06f          	j	221c <main+0xc80>
-    26f4:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    26f8:	00faa023          	sw	a5,0(s5)
+    26b8:	00eaa023          	sw	a4,0(s5)
     while (*p)
-    26fc:	00074783          	lbu	a5,0(a4)
-    2700:	e8079863          	bnez	a5,1d90 <main+0x7f4>
-    2704:	ea0ff06f          	j	1da4 <main+0x808>
-        UART0->DATA = '\r';
-    2708:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    270c:	00eaa023          	sw	a4,0(s5)
-    while (*p)
-    2710:	0006c703          	lbu	a4,0(a3)
-    2714:	86071ae3          	bnez	a4,1f88 <main+0x9ec>
-        print_hex(cycles_end - cycles_begin, 8);
-    2718:	41c58e33          	sub	t3,a1,t3
+    26bc:	0006c703          	lbu	a4,0(a3)
+    26c0:	9c071ae3          	bnez	a4,2094 <main+0xaf8>
+        print_hex(instns_end - instns_begin, 8);
+    26c4:	40660333          	sub	t1,a2,t1
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    271c:	01ce5713          	srli	a4,t3,0x1c
-    2720:	00ec0733          	add	a4,s8,a4
-    2724:	00074683          	lbu	a3,0(a4)
+    26c8:	01c35713          	srli	a4,t1,0x1c
+    26cc:	00ec0733          	add	a4,s8,a4
+    26d0:	00074683          	lbu	a3,0(a4)
     if (c == '\n')
-    2728:	896694e3          	bne	a3,s6,1fb0 <main+0xa14>
+    26d4:	9f6694e3          	bne	a3,s6,20bc <main+0xb20>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    272c:	018e5713          	srli	a4,t3,0x18
+    26d8:	01835713          	srli	a4,t1,0x18
+    26dc:	00f77713          	andi	a4,a4,15
+    26e0:	00ec0733          	add	a4,s8,a4
+    26e4:	00074603          	lbu	a2,0(a4)
+        UART0->DATA = '\r';
+    26e8:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    26ec:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    26f0:	9f6612e3          	bne	a2,s6,20d4 <main+0xb38>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    26f4:	01435713          	srli	a4,t1,0x14
+    26f8:	00f77713          	andi	a4,a4,15
+    26fc:	00ec0733          	add	a4,s8,a4
+    2700:	00074683          	lbu	a3,0(a4)
+        UART0->DATA = '\r';
+    2704:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2708:	00caa023          	sw	a2,0(s5)
+    if (c == '\n')
+    270c:	9f6690e3          	bne	a3,s6,20ec <main+0xb50>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2710:	01035713          	srli	a4,t1,0x10
+    2714:	00f77713          	andi	a4,a4,15
+    2718:	00ec0733          	add	a4,s8,a4
+    271c:	00074603          	lbu	a2,0(a4)
+        UART0->DATA = '\r';
+    2720:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2724:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    2728:	9d661ee3          	bne	a2,s6,2104 <main+0xb68>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    272c:	00c35713          	srli	a4,t1,0xc
     2730:	00f77713          	andi	a4,a4,15
     2734:	00ec0733          	add	a4,s8,a4
-    2738:	00074583          	lbu	a1,0(a4)
+    2738:	00074683          	lbu	a3,0(a4)
         UART0->DATA = '\r';
     273c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2740:	00daa023          	sw	a3,0(s5)
+    2740:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    2744:	896592e3          	bne	a1,s6,1fc8 <main+0xa2c>
+    2744:	9d669ce3          	bne	a3,s6,211c <main+0xb80>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2748:	014e5713          	srli	a4,t3,0x14
+    2748:	00835713          	srli	a4,t1,0x8
     274c:	00f77713          	andi	a4,a4,15
     2750:	00ec0733          	add	a4,s8,a4
-    2754:	00074683          	lbu	a3,0(a4)
+    2754:	00074603          	lbu	a2,0(a4)
         UART0->DATA = '\r';
     2758:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    275c:	00baa023          	sw	a1,0(s5)
+    275c:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2760:	896690e3          	bne	a3,s6,1fe0 <main+0xa44>
+    2760:	9d661ae3          	bne	a2,s6,2134 <main+0xb98>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2764:	010e5713          	srli	a4,t3,0x10
+    2764:	00435713          	srli	a4,t1,0x4
     2768:	00f77713          	andi	a4,a4,15
     276c:	00ec0733          	add	a4,s8,a4
-    2770:	00074583          	lbu	a1,0(a4)
+    2770:	00074683          	lbu	a3,0(a4)
         UART0->DATA = '\r';
     2774:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2778:	00daa023          	sw	a3,0(s5)
+    2778:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    277c:	87659ee3          	bne	a1,s6,1ff8 <main+0xa5c>
+    277c:	9d6698e3          	bne	a3,s6,214c <main+0xbb0>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    2780:	00ce5713          	srli	a4,t3,0xc
-    2784:	00f77713          	andi	a4,a4,15
-    2788:	00ec0733          	add	a4,s8,a4
-    278c:	00074683          	lbu	a3,0(a4)
+    2780:	00f37313          	andi	t1,t1,15
+    2784:	006c0733          	add	a4,s8,t1
+    2788:	00074703          	lbu	a4,0(a4)
         UART0->DATA = '\r';
-    2790:	017aa023          	sw	s7,0(s5)
+    278c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2794:	00baa023          	sw	a1,0(s5)
+    2790:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    2798:	87669ce3          	bne	a3,s6,2010 <main+0xa74>
+    2794:	9d6716e3          	bne	a4,s6,2160 <main+0xbc4>
+        UART0->DATA = '\r';
+    2798:	017aa023          	sw	s7,0(s5)
+    279c:	9c5ff06f          	j	2160 <main+0xbc4>
+    27a0:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    27a4:	00eaa023          	sw	a4,0(s5)
+    while (*p)
+    27a8:	0006c703          	lbu	a4,0(a3)
+    27ac:	9c0718e3          	bnez	a4,217c <main+0xbe0>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    279c:	008e5713          	srli	a4,t3,0x8
-    27a0:	00f77713          	andi	a4,a4,15
-    27a4:	00ec0733          	add	a4,s8,a4
-    27a8:	00074583          	lbu	a1,0(a4)
-        UART0->DATA = '\r';
-    27ac:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    27b0:	00daa023          	sw	a3,0(s5)
+    27b0:	01c7d713          	srli	a4,a5,0x1c
+    27b4:	00ec0733          	add	a4,s8,a4
+    27b8:	00074603          	lbu	a2,0(a4)
     if (c == '\n')
-    27b4:	87659ae3          	bne	a1,s6,2028 <main+0xa8c>
+    27bc:	9f6612e3          	bne	a2,s6,21a0 <main+0xc04>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    27b8:	004e5713          	srli	a4,t3,0x4
-    27bc:	00f77713          	andi	a4,a4,15
-    27c0:	00ec0733          	add	a4,s8,a4
-    27c4:	00074683          	lbu	a3,0(a4)
+    27c0:	0187d713          	srli	a4,a5,0x18
+    27c4:	00f77713          	andi	a4,a4,15
+    27c8:	00ec0733          	add	a4,s8,a4
+    27cc:	00074683          	lbu	a3,0(a4)
         UART0->DATA = '\r';
-    27c8:	017aa023          	sw	s7,0(s5)
+    27d0:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    27cc:	00baa023          	sw	a1,0(s5)
+    27d4:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    27d0:	876698e3          	bne	a3,s6,2040 <main+0xaa4>
+    27d8:	9f6690e3          	bne	a3,s6,21b8 <main+0xc1c>
         char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-    27d4:	00fe7e13          	andi	t3,t3,15
-    27d8:	01cc0733          	add	a4,s8,t3
-    27dc:	00074703          	lbu	a4,0(a4)
-        UART0->DATA = '\r';
-    27e0:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
-    27e4:	00daa023          	sw	a3,0(s5)
-    if (c == '\n')
-    27e8:	876716e3          	bne	a4,s6,2054 <main+0xab8>
+    27dc:	0147d713          	srli	a4,a5,0x14
+    27e0:	00f77713          	andi	a4,a4,15
+    27e4:	00ec0733          	add	a4,s8,a4
+    27e8:	00074603          	lbu	a2,0(a4)
         UART0->DATA = '\r';
     27ec:	017aa023          	sw	s7,0(s5)
-    27f0:	865ff06f          	j	2054 <main+0xab8>
-    27f4:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    27f8:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    27fc:	00074783          	lbu	a5,0(a4)
-    2800:	e0079463          	bnez	a5,1e08 <main+0x86c>
-    return QSPI0->REG & QSPI_REG_CRM;
-    2804:	810007b7          	lui	a5,0x81000
-    2808:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-    280c:	00100737          	lui	a4,0x100
-    2810:	00e7f7b3          	and	a5,a5,a4
-                if ( cmd_get_crm() )
-    2814:	e0078e63          	beqz	a5,1e30 <main+0x894>
-        putchar(*(p++));
-    2818:	00012703          	lw	a4,0(sp)
-    UART0->DATA = c;
-    281c:	04f00793          	li	a5,79
-    2820:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    2824:	04e00793          	li	a5,78
-        putchar(*(p++));
-    2828:	00170713          	addi	a4,a4,1 # 100001 <_etext+0xfd3ad>
+    27f0:	00daa023          	sw	a3,0(s5)
     if (c == '\n')
-    282c:	01678c63          	beq	a5,s6,2844 <main+0x12a8>
+    27f4:	9d661ee3          	bne	a2,s6,21d0 <main+0xc34>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    27f8:	0107d713          	srli	a4,a5,0x10
+    27fc:	00f77713          	andi	a4,a4,15
+    2800:	00ec0733          	add	a4,s8,a4
+    2804:	00074683          	lbu	a3,0(a4)
+        UART0->DATA = '\r';
+    2808:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2830:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    2834:	00074783          	lbu	a5,0(a4)
-    2838:	d2078a63          	beqz	a5,1d6c <main+0x7d0>
-        putchar(*(p++));
-    283c:	00170713          	addi	a4,a4,1
+    280c:	00caa023          	sw	a2,0(s5)
     if (c == '\n')
-    2840:	ff6798e3          	bne	a5,s6,2830 <main+0x1294>
+    2810:	9d669ce3          	bne	a3,s6,21e8 <main+0xc4c>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2814:	00c7d713          	srli	a4,a5,0xc
+    2818:	00f77713          	andi	a4,a4,15
+    281c:	00ec0733          	add	a4,s8,a4
+    2820:	00074603          	lbu	a2,0(a4)
         UART0->DATA = '\r';
-    2844:	017aa023          	sw	s7,0(s5)
+    2824:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2848:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    284c:	00074783          	lbu	a5,0(a4)
-    2850:	fc079ce3          	bnez	a5,2828 <main+0x128c>
-        for (int rep = 10; rep > 0; rep--)
-    2854:	fffa0a13          	addi	s4,s4,-1
-    2858:	b40a1c63          	bnez	s4,1bb0 <main+0x614>
-    285c:	96cff06f          	j	19c8 <main+0x42c>
+    2828:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    282c:	9d661ae3          	bne	a2,s6,2200 <main+0xc64>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2830:	0087d713          	srli	a4,a5,0x8
+    2834:	00f77713          	andi	a4,a4,15
+    2838:	00ec0733          	add	a4,s8,a4
+    283c:	00074683          	lbu	a3,0(a4)
         UART0->DATA = '\r';
-    2860:	017aa023          	sw	s7,0(s5)
+    2840:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2864:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    2868:	00074783          	lbu	a5,0(a4)
-    286c:	d4079263          	bnez	a5,1db0 <main+0x814>
-    return QSPI0->REG & QSPI_REG_DSPI;
-    2870:	810007b7          	lui	a5,0x81000
-    2874:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
-    2878:	00400737          	lui	a4,0x400
-    287c:	00e7f7b3          	and	a5,a5,a4
-                if ( cmd_get_dspi() )
-    2880:	d4078c63          	beqz	a5,1dd8 <main+0x83c>
-        putchar(*(p++));
-    2884:	00012703          	lw	a4,0(sp)
+    2844:	00caa023          	sw	a2,0(s5)
+    if (c == '\n')
+    2848:	9d6698e3          	bne	a3,s6,2218 <main+0xc7c>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    284c:	0047d713          	srli	a4,a5,0x4
+    2850:	00f77713          	andi	a4,a4,15
+    2854:	00ec0733          	add	a4,s8,a4
+    2858:	00074703          	lbu	a4,0(a4)
+        UART0->DATA = '\r';
+    285c:	017aa023          	sw	s7,0(s5)
     UART0->DATA = c;
-    2888:	04f00793          	li	a5,79
+    2860:	00daa023          	sw	a3,0(s5)
+    if (c == '\n')
+    2864:	9d6716e3          	bne	a4,s6,2230 <main+0xc94>
+        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
+    2868:	00f7f793          	andi	a5,a5,15
+    286c:	00fc07b3          	add	a5,s8,a5
+    2870:	0007c783          	lbu	a5,0(a5)
+        UART0->DATA = '\r';
+    2874:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2878:	00eaa023          	sw	a4,0(s5)
+    if (c == '\n')
+    287c:	9d6794e3          	bne	a5,s6,2244 <main+0xca8>
+        UART0->DATA = '\r';
+    2880:	017aa023          	sw	s7,0(s5)
+    2884:	9c1ff06f          	j	2244 <main+0xca8>
+    2888:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
     288c:	00faa023          	sw	a5,0(s5)
     while (*p)
-    2890:	04e00793          	li	a5,78
+    2890:	00074783          	lbu	a5,0(a4)
+    2894:	d4079263          	bnez	a5,1dd8 <main+0x83c>
+    return QSPI0->REG & QSPI_REG_DSPI;
+    2898:	810007b7          	lui	a5,0x81000
+    289c:	0007a783          	lw	a5,0(a5) # 81000000 <__global_pointer$+0x40fff800>
+    28a0:	00400737          	lui	a4,0x400
+    28a4:	00e7f7b3          	and	a5,a5,a4
+                if ( cmd_get_dspi() )
+    28a8:	d4078c63          	beqz	a5,1e00 <main+0x864>
         putchar(*(p++));
-    2894:	00170713          	addi	a4,a4,1 # 400001 <_etext+0x3fd3ad>
-    if (c == '\n')
-    2898:	01678c63          	beq	a5,s6,28b0 <main+0x1314>
+    28ac:	00c12703          	lw	a4,12(sp)
     UART0->DATA = c;
-    289c:	00faa023          	sw	a5,0(s5)
-    while (*p)
-    28a0:	00074783          	lbu	a5,0(a4)
-    28a4:	d4078c63          	beqz	a5,1dfc <main+0x860>
-        putchar(*(p++));
-    28a8:	00170713          	addi	a4,a4,1
-    if (c == '\n')
-    28ac:	ff6798e3          	bne	a5,s6,289c <main+0x1300>
-        UART0->DATA = '\r';
-    28b0:	017aa023          	sw	s7,0(s5)
-    UART0->DATA = c;
+    28b0:	04f00793          	li	a5,79
     28b4:	00faa023          	sw	a5,0(s5)
     while (*p)
-    28b8:	00074783          	lbu	a5,0(a4)
-    28bc:	fc079ce3          	bnez	a5,2894 <main+0x12f8>
-    28c0:	d3cff06f          	j	1dfc <main+0x860>
-        UART0->DATA = '\r';
-    28c4:	017aa023          	sw	s7,0(s5)
+    28b8:	04e00793          	li	a5,78
+        putchar(*(p++));
+    28bc:	00170713          	addi	a4,a4,1 # 400001 <_etext+0x3fd351>
+    if (c == '\n')
+    28c0:	01678c63          	beq	a5,s6,28d8 <main+0x133c>
     UART0->DATA = c;
-    28c8:	00faa023          	sw	a5,0(s5)
+    28c4:	00faa023          	sw	a5,0(s5)
     while (*p)
-    28cc:	00074783          	lbu	a5,0(a4)
-    28d0:	d0079c63          	bnez	a5,1de8 <main+0x84c>
-    28d4:	d28ff06f          	j	1dfc <main+0x860>
+    28c8:	00074783          	lbu	a5,0(a4)
+    28cc:	d4078c63          	beqz	a5,1e24 <main+0x888>
+        putchar(*(p++));
+    28d0:	00170713          	addi	a4,a4,1
+    if (c == '\n')
+    28d4:	ff6798e3          	bne	a5,s6,28c4 <main+0x1328>
+        UART0->DATA = '\r';
+    28d8:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    28dc:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    28e0:	00074783          	lbu	a5,0(a4)
+    28e4:	fc079ce3          	bnez	a5,28bc <main+0x1320>
+    28e8:	d3cff06f          	j	1e24 <main+0x888>
+        UART0->DATA = '\r';
+    28ec:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    28f0:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    28f4:	00074783          	lbu	a5,0(a4)
+    28f8:	cc079063          	bnez	a5,1db8 <main+0x81c>
+    28fc:	cd0ff06f          	j	1dcc <main+0x830>
+        UART0->DATA = '\r';
+    2900:	017aa023          	sw	s7,0(s5)
+    UART0->DATA = c;
+    2904:	00faa023          	sw	a5,0(s5)
+    while (*p)
+    2908:	00074783          	lbu	a5,0(a4)
+    290c:	d0079263          	bnez	a5,1e10 <main+0x874>
+    2910:	d14ff06f          	j	1e24 <main+0x888>
 
-000028d8 <irqCallback>:
+00002914 <irqCallback>:
     }
 }
 
 void irqCallback() {
 
-    28d8:	00008067          	ret
-    28dc:	3130                	fld	fa2,96(a0)
-    28de:	3332                	fld	ft6,296(sp)
-    28e0:	3534                	fld	fa3,104(a0)
-    28e2:	3736                	fld	fa4,360(sp)
-    28e4:	3938                	fld	fa4,112(a0)
-    28e6:	6261                	lui	tp,0x18
-    28e8:	66656463          	bltu	a0,t1,2f50 <_etext+0x2fc>
-    28ec:	0000                	unimp
-    28ee:	0000                	unimp
-    28f0:	6c637943          	0x6c637943
-    28f4:	7365                	lui	t1,0xffff9
-    28f6:	203a                	fld	ft0,392(sp)
-    28f8:	7830                	flw	fa2,112(s0)
-    28fa:	0000                	unimp
-    28fc:	6e49                	lui	t3,0x12
-    28fe:	736e7473          	csrrci	s0,0x736,28
-    2902:	203a                	fld	ft0,392(sp)
-    2904:	7830                	flw	fa2,112(s0)
-    2906:	0000                	unimp
-    2908:	736b6843          	fmadd.d	fa6,fs6,fs6,fa4,unknown
-    290c:	6d75                	lui	s10,0x1d
-    290e:	203a                	fld	ft0,392(sp)
-    2910:	7830                	flw	fa2,112(s0)
-    2912:	0000                	unimp
-    2914:	6564                	flw	fs1,76(a0)
-    2916:	6166                	flw	ft2,88(sp)
-    2918:	6c75                	lui	s8,0x1d
-    291a:	2074                	fld	fa3,192(s0)
-    291c:	2020                	fld	fs0,64(s0)
-    291e:	2020                	fld	fs0,64(s0)
-    2920:	2020                	fld	fs0,64(s0)
-    2922:	0020                	addi	s0,sp,8
-    2924:	7364                	flw	fs1,100(a4)
-    2926:	6970                	flw	fa2,84(a0)
-    2928:	002d                	c.nop	11
+    2914:	00008067          	ret
+    2918:	3130                	fld	fa2,96(a0)
+    291a:	3332                	fld	ft6,296(sp)
+    291c:	3534                	fld	fa3,104(a0)
+    291e:	3736                	fld	fa4,360(sp)
+    2920:	3938                	fld	fa4,112(a0)
+    2922:	6261                	lui	tp,0x18
+    2924:	66656463          	bltu	a0,t1,2f8c <_etext+0x2dc>
+    2928:	0000                	unimp
     292a:	0000                	unimp
-    292c:	2020                	fld	fs0,64(s0)
-    292e:	2020                	fld	fs0,64(s0)
-    2930:	2020                	fld	fs0,64(s0)
-    2932:	2020                	fld	fs0,64(s0)
-    2934:	0020                	addi	s0,sp,8
+    292c:	6c637943          	0x6c637943
+    2930:	7365                	lui	t1,0xffff9
+    2932:	203a                	fld	ft0,392(sp)
+    2934:	7830                	flw	fa2,112(s0)
     2936:	0000                	unimp
-    2938:	7364                	flw	fs1,100(a4)
-    293a:	6970                	flw	fa2,84(a0)
-    293c:	632d                	lui	t1,0xb
-    293e:	6d72                	flw	fs10,28(sp)
-    2940:	002d                	c.nop	11
+    2938:	6e49                	lui	t3,0x12
+    293a:	736e7473          	csrrci	s0,0x736,28
+    293e:	203a                	fld	ft0,392(sp)
+    2940:	7830                	flw	fa2,112(s0)
     2942:	0000                	unimp
-    2944:	6e69                	lui	t3,0x1a
-    2946:	736e7473          	csrrci	s0,0x736,28
-    294a:	2020                	fld	fs0,64(s0)
-    294c:	2020                	fld	fs0,64(s0)
-    294e:	2020                	fld	fs0,64(s0)
-    2950:	2020                	fld	fs0,64(s0)
-    2952:	3a20                	fld	fs0,112(a2)
-    2954:	0020                	addi	s0,sp,8
-    2956:	0000                	unimp
-    2958:	6e5c                	flw	fa5,28(a2)
-    295a:	0a0a                	slli	s4,s4,0x2
-    295c:	0a0a                	slli	s4,s4,0x2
-    295e:	0000                	unimp
-    2960:	2020                	fld	fs0,64(s0)
-    2962:	2020                	fld	fs0,64(s0)
-    2964:	2020                	fld	fs0,64(s0)
-    2966:	2020                	fld	fs0,64(s0)
+    2944:	736b6843          	fmadd.d	fa6,fs6,fs6,fa4,unknown
+    2948:	6d75                	lui	s10,0x1d
+    294a:	203a                	fld	ft0,392(sp)
+    294c:	7830                	flw	fa2,112(s0)
+    294e:	0000                	unimp
+    2950:	6564                	flw	fs1,76(a0)
+    2952:	6166                	flw	ft2,88(sp)
+    2954:	6c75                	lui	s8,0x1d
+    2956:	2074                	fld	fa3,192(s0)
+    2958:	2020                	fld	fs0,64(s0)
+    295a:	2020                	fld	fs0,64(s0)
+    295c:	2020                	fld	fs0,64(s0)
+    295e:	0020                	addi	s0,sp,8
+    2960:	7364                	flw	fs1,100(a4)
+    2962:	6970                	flw	fa2,84(a0)
+    2964:	002d                	c.nop	11
+    2966:	0000                	unimp
     2968:	2020                	fld	fs0,64(s0)
-    296a:	4f20                	lw	s0,88(a4)
-    296c:	206e                	fld	ft0,216(sp)
-    296e:	694c                	flw	fa1,20(a0)
-    2970:	65656863          	bltu	a0,s6,2fc0 <_etext+0x36c>
-    2974:	5420                	lw	s0,104(s0)
-    2976:	6e61                	lui	t3,0x18
-    2978:	614e2067          	0x614e2067
-    297c:	6f6e                	flw	ft10,216(sp)
-    297e:	392d                	jal	25b8 <main+0x101c>
-    2980:	7962204b          	fnmsub.s	ft0,ft4,fs6,fa5,rdn
-    2984:	5020                	lw	s0,96(s0)
-    2986:	7465                	lui	s0,0xffff9
-    2988:	7265                	lui	tp,0xffff9
-    298a:	4720                	lw	s0,72(a4)
-    298c:	656c                	flw	fa1,76(a0)
-    298e:	0a6e                	slli	s4,s4,0x1b
-    2990:	0000                	unimp
+    296a:	2020                	fld	fs0,64(s0)
+    296c:	2020                	fld	fs0,64(s0)
+    296e:	2020                	fld	fs0,64(s0)
+    2970:	0020                	addi	s0,sp,8
+    2972:	0000                	unimp
+    2974:	7364                	flw	fs1,100(a4)
+    2976:	6970                	flw	fa2,84(a0)
+    2978:	632d                	lui	t1,0xb
+    297a:	6d72                	flw	fs10,28(sp)
+    297c:	002d                	c.nop	11
+    297e:	0000                	unimp
+    2980:	6e69                	lui	t3,0x1a
+    2982:	736e7473          	csrrci	s0,0x736,28
+    2986:	2020                	fld	fs0,64(s0)
+    2988:	2020                	fld	fs0,64(s0)
+    298a:	2020                	fld	fs0,64(s0)
+    298c:	2020                	fld	fs0,64(s0)
+    298e:	3a20                	fld	fs0,112(a2)
+    2990:	0020                	addi	s0,sp,8
     2992:	0000                	unimp
-    2994:	656c6553          	0x656c6553
-    2998:	61207463          	bgeu	zero,s2,2fa0 <_etext+0x34c>
-    299c:	206e                	fld	ft0,216(sp)
-    299e:	6361                	lui	t1,0x18
-    29a0:	6974                	flw	fa3,84(a0)
-    29a2:	0a3a6e6f          	jal	t3,a9244 <_etext+0xa65f0>
-    29a6:	0000                	unimp
-    29a8:	2020                	fld	fs0,64(s0)
-    29aa:	5b20                	lw	s0,112(a4)
-    29ac:	5d31                	li	s10,-20
-    29ae:	5420                	lw	s0,104(s0)
-    29b0:	6c67676f          	jal	a4,79076 <_etext+0x76422>
-    29b4:	2065                	jal	2a5c <irqCallback+0x184>
-    29b6:	656c                	flw	fa1,76(a0)
-    29b8:	2064                	fld	fs1,192(s0)
-    29ba:	0a31                	addi	s4,s4,12
-    29bc:	0000                	unimp
-    29be:	0000                	unimp
-    29c0:	2020                	fld	fs0,64(s0)
-    29c2:	5b20                	lw	s0,112(a4)
-    29c4:	5d32                	lw	s10,44(sp)
-    29c6:	5420                	lw	s0,104(s0)
-    29c8:	6c67676f          	jal	a4,7908e <_etext+0x7643a>
-    29cc:	2065                	jal	2a74 <irqCallback+0x19c>
-    29ce:	656c                	flw	fa1,76(a0)
-    29d0:	2064                	fld	fs1,192(s0)
-    29d2:	0a32                	slli	s4,s4,0xc
-    29d4:	0000                	unimp
-    29d6:	0000                	unimp
-    29d8:	2020                	fld	fs0,64(s0)
-    29da:	5b20                	lw	s0,112(a4)
-    29dc:	54205d33          	0x54205d33
-    29e0:	6c67676f          	jal	a4,790a6 <_etext+0x76452>
-    29e4:	2065                	jal	2a8c <irqCallback+0x1b4>
-    29e6:	656c                	flw	fa1,76(a0)
-    29e8:	2064                	fld	fs1,192(s0)
-    29ea:	00000a33          	add	s4,zero,zero
-    29ee:	0000                	unimp
-    29f0:	2020                	fld	fs0,64(s0)
-    29f2:	5b20                	lw	s0,112(a4)
-    29f4:	5d34                	lw	a3,120(a0)
-    29f6:	5420                	lw	s0,104(s0)
-    29f8:	6c67676f          	jal	a4,790be <_etext+0x7646a>
-    29fc:	2065                	jal	2aa4 <irqCallback+0x1cc>
-    29fe:	656c                	flw	fa1,76(a0)
-    2a00:	2064                	fld	fs1,192(s0)
-    2a02:	0a34                	addi	a3,sp,280
-    2a04:	0000                	unimp
-    2a06:	0000                	unimp
-    2a08:	2020                	fld	fs0,64(s0)
-    2a0a:	5b20                	lw	s0,112(a4)
-    2a0c:	5d35                	li	s10,-19
-    2a0e:	5420                	lw	s0,104(s0)
-    2a10:	6c67676f          	jal	a4,790d6 <_etext+0x76482>
-    2a14:	2065                	jal	2abc <irqCallback+0x1e4>
-    2a16:	656c                	flw	fa1,76(a0)
-    2a18:	2064                	fld	fs1,192(s0)
-    2a1a:	0a35                	addi	s4,s4,13
-    2a1c:	0000                	unimp
-    2a1e:	0000                	unimp
-    2a20:	2020                	fld	fs0,64(s0)
-    2a22:	5b20                	lw	s0,112(a4)
-    2a24:	5d36                	lw	s10,108(sp)
-    2a26:	5420                	lw	s0,104(s0)
-    2a28:	6c67676f          	jal	a4,790ee <_etext+0x7649a>
-    2a2c:	2065                	jal	2ad4 <irqCallback+0x1fc>
-    2a2e:	656c                	flw	fa1,76(a0)
-    2a30:	2064                	fld	fs1,192(s0)
-    2a32:	0a36                	slli	s4,s4,0xd
-    2a34:	0000                	unimp
-    2a36:	0000                	unimp
-    2a38:	2020                	fld	fs0,64(s0)
-    2a3a:	5b20                	lw	s0,112(a4)
-    2a3c:	5d46                	lw	s10,112(sp)
-    2a3e:	4720                	lw	s0,72(a4)
-    2a40:	7465                	lui	s0,0xffff9
-    2a42:	6620                	flw	fs0,72(a2)
-    2a44:	616c                	flw	fa1,68(a0)
-    2a46:	6d206873          	csrrsi	a6,0x6d2,0
-    2a4a:	0a65646f          	jal	s0,58af0 <_etext+0x55e9c>
-    2a4e:	0000                	unimp
-    2a50:	2020                	fld	fs0,64(s0)
-    2a52:	5b20                	lw	s0,112(a4)
-    2a54:	5d49                	li	s10,-14
-    2a56:	5220                	lw	s0,96(a2)
-    2a58:	6165                	addi	sp,sp,112
-    2a5a:	2064                	fld	fs1,192(s0)
-    2a5c:	20495053          	0x20495053
-    2a60:	6c66                	flw	fs8,88(sp)
-    2a62:	7361                	lui	t1,0xffff8
-    2a64:	2068                	fld	fa0,192(s0)
-    2a66:	4449                	li	s0,18
-    2a68:	000a                	c.slli	zero,0x2
-    2a6a:	0000                	unimp
-    2a6c:	2020                	fld	fs0,64(s0)
-    2a6e:	5b20                	lw	s0,112(a4)
-    2a70:	53205d53          	0x53205d53
-    2a74:	7465                	lui	s0,0xffff9
-    2a76:	5320                	lw	s0,96(a4)
-    2a78:	6e69                	lui	t3,0x1a
-    2a7a:	20656c67          	0x20656c67
-    2a7e:	20495053          	0x20495053
-    2a82:	6f6d                	lui	t5,0x1b
-    2a84:	6564                	flw	fs1,76(a0)
-    2a86:	000a                	c.slli	zero,0x2
-    2a88:	2020                	fld	fs0,64(s0)
-    2a8a:	5b20                	lw	s0,112(a4)
-    2a8c:	5d44                	lw	s1,60(a0)
-    2a8e:	5320                	lw	s0,96(a4)
-    2a90:	7465                	lui	s0,0xffff9
-    2a92:	4420                	lw	s0,72(s0)
-    2a94:	20495053          	0x20495053
-    2a98:	6f6d                	lui	t5,0x1b
-    2a9a:	6564                	flw	fs1,76(a0)
-    2a9c:	000a                	c.slli	zero,0x2
-    2a9e:	0000                	unimp
-    2aa0:	2020                	fld	fs0,64(s0)
-    2aa2:	5b20                	lw	s0,112(a4)
-    2aa4:	53205d43          	fmadd.d	fs10,ft0,fs2,fa0,unknown
-    2aa8:	7465                	lui	s0,0xffff9
-    2aaa:	4420                	lw	s0,72(s0)
-    2aac:	2b495053          	0x2b495053
-    2ab0:	204d5243          	fmadd.s	ft4,fs10,ft4,ft4,unknown
-    2ab4:	6f6d                	lui	t5,0x1b
-    2ab6:	6564                	flw	fs1,76(a0)
-    2ab8:	000a                	c.slli	zero,0x2
-    2aba:	0000                	unimp
-    2abc:	2020                	fld	fs0,64(s0)
-    2abe:	5b20                	lw	s0,112(a4)
-    2ac0:	5d42                	lw	s10,48(sp)
-    2ac2:	5220                	lw	s0,96(a2)
-    2ac4:	6e75                	lui	t3,0x1d
-    2ac6:	7320                	flw	fs0,96(a4)
-    2ac8:	6d69                	lui	s10,0x1a
-    2aca:	6c70                	flw	fa2,92(s0)
-    2acc:	7369                	lui	t1,0xffffa
-    2ace:	6974                	flw	fa3,84(a0)
-    2ad0:	65622063          	0x65622063
-    2ad4:	636e                	flw	ft6,216(sp)
-    2ad6:	6d68                	flw	fa0,92(a0)
-    2ad8:	7261                	lui	tp,0xffff8
-    2ada:	6556206b          	0x6556206b
-    2ade:	2072                	fld	ft0,280(sp)
-    2ae0:	2e31                	jal	2dfc <_etext+0x1a8>
-    2ae2:	2e30                	fld	fa2,88(a2)
-    2ae4:	0a30                	addi	a2,sp,280
-    2ae6:	0000                	unimp
-    2ae8:	2020                	fld	fs0,64(s0)
-    2aea:	5b20                	lw	s0,112(a4)
-    2aec:	5d41                	li	s10,-16
-    2aee:	4220                	lw	s0,64(a2)
-    2af0:	6e65                	lui	t3,0x19
-    2af2:	616d6863          	bltu	s10,s6,3102 <_etext+0x4ae>
-    2af6:	6b72                	flw	fs6,28(sp)
-    2af8:	6120                	flw	fs0,64(a0)
-    2afa:	6c6c                	flw	fa1,92(s0)
-    2afc:	6320                	flw	fs0,64(a4)
-    2afe:	69666e6f          	jal	t3,69194 <_etext+0x66540>
-    2b02:	000a7367          	0xa7367
-    2b06:	0000                	unimp
-    2b08:	4f49                	li	t5,18
-    2b0a:	5320                	lw	s0,96(a4)
-    2b0c:	6174                	flw	fa3,68(a0)
-    2b0e:	6574                	flw	fa3,76(a0)
-    2b10:	203a                	fld	ft0,392(sp)
-    2b12:	0000                	unimp
-    2b14:	6d6d6f43          	0x6d6d6f43
-    2b18:	6e61                	lui	t3,0x18
-    2b1a:	3e64                	fld	fs1,248(a2)
-    2b1c:	0020                	addi	s0,sp,8
-    2b1e:	0000                	unimp
-    2b20:	20495053          	0x20495053
-    2b24:	74617453          	0x74617453
-    2b28:	3a65                	jal	24e0 <main+0xf44>
-    2b2a:	000a                	c.slli	zero,0x2
-    2b2c:	2020                	fld	fs0,64(s0)
-    2b2e:	5344                	lw	s1,36(a4)
-    2b30:	4950                	lw	a2,20(a0)
-    2b32:	0020                	addi	s0,sp,8
-    2b34:	000a4e4f          	fnmadd.s	ft8,fs4,ft0,ft0,rmm
-    2b38:	0a46464f          	fnmadd.d	fa2,fa2,ft4,ft1,rmm
-    2b3c:	0000                	unimp
-    2b3e:	0000                	unimp
-    2b40:	2020                	fld	fs0,64(s0)
-    2b42:	204d5243          	fmadd.s	ft4,fs10,ft4,ft4,unknown
-    2b46:	0020                	addi	s0,sp,8
-    2b48:	22e8                	fld	fa0,192(a3)
-    2b4a:	0000                	unimp
-    2b4c:	22cc                	fld	fa1,128(a3)
-    2b4e:	0000                	unimp
-    2b50:	22b0                	fld	fa2,64(a3)
-    2b52:	0000                	unimp
-    2b54:	2294                	fld	fa3,0(a3)
-    2b56:	0000                	unimp
-    2b58:	2278                	fld	fa4,192(a2)
-    2b5a:	0000                	unimp
-    2b5c:	225c                	fld	fa5,128(a2)
-    2b5e:	0000                	unimp
-    2b60:	1d6c                	addi	a1,sp,700
+    2994:	0a0a                	slli	s4,s4,0x2
+    2996:	0a0a                	slli	s4,s4,0x2
+    2998:	0a0a                	slli	s4,s4,0x2
+    299a:	000a                	c.slli	zero,0x2
+    299c:	2020                	fld	fs0,64(s0)
+    299e:	2020                	fld	fs0,64(s0)
+    29a0:	2020                	fld	fs0,64(s0)
+    29a2:	2020                	fld	fs0,64(s0)
+    29a4:	2020                	fld	fs0,64(s0)
+    29a6:	4f20                	lw	s0,88(a4)
+    29a8:	206e                	fld	ft0,216(sp)
+    29aa:	694c                	flw	fa1,20(a0)
+    29ac:	65656863          	bltu	a0,s6,2ffc <_etext+0x34c>
+    29b0:	5420                	lw	s0,104(s0)
+    29b2:	6e61                	lui	t3,0x18
+    29b4:	614e2067          	0x614e2067
+    29b8:	6f6e                	flw	ft10,216(sp)
+    29ba:	392d                	jal	25f4 <main+0x1058>
+    29bc:	7962204b          	fnmsub.s	ft0,ft4,fs6,fa5,rdn
+    29c0:	5020                	lw	s0,96(s0)
+    29c2:	7465                	lui	s0,0xffff9
+    29c4:	7265                	lui	tp,0xffff9
+    29c6:	4720                	lw	s0,72(a4)
+    29c8:	656c                	flw	fa1,76(a0)
+    29ca:	0a6e                	slli	s4,s4,0x1b
+    29cc:	0000                	unimp
+    29ce:	0000                	unimp
+    29d0:	656c6553          	0x656c6553
+    29d4:	61207463          	bgeu	zero,s2,2fdc <_etext+0x32c>
+    29d8:	206e                	fld	ft0,216(sp)
+    29da:	6361                	lui	t1,0x18
+    29dc:	6974                	flw	fa3,84(a0)
+    29de:	0a3a6e6f          	jal	t3,a9280 <_etext+0xa65d0>
+    29e2:	0000                	unimp
+    29e4:	2020                	fld	fs0,64(s0)
+    29e6:	5b20                	lw	s0,112(a4)
+    29e8:	5d30                	lw	a2,120(a0)
+    29ea:	5220                	lw	s0,96(a2)
+    29ec:	6e75                	lui	t3,0x1d
+    29ee:	6d20                	flw	fs0,88(a0)
+    29f0:	6961                	lui	s2,0x18
+    29f2:	206e                	fld	ft0,216(sp)
+    29f4:	7061                	c.lui	zero,0xffff8
+    29f6:	2070                	fld	fa2,192(s0)
+    29f8:	6b28                	flw	fa0,80(a4)
+    29fa:	6f69                	lui	t5,0x1a
+    29fc:	0a296b73          	csrrsi	s6,0xa2,18
+    2a00:	0000                	unimp
+    2a02:	0000                	unimp
+    2a04:	2020                	fld	fs0,64(s0)
+    2a06:	5b20                	lw	s0,112(a4)
+    2a08:	5d31                	li	s10,-20
+    2a0a:	5420                	lw	s0,104(s0)
+    2a0c:	6c67676f          	jal	a4,790d2 <_etext+0x76422>
+    2a10:	2065                	jal	2ab8 <irqCallback+0x1a4>
+    2a12:	656c                	flw	fa1,76(a0)
+    2a14:	2064                	fld	fs1,192(s0)
+    2a16:	0a31                	addi	s4,s4,12
+    2a18:	0000                	unimp
+    2a1a:	0000                	unimp
+    2a1c:	2020                	fld	fs0,64(s0)
+    2a1e:	5b20                	lw	s0,112(a4)
+    2a20:	5d32                	lw	s10,44(sp)
+    2a22:	5420                	lw	s0,104(s0)
+    2a24:	6c67676f          	jal	a4,790ea <_etext+0x7643a>
+    2a28:	2065                	jal	2ad0 <irqCallback+0x1bc>
+    2a2a:	656c                	flw	fa1,76(a0)
+    2a2c:	2064                	fld	fs1,192(s0)
+    2a2e:	0a32                	slli	s4,s4,0xc
+    2a30:	0000                	unimp
+    2a32:	0000                	unimp
+    2a34:	2020                	fld	fs0,64(s0)
+    2a36:	5b20                	lw	s0,112(a4)
+    2a38:	54205d33          	0x54205d33
+    2a3c:	6c67676f          	jal	a4,79102 <_etext+0x76452>
+    2a40:	2065                	jal	2ae8 <irqCallback+0x1d4>
+    2a42:	656c                	flw	fa1,76(a0)
+    2a44:	2064                	fld	fs1,192(s0)
+    2a46:	00000a33          	add	s4,zero,zero
+    2a4a:	0000                	unimp
+    2a4c:	2020                	fld	fs0,64(s0)
+    2a4e:	5b20                	lw	s0,112(a4)
+    2a50:	5d34                	lw	a3,120(a0)
+    2a52:	5420                	lw	s0,104(s0)
+    2a54:	6c67676f          	jal	a4,7911a <_etext+0x7646a>
+    2a58:	2065                	jal	2b00 <irqCallback+0x1ec>
+    2a5a:	656c                	flw	fa1,76(a0)
+    2a5c:	2064                	fld	fs1,192(s0)
+    2a5e:	0a34                	addi	a3,sp,280
+    2a60:	0000                	unimp
+    2a62:	0000                	unimp
+    2a64:	2020                	fld	fs0,64(s0)
+    2a66:	5b20                	lw	s0,112(a4)
+    2a68:	5d35                	li	s10,-19
+    2a6a:	5420                	lw	s0,104(s0)
+    2a6c:	6c67676f          	jal	a4,79132 <_etext+0x76482>
+    2a70:	2065                	jal	2b18 <irqCallback+0x204>
+    2a72:	656c                	flw	fa1,76(a0)
+    2a74:	2064                	fld	fs1,192(s0)
+    2a76:	0a35                	addi	s4,s4,13
+    2a78:	0000                	unimp
+    2a7a:	0000                	unimp
+    2a7c:	2020                	fld	fs0,64(s0)
+    2a7e:	5b20                	lw	s0,112(a4)
+    2a80:	5d36                	lw	s10,108(sp)
+    2a82:	5420                	lw	s0,104(s0)
+    2a84:	6c67676f          	jal	a4,7914a <_etext+0x7649a>
+    2a88:	2065                	jal	2b30 <irqCallback+0x21c>
+    2a8a:	656c                	flw	fa1,76(a0)
+    2a8c:	2064                	fld	fs1,192(s0)
+    2a8e:	0a36                	slli	s4,s4,0xd
+    2a90:	0000                	unimp
+    2a92:	0000                	unimp
+    2a94:	2020                	fld	fs0,64(s0)
+    2a96:	5b20                	lw	s0,112(a4)
+    2a98:	5d46                	lw	s10,112(sp)
+    2a9a:	4720                	lw	s0,72(a4)
+    2a9c:	7465                	lui	s0,0xffff9
+    2a9e:	6620                	flw	fs0,72(a2)
+    2aa0:	616c                	flw	fa1,68(a0)
+    2aa2:	6d206873          	csrrsi	a6,0x6d2,0
+    2aa6:	0a65646f          	jal	s0,58b4c <_etext+0x55e9c>
+    2aaa:	0000                	unimp
+    2aac:	2020                	fld	fs0,64(s0)
+    2aae:	5b20                	lw	s0,112(a4)
+    2ab0:	5d49                	li	s10,-14
+    2ab2:	5220                	lw	s0,96(a2)
+    2ab4:	6165                	addi	sp,sp,112
+    2ab6:	2064                	fld	fs1,192(s0)
+    2ab8:	20495053          	0x20495053
+    2abc:	6c66                	flw	fs8,88(sp)
+    2abe:	7361                	lui	t1,0xffff8
+    2ac0:	2068                	fld	fa0,192(s0)
+    2ac2:	4449                	li	s0,18
+    2ac4:	000a                	c.slli	zero,0x2
+    2ac6:	0000                	unimp
+    2ac8:	2020                	fld	fs0,64(s0)
+    2aca:	5b20                	lw	s0,112(a4)
+    2acc:	53205d53          	0x53205d53
+    2ad0:	7465                	lui	s0,0xffff9
+    2ad2:	5320                	lw	s0,96(a4)
+    2ad4:	6e69                	lui	t3,0x1a
+    2ad6:	20656c67          	0x20656c67
+    2ada:	20495053          	0x20495053
+    2ade:	6f6d                	lui	t5,0x1b
+    2ae0:	6564                	flw	fs1,76(a0)
+    2ae2:	000a                	c.slli	zero,0x2
+    2ae4:	2020                	fld	fs0,64(s0)
+    2ae6:	5b20                	lw	s0,112(a4)
+    2ae8:	5d44                	lw	s1,60(a0)
+    2aea:	5320                	lw	s0,96(a4)
+    2aec:	7465                	lui	s0,0xffff9
+    2aee:	4420                	lw	s0,72(s0)
+    2af0:	20495053          	0x20495053
+    2af4:	6f6d                	lui	t5,0x1b
+    2af6:	6564                	flw	fs1,76(a0)
+    2af8:	000a                	c.slli	zero,0x2
+    2afa:	0000                	unimp
+    2afc:	2020                	fld	fs0,64(s0)
+    2afe:	5b20                	lw	s0,112(a4)
+    2b00:	53205d43          	fmadd.d	fs10,ft0,fs2,fa0,unknown
+    2b04:	7465                	lui	s0,0xffff9
+    2b06:	4420                	lw	s0,72(s0)
+    2b08:	2b495053          	0x2b495053
+    2b0c:	204d5243          	fmadd.s	ft4,fs10,ft4,ft4,unknown
+    2b10:	6f6d                	lui	t5,0x1b
+    2b12:	6564                	flw	fs1,76(a0)
+    2b14:	000a                	c.slli	zero,0x2
+    2b16:	0000                	unimp
+    2b18:	2020                	fld	fs0,64(s0)
+    2b1a:	5b20                	lw	s0,112(a4)
+    2b1c:	5d42                	lw	s10,48(sp)
+    2b1e:	5220                	lw	s0,96(a2)
+    2b20:	6e75                	lui	t3,0x1d
+    2b22:	7320                	flw	fs0,96(a4)
+    2b24:	6d69                	lui	s10,0x1a
+    2b26:	6c70                	flw	fa2,92(s0)
+    2b28:	7369                	lui	t1,0xffffa
+    2b2a:	6974                	flw	fa3,84(a0)
+    2b2c:	65622063          	0x65622063
+    2b30:	636e                	flw	ft6,216(sp)
+    2b32:	6d68                	flw	fa0,92(a0)
+    2b34:	7261                	lui	tp,0xffff8
+    2b36:	6556206b          	0x6556206b
+    2b3a:	2072                	fld	ft0,280(sp)
+    2b3c:	2e31                	jal	2e58 <_etext+0x1a8>
+    2b3e:	2e30                	fld	fa2,88(a2)
+    2b40:	0a30                	addi	a2,sp,280
+    2b42:	0000                	unimp
+    2b44:	2020                	fld	fs0,64(s0)
+    2b46:	5b20                	lw	s0,112(a4)
+    2b48:	5d41                	li	s10,-16
+    2b4a:	4220                	lw	s0,64(a2)
+    2b4c:	6e65                	lui	t3,0x19
+    2b4e:	616d6863          	bltu	s10,s6,315e <_etext+0x4ae>
+    2b52:	6b72                	flw	fs6,28(sp)
+    2b54:	6120                	flw	fs0,64(a0)
+    2b56:	6c6c                	flw	fa1,92(s0)
+    2b58:	6320                	flw	fs0,64(a4)
+    2b5a:	69666e6f          	jal	t3,691f0 <_etext+0x66540>
+    2b5e:	000a7367          	0xa7367
     2b62:	0000                	unimp
-    2b64:	1d6c                	addi	a1,sp,700
-    2b66:	0000                	unimp
-    2b68:	1d6c                	addi	a1,sp,700
-    2b6a:	0000                	unimp
-    2b6c:	1d6c                	addi	a1,sp,700
+    2b64:	4f49                	li	t5,18
+    2b66:	5320                	lw	s0,96(a4)
+    2b68:	6174                	flw	fa3,68(a0)
+    2b6a:	6574                	flw	fa3,76(a0)
+    2b6c:	203a                	fld	ft0,392(sp)
     2b6e:	0000                	unimp
-    2b70:	1d6c                	addi	a1,sp,700
-    2b72:	0000                	unimp
-    2b74:	1d6c                	addi	a1,sp,700
-    2b76:	0000                	unimp
-    2b78:	1d6c                	addi	a1,sp,700
+    2b70:	6d6d6f43          	0x6d6d6f43
+    2b74:	6e61                	lui	t3,0x18
+    2b76:	3e64                	fld	fs1,248(a2)
+    2b78:	0020                	addi	s0,sp,8
     2b7a:	0000                	unimp
-    2b7c:	1d6c                	addi	a1,sp,700
-    2b7e:	0000                	unimp
-    2b80:	1d6c                	addi	a1,sp,700
-    2b82:	0000                	unimp
-    2b84:	1d6c                	addi	a1,sp,700
-    2b86:	0000                	unimp
-    2b88:	2234                	fld	fa3,64(a2)
-    2b8a:	0000                	unimp
-    2b8c:	1ed8                	addi	a4,sp,884
-    2b8e:	0000                	unimp
-    2b90:	1ec4                	addi	s1,sp,884
-    2b92:	0000                	unimp
-    2b94:	1d48                	addi	a0,sp,692
-    2b96:	0000                	unimp
-    2b98:	1d6c                	addi	a1,sp,700
+    2b7c:	20495053          	0x20495053
+    2b80:	74617453          	0x74617453
+    2b84:	3a65                	jal	253c <main+0xfa0>
+    2b86:	000a                	c.slli	zero,0x2
+    2b88:	2020                	fld	fs0,64(s0)
+    2b8a:	5344                	lw	s1,36(a4)
+    2b8c:	4950                	lw	a2,20(a0)
+    2b8e:	0020                	addi	s0,sp,8
+    2b90:	000a4e4f          	fnmadd.s	ft8,fs4,ft0,ft0,rmm
+    2b94:	0a46464f          	fnmadd.d	fa2,fa2,ft4,ft1,rmm
+    2b98:	0000                	unimp
     2b9a:	0000                	unimp
-    2b9c:	1d78                	addi	a4,sp,700
-    2b9e:	0000                	unimp
-    2ba0:	1d6c                	addi	a1,sp,700
-    2ba2:	0000                	unimp
-    2ba4:	1d6c                	addi	a1,sp,700
+    2b9c:	2020                	fld	fs0,64(s0)
+    2b9e:	204d5243          	fmadd.s	ft4,fs10,ft4,ft4,unknown
+    2ba2:	0020                	addi	s0,sp,8
+    2ba4:	2310                	fld	fa2,0(a4)
     2ba6:	0000                	unimp
-    2ba8:	1e78                	addi	a4,sp,828
+    2ba8:	22f4                	fld	fa3,192(a3)
     2baa:	0000                	unimp
-    2bac:	1d6c                	addi	a1,sp,700
+    2bac:	22d8                	fld	fa4,128(a3)
     2bae:	0000                	unimp
-    2bb0:	1d6c                	addi	a1,sp,700
+    2bb0:	22bc                	fld	fa5,64(a3)
     2bb2:	0000                	unimp
-    2bb4:	1d6c                	addi	a1,sp,700
+    2bb4:	22a0                	fld	fs0,64(a3)
     2bb6:	0000                	unimp
-    2bb8:	1d6c                	addi	a1,sp,700
+    2bb8:	2284                	fld	fs1,0(a3)
     2bba:	0000                	unimp
-    2bbc:	1d6c                	addi	a1,sp,700
+    2bbc:	1d94                	addi	a3,sp,752
     2bbe:	0000                	unimp
-    2bc0:	1d6c                	addi	a1,sp,700
+    2bc0:	1d94                	addi	a3,sp,752
     2bc2:	0000                	unimp
-    2bc4:	1d6c                	addi	a1,sp,700
+    2bc4:	1d94                	addi	a3,sp,752
     2bc6:	0000                	unimp
-    2bc8:	1d6c                	addi	a1,sp,700
+    2bc8:	1d94                	addi	a3,sp,752
     2bca:	0000                	unimp
-    2bcc:	1d6c                	addi	a1,sp,700
+    2bcc:	1d94                	addi	a3,sp,752
     2bce:	0000                	unimp
-    2bd0:	1e98                	addi	a4,sp,880
+    2bd0:	1d94                	addi	a3,sp,752
     2bd2:	0000                	unimp
-    2bd4:	1d6c                	addi	a1,sp,700
+    2bd4:	1d94                	addi	a3,sp,752
     2bd6:	0000                	unimp
-    2bd8:	1d6c                	addi	a1,sp,700
+    2bd8:	1d94                	addi	a3,sp,752
     2bda:	0000                	unimp
-    2bdc:	1d6c                	addi	a1,sp,700
+    2bdc:	1d94                	addi	a3,sp,752
     2bde:	0000                	unimp
-    2be0:	1d6c                	addi	a1,sp,700
+    2be0:	1d94                	addi	a3,sp,752
     2be2:	0000                	unimp
-    2be4:	1d6c                	addi	a1,sp,700
+    2be4:	225c                	fld	fa5,128(a2)
     2be6:	0000                	unimp
-    2be8:	1d6c                	addi	a1,sp,700
+    2be8:	1f00                	addi	s0,sp,944
     2bea:	0000                	unimp
-    2bec:	1d6c                	addi	a1,sp,700
+    2bec:	1eec                	addi	a1,sp,892
     2bee:	0000                	unimp
-    2bf0:	1d6c                	addi	a1,sp,700
+    2bf0:	1d70                	addi	a2,sp,700
     2bf2:	0000                	unimp
-    2bf4:	1d6c                	addi	a1,sp,700
+    2bf4:	1d94                	addi	a3,sp,752
     2bf6:	0000                	unimp
-    2bf8:	1d6c                	addi	a1,sp,700
+    2bf8:	1da0                	addi	s0,sp,760
     2bfa:	0000                	unimp
-    2bfc:	1d6c                	addi	a1,sp,700
+    2bfc:	1d94                	addi	a3,sp,752
     2bfe:	0000                	unimp
-    2c00:	1d6c                	addi	a1,sp,700
+    2c00:	1d94                	addi	a3,sp,752
     2c02:	0000                	unimp
-    2c04:	1d6c                	addi	a1,sp,700
+    2c04:	1ecc                	addi	a1,sp,884
     2c06:	0000                	unimp
-    2c08:	2234                	fld	fa3,64(a2)
+    2c08:	1d94                	addi	a3,sp,752
     2c0a:	0000                	unimp
-    2c0c:	1ed8                	addi	a4,sp,884
+    2c0c:	1d94                	addi	a3,sp,752
     2c0e:	0000                	unimp
-    2c10:	1ec4                	addi	s1,sp,884
+    2c10:	1d94                	addi	a3,sp,752
     2c12:	0000                	unimp
-    2c14:	1d48                	addi	a0,sp,692
+    2c14:	1d94                	addi	a3,sp,752
     2c16:	0000                	unimp
-    2c18:	1d6c                	addi	a1,sp,700
+    2c18:	1d94                	addi	a3,sp,752
     2c1a:	0000                	unimp
-    2c1c:	1d78                	addi	a4,sp,700
+    2c1c:	1d94                	addi	a3,sp,752
     2c1e:	0000                	unimp
-    2c20:	1d6c                	addi	a1,sp,700
+    2c20:	1d94                	addi	a3,sp,752
     2c22:	0000                	unimp
-    2c24:	1d6c                	addi	a1,sp,700
+    2c24:	1d94                	addi	a3,sp,752
     2c26:	0000                	unimp
-    2c28:	1e78                	addi	a4,sp,828
+    2c28:	1d94                	addi	a3,sp,752
     2c2a:	0000                	unimp
-    2c2c:	1d6c                	addi	a1,sp,700
+    2c2c:	1ea0                	addi	s0,sp,888
     2c2e:	0000                	unimp
-    2c30:	1d6c                	addi	a1,sp,700
+    2c30:	1d94                	addi	a3,sp,752
     2c32:	0000                	unimp
-    2c34:	1d6c                	addi	a1,sp,700
+    2c34:	1d94                	addi	a3,sp,752
     2c36:	0000                	unimp
-    2c38:	1d6c                	addi	a1,sp,700
+    2c38:	1d94                	addi	a3,sp,752
     2c3a:	0000                	unimp
-    2c3c:	1d6c                	addi	a1,sp,700
+    2c3c:	1d94                	addi	a3,sp,752
     2c3e:	0000                	unimp
-    2c40:	1d6c                	addi	a1,sp,700
+    2c40:	1d94                	addi	a3,sp,752
     2c42:	0000                	unimp
-    2c44:	1d6c                	addi	a1,sp,700
+    2c44:	1d94                	addi	a3,sp,752
     2c46:	0000                	unimp
-    2c48:	1d6c                	addi	a1,sp,700
+    2c48:	1d94                	addi	a3,sp,752
     2c4a:	0000                	unimp
-    2c4c:	1d6c                	addi	a1,sp,700
+    2c4c:	1d94                	addi	a3,sp,752
     2c4e:	0000                	unimp
-    2c50:	1e98                	addi	a4,sp,880
+    2c50:	1d94                	addi	a3,sp,752
+    2c52:	0000                	unimp
+    2c54:	1d94                	addi	a3,sp,752
+    2c56:	0000                	unimp
+    2c58:	1d94                	addi	a3,sp,752
+    2c5a:	0000                	unimp
+    2c5c:	1d94                	addi	a3,sp,752
+    2c5e:	0000                	unimp
+    2c60:	1d94                	addi	a3,sp,752
+    2c62:	0000                	unimp
+    2c64:	225c                	fld	fa5,128(a2)
+    2c66:	0000                	unimp
+    2c68:	1f00                	addi	s0,sp,944
+    2c6a:	0000                	unimp
+    2c6c:	1eec                	addi	a1,sp,892
+    2c6e:	0000                	unimp
+    2c70:	1d70                	addi	a2,sp,700
+    2c72:	0000                	unimp
+    2c74:	1d94                	addi	a3,sp,752
+    2c76:	0000                	unimp
+    2c78:	1da0                	addi	s0,sp,760
+    2c7a:	0000                	unimp
+    2c7c:	1d94                	addi	a3,sp,752
+    2c7e:	0000                	unimp
+    2c80:	1d94                	addi	a3,sp,752
+    2c82:	0000                	unimp
+    2c84:	1ecc                	addi	a1,sp,884
+    2c86:	0000                	unimp
+    2c88:	1d94                	addi	a3,sp,752
+    2c8a:	0000                	unimp
+    2c8c:	1d94                	addi	a3,sp,752
+    2c8e:	0000                	unimp
+    2c90:	1d94                	addi	a3,sp,752
+    2c92:	0000                	unimp
+    2c94:	1d94                	addi	a3,sp,752
+    2c96:	0000                	unimp
+    2c98:	1d94                	addi	a3,sp,752
+    2c9a:	0000                	unimp
+    2c9c:	1d94                	addi	a3,sp,752
+    2c9e:	0000                	unimp
+    2ca0:	1d94                	addi	a3,sp,752
+    2ca2:	0000                	unimp
+    2ca4:	1d94                	addi	a3,sp,752
+    2ca6:	0000                	unimp
+    2ca8:	1d94                	addi	a3,sp,752
+    2caa:	0000                	unimp
+    2cac:	1ea0                	addi	s0,sp,888
 	...

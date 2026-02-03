@@ -2,11 +2,15 @@
 
 `define SVO_XYBITS 14
 
+//SVO_MODE                =  "1024x768",    \
+//SVO_MODE                =   "1366x768",    \
+//SVO_MODE                =   "1024x576",    \
+
+//`define SVO_MODEX  "640x480V"
+
 `define SVO_DEFAULT_PARAMS parameter \
-    //SVO_MODE              =  "640x480",       \
-    //SVO_MODE                =  "1024x768",    \
-    //SVO_MODE                =   "1366x768",    \
-    SVO_MODE                =   "1366x768",    \
+    //SVO_MODE             =  "640x480V",       \
+    SVO_MODE                =   "1024x576",    \
     SVO_FRAMERATE        =  60, \
     SVO_BITS_PER_PIXEL   =  24, \
     SVO_BITS_PER_RED     =   8, \

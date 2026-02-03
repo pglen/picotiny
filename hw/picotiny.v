@@ -54,7 +54,7 @@ module picotiny (
  wire [31:0] wbp_wdata;
  wire [3:0] wbp_wstrb;
  wire [31:0] wbp_rdata;
- 
+
  wire spimemcfg_valid;
  wire spimemcfg_ready;
  wire [31:0] spimemcfg_addr;
@@ -133,7 +133,7 @@ picorv32 #(
   .mem_s_wstrb(sram_wstrb),
   .mem_s_rdata(sram_rdata)
  );
- 
+
  // S0 0x0000_0000 -> SPI Flash XIP
  // S1 0x4000_0000 -> SRAM
  // S2 0x8000_0000 -> PicoPeriph
@@ -275,6 +275,7 @@ picorv32 #(
  PicoMem_UART u_PicoMem_UART (
   .resetn(sys_resetn),
   .clk(clk_p),
+  //.clk(clk),
   .mem_s_valid(uart_valid),
   .mem_s_ready(uart_ready),
   .mem_s_addr(uart_addr),
@@ -287,7 +288,7 @@ picorv32 #(
 
 
 assign wbp_ready = 1'b1;
- 
+
 wire svo_term_valid;
 assign svo_term_valid = (uart_valid && uart_ready) & (~uart_addr[2]) & uart_wstrb[0];
 

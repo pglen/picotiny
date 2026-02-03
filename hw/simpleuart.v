@@ -17,7 +17,12 @@
  *
  */
 
-module simpleuart (
+module simpleuart
+#(
+	parameter CLK_FRE = 50,      //clock frequency(Mhz)
+	parameter BAUD_RATE = 115200 //serial baud rate
+)
+ (
 	input clk,
 	input resetn,
 

@@ -2,11 +2,11 @@
  *  SVO - Simple Video Out FPGA Core
  *
  *  Copyright (C) 2014  Clifford Wolf <clifford@clifford.at>
- *  
+ *
  *  Permission to use, copy, modify, and/or distribute this software for any
  *  purpose with or without fee is hereby granted, provided that the above
  *  copyright notice and this permission notice appear in all copies.
- *  
+ *
  *  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  *  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  *  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -39,7 +39,9 @@ module svo_hdmi_top (
 	output [2:0] tmds_d_n,
 	output [2:0] tmds_d_p
 );
-	parameter SVO_MODE             =   "640x480V";
+	//parameter SVO_MODE           =   "640x480V";
+	parameter SVO_MODE           =   "1024x576";
+	//parameter SVO_MODE             =   (SVO_MODEX);
 	parameter SVO_FRAMERATE        =   60;
 	parameter SVO_BITS_PER_PIXEL   =   24;
 	parameter SVO_BITS_PER_RED     =    8;
@@ -178,7 +180,7 @@ module svo_hdmi_top (
 		.dout({tmds_d9[2], tmds_d8[2], tmds_d7[2], tmds_d6[2], tmds_d5[2],
 		       tmds_d4[2], tmds_d3[2], tmds_d2[2], tmds_d1[2], tmds_d0[2]})
 	);
-    
+
 	OSER10 tmds_serdes [2:0] (
 		.Q(tmds_d),
 		.D0(tmds_d0),
@@ -195,7 +197,7 @@ module svo_hdmi_top (
 		.FCLK(clk_5x_pixel),
 		.RESET(~clk_pixel_resetn)
 	);
-	
+
 	ELVDS_OBUF tmds_bufds [3:0] (
 		.I({clk_pixel, tmds_d}),
 		.O({tmds_clk_p, tmds_d_p}),

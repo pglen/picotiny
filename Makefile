@@ -26,16 +26,16 @@ export PYTHON_NAME
 export RISCV_NAME
 export RISCV_PATH
 
-.PHONY: brom flash clean program newfirm test
+.PHONY: brom flash clean program newfirm testcomp
 
 help:
-	@echo Targets: brom mkflash clean program newfirm test
-	@echo "        brom         -- make boot rom"
-	@echo "        newfirm      -- make \(flash\) new firmware"
-	@echo "        mkflash      -- make flash"
+	@echo Targets: brom mkflash clean program newfirm putty testcomp
+	@echo "        brom         -- creat boot rom"
+	@echo "        newfirm      -- flash new firmware"
+	@echo "        mkflash      -- make system flash / firmware "
 	@echo "        program      -- program firmware"
-	@echo "        putty        -- start putty"
-	@echo "        test         -- test RISC compile"
+	@echo "        putty        -- start putty with configured port"
+	@echo "        testcomp     -- test RISC compile (. setenv.sh first)"
 	@echo "        clean        -- clean temps and builds"
 
 all: brom mkflash
@@ -43,8 +43,8 @@ all: brom mkflash
 newfirm:
 	openFPGALoader -f project/impl/pnr/picotiny.fs
 
-test:
-	@#$(RISCV_NAME)-gcc   -nostdlib test.c
+testcomp:
+	@#$(RISCV_NAME)-gcc -nostdlib test.c
 	$(RISCV_NAME)-gcc  test.c
 
 $(FW_FILE): mkflash
@@ -65,5 +65,9 @@ program: $(PROG_FILE)
 
 putty:
 	putty -load tang_serial
+
+git:
+	git add .
+	git commit -m "AutoCheck"
 
 # EOF

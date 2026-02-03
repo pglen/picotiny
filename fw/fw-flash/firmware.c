@@ -300,7 +300,7 @@ void main()
     cmd_set_crm(1);
     cmd_set_dspi(1);
 
-    print("\\n\n\n\n\n");
+    print("\n\n\n\n\n\n\n");
 
     //char strx[] =  "\
     // ____      _               ____ _\n\
@@ -346,6 +346,7 @@ void main()
         print("\n");
         print("Select an action:\n");
         print("\n");
+        print("   [0] Run main app (kiosk)\n");
         print("   [1] Toggle led 1\n");
         print("   [2] Toggle led 2\n");
         print("   [3] Toggle led 3\n");
