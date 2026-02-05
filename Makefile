@@ -72,6 +72,7 @@ MESSAGE ?= "AutoCheck"
 git:
 	git add .
 	git commit -m $(MESSAGE)
+	git push
 
 echo:
 	@echo $(MESSAGE)
