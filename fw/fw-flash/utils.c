@@ -3,8 +3,10 @@
 
    File Name:       utils.c
 
-   Description:     Functions for utils.c
-
+   Description:     Functions for utils.c It is a standard library like
+                    set of functions without the usual overhead. No
+                    malloc and no exceptions. Errors are signalled in the
+                    result string.
    Revisions:
 
       REV   DATE                BY              DESCRIPTION
@@ -100,7 +102,7 @@ char tab[255] =
         L|A,    L|A,    L|A,    L|A,    L|A,    L|A,    L|A,    L|A,
 
     //  112  p  113  q  114  r  115  s  116  t  117  u  118  v  119  w
-        L|A,      L|A,  L|A,  L|A,      L|A,    L|A,    L|A,     L|A,
+        L|A,    L|A,  L|A,      L|A,    L|A,    L|A,    L|A,     L|A,
 
     //  120  x  121  y  122  z  123  {  124  |  125  }  126  ~  127  DEL
         L|A,    L|A,     L|A,     T,      T,      T,      T,      C,
@@ -137,8 +139,6 @@ int isxprint(char chh) {
     return tab[(uchar)chh] & (ISPUNCT | ISSPACE | ISALPHA | ISNUM) ? 1 : 0;
     }
 
-// Safe strcpy. Return length of copy.
-
 #ifdef TESTME
     void print(const char *strx)
         {
@@ -146,6 +146,8 @@ int isxprint(char chh) {
         }
 #endif
 
+// Safe strcpy. Obey buffer limit. Always terminate string.
+// Return length of copy.
 
 int strxcpy(char *out, const char *in, int lim)
 
@@ -153,9 +155,14 @@ int strxcpy(char *out, const char *in, int lim)
     int lnx = 0;
     while(1)
         {
-        if(lnx >= lim-1)
+        if(lnx >= lim-4)
             {
-            *out = '\0'; break;
+            *out = 'E';
+            *out = 'R';
+            *out = 'R';
+
+            *out = '\0';
+            break;
             }
         if(*in == '\0')
             {
@@ -200,13 +207,13 @@ int strxlen(char *strx)
         xx /= rrr;          \
         }
 
-#define MEMSIZE 48   // Temporary string size for numbers
+#define _MEMSIZE 48   // Temporary string size for numbers
 
 int     print_long(long vv, int radix, char *out, int lim)
 {
     int prog = 0, digits = 0, neg = 0, bb = 0;
-    char outp[MEMSIZE];
-    for(int aa = 0; aa < MEMSIZE; aa++)
+    char outp[_MEMSIZE];
+    for(int aa = 0; aa < _MEMSIZE; aa++)
         outp[aa] = '\0';
     if( vv < 0) { neg = 1; vv = -vv;} ;
     while(1)
@@ -235,7 +242,7 @@ int     print_long(long vv, int radix, char *out, int lim)
     if(neg)
         out[bb++] = '-';
     // Reverse
-    for(int aa = MEMSIZE - 1; aa >= 0; aa--)
+    for(int aa = _MEMSIZE - 1; aa >= 0; aa--)
         {
         if (bb >= lim - 1)
             break;
@@ -250,8 +257,8 @@ int     print_long(long vv, int radix, char *out, int lim)
 int     print_ulong(ulong vv, int radix, char *out, int lim)
 {
     int prog = 0, digits = 0, neg = 0, bb = 0;
-    char outp[MEMSIZE];
-    for(int aa = 0; aa < MEMSIZE; aa++)
+    char outp[_MEMSIZE];
+    for(int aa = 0; aa < _MEMSIZE; aa++)
         outp[aa] = '\0';
     //if( vv < 0) { neg = 1; vv = -vv;} ;
     while(1)
@@ -280,7 +287,7 @@ int     print_ulong(ulong vv, int radix, char *out, int lim)
     if(neg)
         out[bb++] = '-';
     // Reverse
-    for(int aa = MEMSIZE - 1; aa >= 0; aa--)
+    for(int aa = _MEMSIZE - 1; aa >= 0; aa--)
         {
         if (bb >= lim - 1)
             break;
@@ -298,8 +305,8 @@ int     print_int(int vv, int radix, char *out, int lim)
 
 {
     int prog = 0, digits = 0, neg = 0, bb = 0;
-    char outp[MEMSIZE];
-    for(int aa = 0; aa < MEMSIZE; aa++)
+    char outp[_MEMSIZE];
+    for(int aa = 0; aa < _MEMSIZE; aa++)
         outp[aa] = '\0';
 
     if( vv < 0) { neg = 1; vv = -vv;} ;
@@ -325,13 +332,14 @@ int     print_int(int vv, int radix, char *out, int lim)
         outp[digits++] = c;
         //vv /= radix;
         DIVRADIX(vv, radix)
+        //printf("vv=%d ", vv);
         prog += 1;
         }
     // Sign
     if(neg)
         out[bb++] = '-';
     // Reverse
-    for(int aa = MEMSIZE - 1; aa >= 0; aa--)
+    for(int aa = _MEMSIZE - 1; aa >= 0; aa--)
         {
         if (bb >= lim - 1)
             break;
@@ -348,8 +356,8 @@ int     print_uint(uint vv, int radix, char *out, int lim)
 
 {
     int prog = 0, digits = 0, neg = 0, bb = 0;
-    char outp[MEMSIZE];
-    for(int aa = 0; aa < MEMSIZE; aa++)
+    char outp[_MEMSIZE];
+    for(int aa = 0; aa < _MEMSIZE; aa++)
         outp[aa] = '\0';
 
     //if( vv < 0) { neg = 1; vv = -vv;} ;
@@ -380,7 +388,7 @@ int     print_uint(uint vv, int radix, char *out, int lim)
     if(neg)
         out[bb++] = '-';
     // Reverse
-    for(int aa = MEMSIZE - 1; aa >= 0; aa--)
+    for(int aa = _MEMSIZE - 1; aa >= 0; aa--)
         {
         if (bb >= lim - 1)
             break;
@@ -391,6 +399,17 @@ int     print_uint(uint vv, int radix, char *out, int lim)
     return prog;
 }
 
+// int xsnprintf(char *out, int lim, const char *fmt, void *args[])
+//
+// Imitate snprintf from standard library. Simplified. There is
+// no variable args, no exception mechanisms. If buffer overflow
+// takes place the string is prepeded with the "ERR" char sequence.
+//
+//    char *out,          -- results go here
+//    int lim,            -- sizeof buffer
+//    const char *fmt,    -- printf like format string
+//    void *args[]        -- array of arguments
+//
 // Format characters:
 //
 //      %[opts]d        -- decimal (signed)
@@ -404,18 +423,30 @@ int     print_uint(uint vv, int radix, char *out, int lim)
 //      -               -- align left
 //      +               -- align right (default)
 //      l               -- long
-//      [0-9]+          -- pad this number of times
-
+//      [0-9]+          -- pad with this number of spaces
+//
+//  option example: %-12d
+//
+// The _MEMSIZE define determines the size of number buffer.
+//  If one does not use the 'b' format, the _MEMSIZE can be reduced.
+//
 
 int xsnprintf(char *out, int lim, const char *fmt, void *args[])
 
 {
     int argidx = 0, prog = 0;
     *out = '\0';
-    char out2[MEMSIZE];
+    char out2[_MEMSIZE];
 
     while(*fmt)
         {
+        if(prog >= lim - 6)
+            {
+            out[prog++] = 'E';
+            out[prog++] = 'R';
+            out[prog++] = 'R';
+            break;
+            }
         if(*fmt == '%')
             {
             fmt++;
@@ -423,28 +454,28 @@ int xsnprintf(char *out, int lim, const char *fmt, void *args[])
             int     outnum = 0;
             while(*fmt)
                 {
-                // Gather num
+                // Gather options
                 char chh2 = *fmt;
-                if(isxnum(*fmt))
+                if(isxnum(chh2))
                     {
                     //printf("num: %c ", chh2);
                     outnum *= 10;
                     outnum += chh2 - '0';
                     }
-                else if(*fmt == '-')
+                else if(chh2 == '-')
                     {
                     //printf("opt: %c ", chh2);
                     opt = *fmt;
                     }
-                else if(*fmt == 'l')
+                else if(chh2 == 'l')
                     {
-                    printf("longopt: %c ", chh2);
-                    longopt = *fmt;
+                    //printf("longopt: %c ", chh2);
+                    longopt = chh2;
                     }
-                else if(*fmt == '+')
+                else if(chh2 == '+')
                     {
                     //printf("opt: %c ", chh2);
-                    opt = *fmt;
+                    opt = chh2;
                     }
                 else
                     {
@@ -454,7 +485,6 @@ int xsnprintf(char *out, int lim, const char *fmt, void *args[])
                 }
             char chh = *fmt;
             //printf("outnum: oper=%c outnum=%d opt='%c'\n", chh, outnum, opt);
-
             if(chh == '\0')
                 break;
             else if(chh == '%')
@@ -481,7 +511,17 @@ int xsnprintf(char *out, int lim, const char *fmt, void *args[])
                     if(longopt)
                         len = print_long((PTRCAST)args[argidx], 10, out2, sizeof(out2));
                     else
+                        {
+                        if ((PTRCAST)args[argidx] > 0xffffffff)
+                            {
+                            prog += strxcpy(out + prog, "OVR", lim - prog);
+                            }
+                        else if ((PTRCAST)args[argidx] < -0xffffffff)
+                            {
+                            prog += strxcpy(out + prog, "UND", lim - prog);
+                            }
                         len = print_int((PTRCAST)args[argidx], 10, out2, sizeof(out2));
+                        }
                     }
                else
                     {
@@ -567,6 +607,7 @@ int xsnprintf(char *out, int lim, const char *fmt, void *args[])
 #ifdef TESTME
 int main(int argc, char *argv[])
 {
+    #if 0
     for (int aa = 0; aa < 128; aa++)
         {
         //printf("%3d '%c' =>%d  ", aa, aa >= 32 ? aa : ' ', isxalnum(aa) );
@@ -577,15 +618,17 @@ int main(int argc, char *argv[])
         //printf("%3d '%c' =>%d  ", aa, aa >= 32 ? aa : ' ', isxlower(aa) );
         //printf("%3d '%c' =>%d  ", aa, aa >= 32 ? aa : ' ', isxpunct(aa) );
         //printf("%3d '%c' =>%d  ", aa, aa >= 32 ? aa : ' ', isxctrl(aa) );
-        //printf("%3d '%c' =>%d  ", aa, aa >= 32 ? aa : ' ', isxprint(aa) );
+        printf("%3d '%c' =>%d  ", aa, aa >= 32 ? aa : ' ', isxprint(aa) );
 
-        //if(aa % 6 == 5)
-        //    printf("\n");
+        if(aa % 6 == 5)
+            printf("\n");
         }
-    char    out[128];
+    #endif
+
+    char    out[64];
     void *arr[] = { _A("World"),  _A(1234123403333),
                     _A('a' + 2),  _A(arr), _A(0623)};
-    xsnprintf(out, sizeof(out), "Hello '%s' %lb %c %p %o", arr);
+    xsnprintf(out, sizeof(out), "Hello '%s' %d %c %p %o", arr);
     printf("out: %p [%s] \n", arr, out);
 }
 #endif

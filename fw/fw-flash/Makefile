@@ -98,8 +98,8 @@ $(OBJDIR)/%.o: %.S
 $(OBJDIR):
 	mkdir -p $@
 
-utils:  utils.c
-	gcc utils.c -o utils -DTESTME
+utils:  utils.c utils.h
+	gcc -ggdb utils.c -o utils -DTESTME
 
 clean:
 	@rm -f $(OBJDIR)/$(PROJ_NAME).elf
