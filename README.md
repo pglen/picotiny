@@ -22,7 +22,7 @@ Use '. setenv.sh' for correct make env vars for RISC V.
 - \sw
     Tools for BROM building and ISP flashing
 - \hw
-    RTL sources for the PicoTiny system
+        RTL sources for the PicoTiny system
 - \project
     Gowin FPGA project file and constraints
 - \gowin_ip
