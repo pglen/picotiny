@@ -1,9 +1,9 @@
 # Tang Nano 9k PicoTiny Example Project
-## Cloned from Sipeed examples
+## Cloned from the Sipeed examples
 
-This modification has video mode set to 1024x576.
-We need to set the PLL clock, so it upsets the baud rate. We set the baud
-rate in the simpleuart to match the original 115200.
+This modification has video mode set to 1024x576. We need to set the PLL
+clock, so it upsets the baud rate. Modified the baud rate divider in the
+simpleuart divider code to match the original baud of 115200.
 
 A PicoRV32-based SoC example with HDMI terminal from SimpleVout, SPI Flash
 XIP from picosoc, and custom UART ISP for flash programming.
@@ -47,7 +47,7 @@ Use '. setenv.sh' for correct make env vars for RISC V.
 
 - SimpleVOut
 
-    Configured for 640x480@60 HDMI output with Gowin OSER and
+    Configured for 1024x576@60 HDMI output with Gowin OSER and
     ELVDS macro. The module sends a terminal with testcard as
     the background. Characters sent from PicoRV32 to the UART
     will also be displayed on the terminal.
@@ -117,3 +117,5 @@ The firmware has a UART terminal on the integrated USB-UART with
 baudrate `115200`. Terminal output will be send to both the UART
 and the HDMI terminal. The terminal contains LED toggling, flash
 mode configuration, and a simple benchmark from the original picosoc.
+
+// # EOF
