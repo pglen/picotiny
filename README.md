@@ -1,9 +1,14 @@
-# PicoTiny Example Project
+# Tang Nano 9k PicoTiny Example Project
+## Cloned from Sipeed examples
 
-Use . setenv.sh for correct make vars for risc V.
+This modification has video mode set to 1024x576.
+We need to set the PLL clock, so it upsets the baud rate. We set the baud
+rate in the simpleuart to match the original 115200.
 
 A PicoRV32-based SoC example with HDMI terminal from SimpleVout, SPI Flash
 XIP from picosoc, and custom UART ISP for flash programming.
+
+Use '. setenv.sh' for correct make env vars for RISC V.
 
 ## Project Structure
 
