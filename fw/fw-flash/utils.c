@@ -200,7 +200,7 @@ int strxlen(char *strx)
         xx /= rrr;          \
         }
 
-#define MEMSIZE 16   // Temporary string size for numbers
+#define MEMSIZE 48   // Temporary string size for numbers
 
 int     print_long(long vv, int radix, char *out, int lim)
 {
@@ -211,6 +211,13 @@ int     print_long(long vv, int radix, char *out, int lim)
     if( vv < 0) { neg = 1; vv = -vv;} ;
     while(1)
         {
+        if(prog >= lim-3)
+            {
+            outp[digits++] = 'R';
+            outp[digits++] = 'R';
+            outp[digits++] = 'E';
+            break;
+            }
         char c = "0123456789abcdefghijklmnopqrstuvwxyz"[(vv % radix)];
         //putchar('\''); putchar(c); putchar('\''); putchar('\n');
         if (vv == 0)
@@ -249,6 +256,13 @@ int     print_ulong(ulong vv, int radix, char *out, int lim)
     //if( vv < 0) { neg = 1; vv = -vv;} ;
     while(1)
         {
+        if(prog >= lim-3)
+            {
+            outp[digits++] = 'R';
+            outp[digits++] = 'R';
+            outp[digits++] = 'E';
+            break;
+            }
         char c = "0123456789abcdefghijklmnopqrstuvwxyz"[(vv % radix)];
         //putchar('\''); putchar(c); putchar('\''); putchar('\n');
         if (vv == 0)
@@ -292,8 +306,13 @@ int     print_int(int vv, int radix, char *out, int lim)
 
     while(1)
         {
-        if(prog >= lim - 2)
+        if(prog >= lim-3)
+            {
+            outp[digits++] = 'R';
+            outp[digits++] = 'R';
+            outp[digits++] = 'E';
             break;
+            }
 
         char c = "0123456789abcdefghijklmnopqrstuvwxyz"[(vv % radix)];
         //putchar('\''); putchar(c); putchar('\''); putchar('\n');
@@ -344,7 +363,6 @@ int     print_uint(uint vv, int radix, char *out, int lim)
             outp[digits++] = 'E';
             break;
             }
-
         char c = "0123456789abcdefghijklmnopqrstuvwxyz"[(vv % radix)];
         //putchar('\''); putchar(c); putchar('\''); putchar('\n');
         if (vv == 0)
@@ -564,10 +582,10 @@ int main(int argc, char *argv[])
         //if(aa % 6 == 5)
         //    printf("\n");
         }
-    char    out[64];
-    void *arr[] = { _A("World"),  _A(123412340),
+    char    out[128];
+    void *arr[] = { _A("World"),  _A(1234123403333),
                     _A('a' + 2),  _A(arr), _A(0623)};
-    xsnprintf(out, sizeof(out), "Hello '%s' %b %c %p %o", arr);
+    xsnprintf(out, sizeof(out), "Hello '%s' %lb %c %p %o", arr);
     printf("out: %p [%s] \n", arr, out);
 }
 #endif
