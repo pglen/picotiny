@@ -40,6 +40,7 @@ module simpleuart
 	output        reg_dat_wait
 );
 	reg [31:0] cfg_divider;
+    reg [31:0] reg_div ;
 
 	reg [3:0] recv_state;
 	reg [31:0] recv_divcnt;
@@ -61,10 +62,21 @@ module simpleuart
 		if (!resetn) begin
 			cfg_divider <= 1;
 		end else begin
-			if (reg_div_we[0]) cfg_divider[ 7: 0] <= reg_div_di[ 7: 0];
-			if (reg_div_we[1]) cfg_divider[15: 8] <= reg_div_di[15: 8];
-			if (reg_div_we[2]) cfg_divider[23:16] <= reg_div_di[23:16];
-			if (reg_div_we[3]) cfg_divider[31:24] <= reg_div_di[31:24];
+
+            // Make the divider local. Reconfigure if PLLs changed.
+            // This may need fine tuning (experimental)
+            //reg_div <= 32'd200;       // 460800
+            //reg_div <= 32'd800;         // 32400
+            reg_div <= 32'd400;         // 115200
+
+			//if (reg_div_we[0]) cfg_divider[ 7: 0] <= reg_div_di[ 7: 0];
+			//if (reg_div_we[1]) cfg_divider[15: 8] <= reg_div_di[15: 8];
+			//if (reg_div_we[2]) cfg_divider[23:16] <= reg_div_di[23:16];
+			//if (reg_div_we[3]) cfg_divider[31:24] <= reg_div_di[31:24];
+			if (reg_div_we[0]) cfg_divider[ 7: 0] <= reg_div[ 7: 0];
+			if (reg_div_we[1]) cfg_divider[15: 8] <= reg_div[15: 8];
+			if (reg_div_we[2]) cfg_divider[23:16] <= reg_div[23:16];
+			if (reg_div_we[3]) cfg_divider[31:24] <= reg_div[31:24];
 		end
 	end
 

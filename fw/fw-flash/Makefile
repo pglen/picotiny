@@ -1,3 +1,5 @@
+# Make for picotiny
+
 PROJ_NAME=fw-flash
 DEBUG=no
 BENCH=no
@@ -82,6 +84,7 @@ $(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
 
 $(OBJDIR)/%.o: %.c
 	mkdir -p $(dir $@)
+	./genver.py
 	$(RISCV_CC) -c $(CFLAGS)  $(INC) -o $@ $^
 
 $(OBJDIR)/%.o: %.cpp
@@ -95,6 +98,9 @@ $(OBJDIR)/%.o: %.S
 $(OBJDIR):
 	mkdir -p $@
 
+utils:  utils.c
+	gcc utils.c -o utils -DTESTME
+
 clean:
 	@rm -f $(OBJDIR)/$(PROJ_NAME).elf
 	@rm -f $(OBJDIR)/$(PROJ_NAME).hex
@@ -106,5 +112,4 @@ clean:
 
 .SECONDARY: $(OBJS)
 
-
-
+# EOF

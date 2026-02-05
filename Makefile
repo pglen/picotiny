@@ -15,7 +15,7 @@ else
     RM = rm -f
     RISCV_NAME  ?= riscv-none-embed
     RISCV_PATH 	?= /usr
-    COMx	 	?= /dev/ttyUSB0
+    COMx	 	?= /dev/ttyUSB1
 endif
 
 FW_FILE 	 = fw/fw-flash/build/fw-flash.v
@@ -30,13 +30,14 @@ export RISCV_PATH
 
 help:
 	@echo Targets: brom mkflash clean program newfirm putty testcomp
-	@echo "        brom         -- creat boot rom"
-	@echo "        newfirm      -- flash new firmware"
-	@echo "        mkflash      -- make system flash / firmware "
-	@echo "        program      -- program firmware"
-	@echo "        putty        -- start putty with configured port"
-	@echo "        testcomp     -- test RISC compile (. setenv.sh first)"
-	@echo "        clean        -- clean temps and builds"
+	@echo "        brom         --     creat boot rom"
+	@echo "        newfirm      --     flash new firmware"
+	@echo "        mkflash      --     make system flash / firmware "
+	@echo "        program      --     program firmware"
+	@echo "        putty        --     start putty with configured port"
+	@echo "        testcomp     --     test RISC compile (. setenv.sh first)"
+	@echo "        git          --     check in to git (env: MESSAGE)"
+	@echo "        clean        --     clean temps and builds"
 
 all: brom mkflash
 
@@ -45,7 +46,7 @@ newfirm:
 
 testcomp:
 	@#$(RISCV_NAME)-gcc -nostdlib test.c
-	$(RISCV_NAME)-gcc  test.c
+	$(RISCV_NAME)-gcc test.c
 
 $(FW_FILE): mkflash
 
@@ -66,8 +67,13 @@ program: $(PROG_FILE)
 putty:
 	putty -load tang_serial
 
+MESSAGE ?= "AutoCheck"
+
 git:
 	git add .
-	git commit -m "AutoCheck"
+	git commit -m $(MESSAGE)
+
+echo:
+	@echo $(MESSAGE)
 
 # EOF

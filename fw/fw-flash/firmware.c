@@ -1,51 +1,20 @@
-//#include <stdint.h>
-//#include <stdbool.h>
-#define false 0
-#define true 1
-#define bool char
-#define uint32_t  unsigned int
-#define uint16_t  unsigned short
-#define uint8_t  unsigned char
 
-#define int32_t  int
-#define int16_t  short
-#define int8_t   char
+/* =====[ pyedpro.sess ]========================================================
 
-// a pointer to this is a null pointer, but the compiler does not
-// know that because "sram" is a linker symbol from sections.lds.
-extern uint32_t sram;
+   File Name:       firmware.c
 
-typedef struct {
-    volatile uint32_t DATA;
-    volatile uint32_t CLKDIV;
-} PICOUART;
+   Description:     Functions for firmware.c
 
-typedef struct {
-    volatile uint32_t OUT;
-    volatile uint32_t IN;
-    volatile uint32_t OE;
-} PICOGPIO;
+   Revisions:
 
-typedef struct {
-    union {
-        volatile uint32_t REG;
-        volatile uint16_t IOW;
-        struct {
-            volatile uint8_t IO;
-            volatile uint8_t OE;
-            volatile uint8_t CFG;
-            volatile uint8_t EN;
-        };
-    };
-} PICOQSPI;
+      REV   DATE                BY              DESCRIPTION
+      ----  -----------         ----------      --------------------------
+      0.00  Wed 04.Feb.2026     Peter Glen      Initial version.
 
-#define QSPI0 ((PICOQSPI*)0x81000000)
-#define GPIO0 ((PICOGPIO*)0x82000000)
-#define UART0 ((PICOUART*)0x83000000)
+   ======================================================================= */
 
-#define FLASHIO_ENTRY_ADDR ((void *)0x80000054)
-
-void (*spi_flashio)(uint8_t *pdata, int length, int wren) = FLASHIO_ENTRY_ADDR;
+#include "utils.h"
+#include "genver.txt"
 
 int putchar(int c)
 {
@@ -62,44 +31,9 @@ void print(const char *p)
         putchar(*(p++));
 }
 
-void print_hex(uint32_t v, int digits)
-{
-    for (int i = 7; i >= 0; i--) {
-        char c = "0123456789abcdef"[(v >> (4*i)) & 15];
-        if (c == '0' && i >= digits) continue;
-        putchar(c);
-        digits = i;
-    }
-}
+//include "utils.c"
 
-void print_dec(uint32_t v)
-{
-    if (v >= 100) {
-        print(">=100");
-        return;
-    }
-
-    if      (v >= 90) { putchar('9'); v -= 90; }
-    else if (v >= 80) { putchar('8'); v -= 80; }
-    else if (v >= 70) { putchar('7'); v -= 70; }
-    else if (v >= 60) { putchar('6'); v -= 60; }
-    else if (v >= 50) { putchar('5'); v -= 50; }
-    else if (v >= 40) { putchar('4'); v -= 40; }
-    else if (v >= 30) { putchar('3'); v -= 30; }
-    else if (v >= 20) { putchar('2'); v -= 20; }
-    else if (v >= 10) { putchar('1'); v -= 10; }
-
-    if      (v >= 9) { putchar('9'); v -= 9; }
-    else if (v >= 8) { putchar('8'); v -= 8; }
-    else if (v >= 7) { putchar('7'); v -= 7; }
-    else if (v >= 6) { putchar('6'); v -= 6; }
-    else if (v >= 5) { putchar('5'); v -= 5; }
-    else if (v >= 4) { putchar('4'); v -= 4; }
-    else if (v >= 3) { putchar('3'); v -= 3; }
-    else if (v >= 2) { putchar('2'); v -= 2; }
-    else if (v >= 1) { putchar('1'); v -= 1; }
-    else putchar('0');
-}
+void (*spi_flashio)(uint8_t *pdata, int length, int wren) = FLASHIO_ENTRY_ADDR;
 
 char getchar_prompt(char *prompt)
 {
@@ -179,7 +113,9 @@ void cmd_read_flash_id()
 
     for (int i = 1; i <= 3; i++) {
         putchar(' ');
-        print_hex(buffer[i], 2);
+        //print_hex(buffer[i], 2);
+        char out[12];
+        print_num(buffer[i], 16, out, 12);  print(out);
     }
     putchar('\n');
 
@@ -227,17 +163,22 @@ uint32_t cmd_benchmark(bool verbose, uint32_t *instns_p)
 
     if (verbose)
     {
+        char out[12];
+
         print("Cycles: 0x");
-        print_hex(cycles_end - cycles_begin, 8);
-        putchar('\n');
+        //print_hex(cycles_end - cycles_begin, 8);
+        print_num(cycles_end - cycles_begin, 16, out, 12);
+         print(out);
+         putchar('\n');
 
         print("Instns: 0x");
-        print_hex(instns_end - instns_begin, 8);
-        putchar('\n');
+        print_num(instns_end - instns_begin, 16, out, 12);
+         print(out);
+         putchar('\n');
 
         print("Chksum: 0x");
-        print_hex(x32, 8);
-        putchar('\n');
+        print_num(x32, 16, out, 12);
+         print(out); putchar('\n');
     }
 
     if (instns_p)
@@ -256,32 +197,38 @@ void cmd_benchmark_all()
     cmd_set_crm(0);
 
     print(": ");
-    print_hex(cmd_benchmark(false, &instns), 8);
-    putchar('\n');
+    char out[12];
+    print_num(cmd_benchmark(false, &instns), 16, out, 12);
+     print(out);  putchar('\n');
 
     print("dspi-");
-    print_dec(0);
-    print("         ");
+    print_num(0, 10, out, 12);
+     print(out);
+     print("         ");
 
     cmd_set_dspi(1);
 
     print(": ");
-    print_hex(cmd_benchmark(false, &instns), 8);
-    putchar('\n');
+    print_num(cmd_benchmark(false, &instns), 16, out, 12);
+     print(out);
+     putchar('\n');
 
     print("dspi-crm-");
-    print_dec(0);
-    print("     ");
+    print_num(0, 10, out, 12);
+     print(out);
+     print("     ");
 
     cmd_set_crm(1);
 
     print(": ");
-    print_hex(cmd_benchmark(false, &instns), 8);
-    putchar('\n');
+    print_num(cmd_benchmark(false, &instns), 16, out, 12);
+     print(out);
+     putchar('\n');
 
     print("instns         : ");
-    print_hex(instns, 8);
-    putchar('\n');
+    print_num(instns, 16, out, 12);
+     print(out);
+     putchar('\n');
 }
 
 volatile int i;
@@ -289,6 +236,21 @@ volatile int i;
 
 #define CLK_FREQ        25175000
 #define UART_BAUD       115200
+
+// ____      _               ____ _
+//|  _ \ ___| |_ ___ _ __   / ___| | ___ _ __
+//| |_) / _ \ __/ _ \ '__| | |  _| |/ _ \ '_ \
+//|  __/  __/ ||  __/ |    | |_| | |  __/ | | |
+//|_|   \___|\__\___|_|     \____|_|\___|_| |_|
+//
+
+char strpg[] =  "\
+     ____      _               ____ _\n\
+    |  _ \\ ___| |_ ___ _ __   / ___| | ___ _ __\n\
+    | |_) / _ \\ __/ _ \\ '__| | |  _| |/ _ \\ '_ \\\n\
+    |  __/  __/ ||  __/ |    | |_| | |  __/ | | |\n\
+    |_|   \\___|\\__\\___|_|     \\____|_|\\___|_| |_|\n\
+\n";
 
 void main()
 {
@@ -300,26 +262,35 @@ void main()
     cmd_set_crm(1);
     cmd_set_dspi(1);
 
-    print("\n\n\n\n\n\n\n");
+    print("\n\n\n\n\n\n");
 
-    //char strx[] =  "\
-    // ____      _               ____ _\n\
-    //|  _ \ ___| |_ ___ _ __   / ___| | ___ _ __\n\
-    //| |_) // _ \ __/ _ \ '__| | |  _| |// _ \ '\n\
-    //|  __//  __// ||  __// |    | |_| | |  __// | | |\n\
-    //|_|   \___|\__\___|_|     \____|_|\___|_| |_|\n\
-    //";
-
-    //print(strx);
-
-    //print("  ____  _          ____         ____\n");
-    //print(" |  _ (_) ___ ___/ ___|  ___  / ___|\n");
-    //print(" | |_) | |/ __/ _ \\___ \\ / _ \\| |\n");
-    //print(" |  __/| | (_| (_) |__) | (_) | |___\n");
-    //print(" |_|   |_|\\___\\___/____/ \\___/ \\____|\n");
-    //print("\n");
-    print("           On Lichee Tang Nano-9K by Peter Glen\n");
+    print("           Lichee Tang Nano-9K by Peter Glen, Build: ");
+    print(BUILD); print("\n");
     print("\n");
+    char out[12];
+
+    //print("len: '");
+    //print_num(strxlen(strpg), 10, out, 12);
+    // print(out);
+    // print("'  '");
+    //print_num(strxlen(strpg), 16, out, 12);
+    // print(out);
+    // print("'\n");
+    //for(int aa = 0; aa < 10; aa++)
+    //    {
+    //    print_hex(aa, 4); print(" -- ");
+    //    print_num(aa, 10); print(" - ");
+    //    }
+    //print("\n");
+
+    // Show banner
+    print(strpg);
+
+    // Show clock
+    char outx[64];
+    void *arr2[] = {(void*)CLK_FREQ, NULL};
+    xsnprintf(outx, sizeof(outx), "Clock frequency: %d\n", arr2);
+    print(outx);
 
     for ( i = 0 ; i < 10000; i++);
     GPIO0->OUT = 0x3F ^ 0x01;
@@ -341,6 +312,13 @@ void main()
     GPIO0->OUT = 0x3F;
     for ( i = 0 ; i < 10000; i++);
 
+    // test xsnprintf
+    void *arr[] = {(void*)"\nHello",(void*)-99, (void*)33, 0, arr, 63, NULL};
+    int xx = 1234;
+    arr[3] = (void*)xx;
+    xsnprintf(outx, sizeof(outx), "%s: %22 %d 0x%x 0b%b %p 0%o %%\n", arr);
+    print(outx);
+
     while (1)
     {
         print("\n");
@@ -358,14 +336,16 @@ void main()
         print("   [S] Set Single SPI mode\n");
         print("   [D] Set DSPI mode\n");
         print("   [C] Set DSPI+CRM mode\n");
-        print("   [B] Run simplistic benchmark Ver 1.0.0\n");
+        print("   [B] Run simplistic benchmark\n");
         print("   [A] Benchmark all configs\n");
 
         for (int rep = 10; rep > 0; rep--)
         {
+            char out[12];
+
             print("\n");
             print("IO State: ");
-            print_hex(GPIO0->IN, 8);
+            print_num(GPIO0->IN, 16, out, 12);
             print("\n");
             print("\n");
 
