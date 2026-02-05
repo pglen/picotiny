@@ -2,8 +2,8 @@
 ## Cloned from the Sipeed examples
 
 This modification has video mode set to 1024x576. We need to set the PLL
-clock, so it upsets the baud rate. Modified the baud rate divider in the
-simpleuart divider code to match the original baud of 115200.
+clock, so it upsets the baud rate. Then we modified the baud rate
+divider in the simpleuart code to match the original baud of 115200.
 
 A PicoRV32-based SoC example with HDMI terminal from SimpleVout, SPI Flash
 XIP from picosoc, and custom UART ISP for flash programming.
@@ -31,9 +31,7 @@ Use '. setenv.sh' for correct make env vars for RISC V.
     Testbench and helper modules
 ```
 
-## Hardware
-
-### Module Config
+## Module Config
 
 - PicoRV32
 
@@ -68,15 +66,14 @@ Use '. setenv.sh' for correct make env vars for RISC V.
 ### Dependencies
 
 - python >= 3.6
-
-    Set $PYTHON_NAME to python executive if the desired python is not in the $PATH
 - pyserial
 - RISC-V GCC
 
-    Set $RISCV_NAME to GCC prefix and $RISCV_PATH to GCC root folder
+Set $PYTHON_NAME to python executable if the desired python is not in the $PATH
+Set $RISCV_NAME to GCC prefix and $RISCV_PATH to GCC root folder
 
 The variables above could be configured by setting environment variables or
-modifying Makefile.
+modifying Makefile, or editing the setenv.sh.
 
 ### Firmware Build
 
@@ -89,10 +86,16 @@ modifying Makefile.
 - Build user firmware image
 
     ```bash
-    make flash
+    make mkflash
     ```
+### Flash VERILOG
 
-### Firmware ISP Program
+    ```bash
+    make newfirm
+    ```
+Execute this (above) after every new build in the gowin GUI compile process.
+
+### Firmware ISP Programming
 
 The ISP firmware will wait for ISP command for <1s, then jump to main
 program if ISP command received. Thus, the programming sequence requires
@@ -102,20 +105,25 @@ prompted by the flasher.
 - Program user firmware image through ISP
 
     ```bash
-    make program COMx=<UART port>
+    make program COMx=<UART1 port>
     ```
 
 - Program custom firmware image through ISP
 
     ```bash
-    make program PROG_FILE=<objdump Verilog file> COMx=<UART port>
+    make program PROG_FILE=<objdump Verilog file> COMx=<UART2 port>
     ```
 
 ### Example Firmware
 
 The firmware has a UART terminal on the integrated USB-UART with
-baudrate `115200`. Terminal output will be send to both the UART
+baudrate `115200`. Terminal output will be sent to both the UART
 and the HDMI terminal. The terminal contains LED toggling, flash
 mode configuration, and a simple benchmark from the original picosoc.
+
+## Use
+
+ This project was meant to be an infastructure to an HDMI display terminal
+ project.
 
 // # EOF
